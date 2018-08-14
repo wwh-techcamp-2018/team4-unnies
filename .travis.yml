@@ -1,24 +1,29 @@
 language: java
 jdk:
-- openjdk8
+  - openjdk8
+
 branches:
   only:
-  - master
+    - master
+
 cache:
   directories:
-  - "$HOME/.m2/repository"
-  - "$HOME/.gradle"
+    - "$HOME/.m2/repository"
+    - "$HOME/.gradle"
+
 script: "./gradlew clean build"
+
 notifications:
   email:
     recipients:
-    - tech_msy@woowahan.com
-    - tech_syl@woowahan.com
-    - tech_hjl@woowahan.com
-    - tech_syk@woowahan.com
-    - tech_jiwoo@woowahan.com
+      - tech_msy@woowahan.com
+      - tech_syl@woowahan.com
+      - tech_hjl@woowahan.com
+      - tech_syk@woowahan.com
+      - tech_jiwoo@woowahan.com
   slack:
     secure: T8aXdUvWIEMY8CcVX6P7oZCm7+JQui1jHyMTlNHxBOpEEWsIlC3BlMLodJ4Vtu8BcAcM1RFD8eIuMAdGA/tLxUgqN8aoGibrt8xqxR/x8ArbVk1cyIcB5hFe2G92Nqqf5dAno7bFCOC1zDsUPJwI3GOseoq8rWCDvdY55sby18nnVxPWs4Ii4Q0Ya7AQP4JnIzxks4lXMOANbgr7t9vHqlUtE5kJvRpNZLbF9Vk7Ywz6+8ptink6mGgEcGLbekcvq00AsWcnIAdAzQjxcK2OWj9GyO2alwePGJ3h4eHWvM78V1RJOtrTNAcOKSdTc6tr8b413vuqubDDOlIwCxn4kDt9CX1DVffipKJadJkvqZODFTovKrhEhowt2F5W2DT2UnWVh6eUbtxzWNAcpnuE+RRmB2qulzpLiCCjDg0ngKw57LWWM/tIik+AeXdpjXyPFYRRjgUI4UYSBbkrL1z2g+jqHzdFJGh4v+8O1Zi8v/Wh/3V2GAwus9VEjE6uw+he8cCKInQPsxiA9IpKS5QyLxd5omo5X1jbd33x18PU9yc3QhJxxAL7+ugHlF0j0HZKXLICi8ySprUbVEobAEqo4VGy9XVnMa4ExzyVrb9yu077j2I1Nnq1K8LQWwh1ecKgSpRR2Jcb48LNe5kDDmjhYUhen/TnXnExWbKaEssuoHM=
+
 deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY
@@ -31,3 +36,9 @@ deploy:
     on:
       repo: wwh-techcamp-2018/team4-unnies
       branch: master
+    local_dir: deploy
+
+before_deploy:
+  - zip -r team4-unnies *
+  - mkdir -p deploy
+  - mv team4-unnies.zip deploy/team4-unnies.zip
