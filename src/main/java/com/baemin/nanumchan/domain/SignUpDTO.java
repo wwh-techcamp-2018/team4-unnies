@@ -48,6 +48,7 @@ public class SignUpDTO {
                 .password(passwordEncoder.encode(password))
                 .email(email)
                 .phoneNumber(phoneNumber)
+                .address(address)
                 .build();
 
     }
