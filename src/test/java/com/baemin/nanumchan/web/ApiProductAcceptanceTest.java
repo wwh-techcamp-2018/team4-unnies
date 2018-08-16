@@ -3,6 +3,8 @@ package com.baemin.nanumchan.web;
 import com.baemin.nanumchan.domain.Category;
 import com.baemin.nanumchan.domain.CategoryRepository;
 import com.baemin.nanumchan.domain.Product;
+import com.baemin.nanumchan.dto.ProductDto;
+import common.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +30,8 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
 
         Category newCategory = categoryRepository.save(category);
 
-        Product product = Product.builder()
-                .category(newCategory)
+        ProductDto productDto = ProductDto.builder()
+                .categoryId(newCategory.getId())
                 .description("디스크립션")
                 .expireDateTime(LocalDateTime.now().toLocalDate())
                 .shareDateTime(LocalDateTime.now().toLocalDate())
@@ -40,8 +42,52 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
                 .isBowlNeeded(false)
                 .build();
 
-        ResponseEntity<Void> response = template.postForEntity("/api/products", product, Void.class);
+        ResponseEntity<Void> response = template.postForEntity("/api/products", productDto, Void.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getHeaders().getLocation().getPath()).isNotEmpty();
+    }
+
+    @Test
+    public void upload_유효하지않은필드에러메시지_이름없음() {
+        Category category = Category.builder()
+                .name("Good")
+                .build();
+
+        Category newCategory = categoryRepository.save(category);
+
+        ProductDto productDto = ProductDto.builder()
+                .categoryId(newCategory.getId())
+                .description("디스크립션")
+                .expireDateTime(LocalDateTime.now().toLocalDate())
+                .shareDateTime(LocalDateTime.now().toLocalDate())
+                //.name()
+                .title("제목")
+                .maxParticipant(3)
+                .price(1000L)
+                .isBowlNeeded(false)
+                .build();
+
+        ResponseEntity<RestResponse> response = template.postForEntity("/api/products", productDto, RestResponse.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+        assertThat(response.getBody().getError().size()).isEqualTo(1);
+    }
+
+    @Test
+    public void upload_카테고리없음() {
+        ProductDto productDto = ProductDto.builder()
+                .categoryId(-1L)
+                .description("디스크립션")
+                .expireDateTime(LocalDateTime.now().toLocalDate())
+                .shareDateTime(LocalDateTime.now().toLocalDate())
+                .name("이름")
+                .title("제목")
+                .maxParticipant(3)
+                .price(1000L)
+                .isBowlNeeded(false)
+                .build();
+
+        ResponseEntity<RestResponse> response = template.postForEntity("/api/products", productDto, RestResponse.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody().getError().size()).isEqualTo(1);
     }
 }

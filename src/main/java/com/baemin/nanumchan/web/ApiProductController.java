@@ -1,13 +1,12 @@
 package com.baemin.nanumchan.web;
 
-import com.baemin.nanumchan.domain.Product;
-import com.baemin.nanumchan.domain.ProductRepository;
-import common.RestResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.baemin.nanumchan.dto.ProductDto;
+import com.baemin.nanumchan.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.net.URI;
 
@@ -15,12 +14,12 @@ import java.net.URI;
 @RequestMapping("/api/products")
 public class ApiProductController {
 
-    @Autowired
-    private ProductRepository productRepository;
+    @Resource(name = "productService")
+    private ProductService productService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> upload(@Valid @RequestBody Product product) {
-        return ResponseEntity.created(URI.create("/api/products/" + productRepository.save(product).getId())).build();
+    public ResponseEntity<Void> upload(@Valid @RequestBody ProductDto productDto) {
+        return ResponseEntity.created(URI.create("/api/products/" + productService.create(productDto))).build();
     }
 }

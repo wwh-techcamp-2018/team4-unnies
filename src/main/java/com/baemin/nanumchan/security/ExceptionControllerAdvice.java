@@ -46,7 +46,7 @@ public class ExceptionControllerAdvice {
         List<ObjectError> errors = exception.getBindingResult().getAllErrors();
         RestResponse.ErrorResponseBuilder errorResponseBuilder = RestResponse.error();
         for (ObjectError objectError : errors) {
-            log.info("object error : {}", objectError);
+            log.error("object error : {}", objectError);
             FieldError fieldError = (FieldError) objectError;
             errorResponseBuilder.appendError(fieldError.getField(), getErrorMessage(fieldError));
         }
@@ -60,7 +60,7 @@ public class ExceptionControllerAdvice {
         }
 
         String errorMessage = messageSourceAccessor.getMessage(code.get(), fieldError.getArguments(), fieldError.getDefaultMessage());
-        log.info("error message: {}", errorMessage);
+        log.error("error message: {}", errorMessage);
         return errorMessage;
     }
 

@@ -4,11 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 @Entity
@@ -24,27 +27,32 @@ public class Product {
 
     // TODO: User owner
 
-    @Column(nullable = false)
+    @NotEmpty
     private String name;
 
     // TODO: Location address
 
-    @Column(nullable = false)
+    @NotEmpty
+    @Length(max = 40)
     private String title;
 
+    // TODO: 1000원 단위 밸리데이터
     @DecimalMin("0")
     private Long price;
 
-    @Column(nullable = false)
+    @NotEmpty
+    @Length(max = 2000)
     private String description;
 
     @DecimalMin("1")
     @DecimalMax("6")
     private Integer maxParticipant;
 
+    @FutureOrPresent
     @DateTimeFormat
     private LocalDate expireDateTime;
 
+    @FutureOrPresent
     @DateTimeFormat
     private LocalDate shareDateTime;
 
