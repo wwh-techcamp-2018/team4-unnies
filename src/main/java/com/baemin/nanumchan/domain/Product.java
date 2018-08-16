@@ -1,5 +1,9 @@
 package com.baemin.nanumchan.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -8,6 +12,10 @@ import javax.validation.constraints.DecimalMin;
 import java.time.LocalDate;
 
 @Entity
+@Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
 
     @Id
@@ -43,6 +51,7 @@ public class Product {
     @Column(nullable = false)
     private boolean isBowlNeeded;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_product_category"))
     private Category category;
 }
