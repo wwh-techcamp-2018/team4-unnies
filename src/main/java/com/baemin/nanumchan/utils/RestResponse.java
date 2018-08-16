@@ -13,14 +13,14 @@ import java.util.List;
 public class RestResponse<T> {
 
     private T data;
-    private List<Error> error;
+    private List<Error> errors;
     private String message;
 
     public RestResponse() {
     }
 
     private RestResponse(List<Error> errors) {
-        this.error = errors;
+        this.errors = errors;
     }
 
     private RestResponse(T data, String message) {
