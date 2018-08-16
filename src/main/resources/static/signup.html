@@ -33,8 +33,10 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                            <input type="text" class="form-control" name="email" id="email"
+                                   placeholder="Enter your Email" onchange="validateCheck('email')"/>
                         </div>
+                        <strong style="color:red; visibility:hidden;">invalid email</strong>
                     </div>
                 </div>
 
@@ -43,8 +45,10 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your name"/>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter your name"
+                                   onchange="validateCheck('name')"/>
                         </div>
+                        <strong style="color:red; visibility:hidden;">invalid name</strong>
                     </div>
                 </div>
 
@@ -53,8 +57,10 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                            <input type="password" class="form-control" name="password" id="password"
+                                   placeholder="Enter your Password" onchange="validateCheck('password')"/>
                         </div>
+                        <strong style="color:red; visibility:hidden;">invalid password</strong>
                     </div>
                 </div>
 
@@ -63,8 +69,10 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input type="password" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
+                            <input type="password" class="form-control" name="confirm" id="confirm"
+                                   placeholder="Confirm your Password" onchange="validateCheck('confirmPassword')"/>
                         </div>
+                        <strong style="color:red; visibility:hidden;">confirm password does not match password</strong>
                     </div>
                 </div>
 
@@ -73,8 +81,10 @@
                     <div class="cols-sm-10">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-phone fa-lg" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="phone" id="phone"  placeholder="Enter phone"/>
+                            <input type="text" class="form-control" name="phone" id="phone" placeholder="Enter phone"
+                                   onchange="validateCheck('phone')"/>
                         </div>
+                        <strong style="color:red; visibility:hidden;">invalid phone</strong>
                     </div>
                 </div>
 
@@ -84,20 +94,25 @@
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-home fa-lg" aria-hidden="true"></i></span>
                             <input type="text" id="postcode" placeholder="우편번호">
-                            <input type="button" onclick="sample2_execDaumPostcode()" value="우편번호 찾기"><br>
+                            <input type="button" onclick="test_execDaumPostcode();" value="우편번호 찾기"><br>
                             <input type="text" id="address" placeholder="한글주소">
                             <input type="text" id="address_detail" placeholder="세부주소">
 
                             <!-- iOS에서는 position:fixed 버그가 있음, 적용하는 사이트에 맞게 position:absolute 등을 이용하여 top,left값 조정 필요 -->
-                            <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:10;-webkit-overflow-scrolling:touch;">
-                                <img src="//t1.daumcdn.net/localimg/localimages/07/postcode/320/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="closeDaumPostcode()" alt="닫기 버튼">
+                            <div id="layer"
+                                 style="visibility:hidden;position:fixed;overflow:hidden;z-index:10;-webkit-overflow-scrolling:touch;">
+                                <img src="//t1.daumcdn.net/localimg/localimages/07/postcode/320/close.png"
+                                     id="btnCloseLayer"
+                                     style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1"
+                                     onclick="closeDaumPostcode()" alt="닫기 버튼">
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group ">
-                    <a href="#" target="_blank" type="button" id="button" class="btn btn-primary btn-lg btn-block login-button">Register</a>
+                    <button target="_blank" type="button" id="button"
+                            class="btn btn-primary btn-lg btn-block login-button" disabled="true">Register</button>
                 </div>
 
             </form>
@@ -109,11 +124,11 @@
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 
-
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="js/bootstrap.min.js"></script>
+<script src="js/address.js"></script>
 <script src="js/signup.js"></script>
-</body>
+</body>s
 </html>
