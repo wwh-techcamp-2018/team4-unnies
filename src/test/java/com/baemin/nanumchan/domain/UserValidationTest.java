@@ -1,5 +1,6 @@
 package com.baemin.nanumchan.domain;
 
+import com.baemin.nanumchan.dto.SignUpDTO;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;

@@ -1,19 +1,29 @@
 package com.baemin.nanumchan.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class UnAuthenticationException extends RuntimeException {
 
-    private static final long serialVersionUID = 1L;
-    private String fieldName;
+    // TODO : exception throw 시, field와 error message를 확인할 수 있는 방법은?!
+    private String field;
+    private String message;
 
-    public UnAuthenticationException(String fieldName, String message) {
+    public UnAuthenticationException(String message) {
         super(message);
-        this.fieldName = fieldName;
     }
+
+    public UnAuthenticationException(String field, String message) {
+        this.field = field;
+        this.message = message;
+    }
+
+    public static UnAuthenticationException invalidEmail() {
+        return new UnAuthenticationException("email", "존재하지 않는 이메일입니다");
+    }
+
+    public static UnAuthenticationException invalidPassword() {
+        return new UnAuthenticationException("password", "비밀번호가 틀립니다");
+    }
+
 }
