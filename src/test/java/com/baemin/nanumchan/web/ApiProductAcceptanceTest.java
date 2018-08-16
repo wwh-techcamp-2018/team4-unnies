@@ -19,6 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 public class ApiProductAcceptanceTest extends AcceptanceTest {
 
+    private final static String PRODUCT_URL = "/api/products";
+
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -49,7 +51,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
 
     @Test
     public void upload() {
-        ResponseEntity<Void> response = template.postForEntity("/api/products", productDto, Void.class);
+        ResponseEntity<Void> response = template.postForEntity(PRODUCT_URL, productDto, Void.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getHeaders().getLocation().getPath()).isNotEmpty();
     }
@@ -58,7 +60,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
     public void upload_유효하지않은필드에러메시지_이름없음() {
         productDto.setName(null);
 
-        ResponseEntity<RestResponse> response = template.postForEntity("/api/products", productDto, RestResponse.class);
+        ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL, productDto, RestResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
         assertThat(response.getBody().getError().size()).isEqualTo(1);
     }
@@ -67,7 +69,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
     public void upload_카테고리없음() {
         productDto.setCategoryId(-1L);
 
-        ResponseEntity<RestResponse> response = template.postForEntity("/api/products", productDto, RestResponse.class);
+        ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL, productDto, RestResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody().getError().size()).isEqualTo(1);
     }
