@@ -25,7 +25,7 @@ public class ExceptionControllerAdvice {
     private MessageSourceAccessor messageSourceAccessor;
 
     @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public RestResponse<?> emptyResultData(EntityNotFoundException exception) {
         RestResponse.ErrorResponseBuilder errorResponseBuilder = RestResponse.error();
         errorResponseBuilder.appendError("Entity", exception.getMessage());
@@ -41,7 +41,7 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public RestResponse<?> methodArgumentValidException(MethodArgumentNotValidException exception) {
         List<ObjectError> errors = exception.getBindingResult().getAllErrors();
         RestResponse.ErrorResponseBuilder errorResponseBuilder = RestResponse.error();
