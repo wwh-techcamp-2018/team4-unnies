@@ -1,7 +1,3 @@
-function $(selector){
-    return document.querySelector(selector);
-}
-
 $("#button").addEventListener("click",signupHandler);
 
 const registerFlag = {
