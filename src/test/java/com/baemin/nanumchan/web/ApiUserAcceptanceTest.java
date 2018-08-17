@@ -43,7 +43,7 @@ public class ApiUserAcceptanceTest extends AcceptanceTest {
 
         log.info("response : {}", response.getBody().getErrors());
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
