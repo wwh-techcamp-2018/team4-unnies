@@ -1,5 +1,8 @@
 package com.baemin.nanumchan.product.dto;
 
+import com.baemin.nanumchan.product.exception.ExceedMaximumAllowedFileSizeException;
+import com.baemin.nanumchan.product.exception.InvalidImageDimensionException;
+import com.baemin.nanumchan.product.exception.UnsupportMimeTypeException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,7 +44,7 @@ public class ProductMultiPartFormDtoTest {
         assertThat(productMultiPartFormDto.isMimeTypeImage(pngImage)).isTrue();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = UnsupportMimeTypeException.class)
     public void notSupportGIFImage() {
         productMultiPartFormDto.isMimeTypeImage(gifImage);
     }
@@ -53,7 +56,7 @@ public class ProductMultiPartFormDtoTest {
         assertThat(productMultiPartFormDto.lessThanMaximumAllowedSize(gifImage)).isTrue();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = ExceedMaximumAllowedFileSizeException.class)
     public void overSizedImage() {
         productMultiPartFormDto.lessThanMaximumAllowedSize(jpgImage, 1L);
     }
@@ -65,12 +68,12 @@ public class ProductMultiPartFormDtoTest {
         assertThat(productMultiPartFormDto.isValidDimension(gifImage)).isTrue();
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = InvalidImageDimensionException.class)
     public void widthLargerThan_1() {
         productMultiPartFormDto.isValidDimension(pngImage, 1, 1000);
     }
 
-    @Test(expected = RuntimeException.class)
+    @Test(expected = InvalidImageDimensionException.class)
     public void heightLargerThan_1() {
         productMultiPartFormDto.isValidDimension(pngImage, 1000, 1);
     }
