@@ -5,6 +5,7 @@ jdk:
 branches:
   only:
     - master
+    - develop
 
 cache:
   directories:
@@ -12,6 +13,9 @@ cache:
     - "$HOME/.gradle"
 
 script: "./gradlew clean build"
+
+after_success:
+  - ./gradlew jacocoTestReport coveralls
 
 before_deploy:
   - zip -r team4-unnies *
