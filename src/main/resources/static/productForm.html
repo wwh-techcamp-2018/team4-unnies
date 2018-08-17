@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 위 3개의 메타 태그는 *반드시* head 태그의 처음에 와야합니다; 어떤 다른 콘텐츠들은 반드시 이 태그들 *다음에* 와야 합니다 -->
+    <title>부트스트랩 101 템플릿</title>
+
+    <!-- 부트스트랩 -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/datepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+
+    <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
+    <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="container">
+        <form class="form-horizontal" method="post" action="#">
+            <h2 class="form-upload-heading ">업로드 페이지</h2>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">카테고리</label>
+                <div class="col-sm-2">
+                    <select class="custom-select form-control" id="product-category">
+                        <option selected>카테고리 선택</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">음식명</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control" id="product-name" placeholder="음식명을 입력하세요.">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">나눔 장소</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="product-address" placeholder="나눔장소를 입력하세요.">
+                </div>
+                <button type="submit" class="btn btn-primary">내 주소</button>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">제목</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="product-title" placeholder="제목을 입력하세요. (최대 40자)">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">가격</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" id="product-price" placeholder="가격을 입력하세요. (숫자로만 입력 / 1000원 단위)">
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">무료
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">내용</label>
+                <div class="col-sm-4">
+                    <textarea class="form-control" id="product-description" placeholder="상품 설명을 해주세요. (최대 2000자)" rows="7"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">모집인원</label>
+                <div class="col-sm-2">
+                    <select class="custom-select form-control" id="product-max-participant">
+                        <option selected>모집인원 선택</option>
+                        <option value="1">1명</option>
+                        <option value="2">2명</option>
+                        <option value="3">3명</option>
+                        <option value="3">4명</option>
+                        <option value="3">5명</option>
+                        <option value="3">6명</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">모집기간</label>
+                <div class="col-sm-8">
+                    <div class="input-group date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy/mm/dd - HH:ii p" data-link-field="dtp_input1">
+                        <input class="form-control" size="16" type="text" value="" readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+                    <input type="hidden" id="dtp_input1" value="" /><br/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">나눔시간</label>
+                <div class="col-sm-8">
+                    <div class="input-group date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z" data-date-format="yyyy/mm/dd - HH:ii p" data-link-field="dtp_input2">
+                        <input class="form-control" size="16" type="text" value="" readonly>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                    </div>
+                    <input type="hidden" id="dtp_input2" value="" /><br/>
+                </div>
+            </div>
+
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-2 control-label">모집기간</label>-->
+                <!--<div class="col-xs-1">-->
+                    <!--<select class="custom-select form-control" id="product-expire-datetime-year">-->
+                        <!--<option selected>년</option>-->
+                        <!--<option value="1">One</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-xs-1">-->
+                    <!--<select class="custom-select form-control" id="product-expire-datetime-month">-->
+                        <!--<option selected>월</option>-->
+                        <!--<option value="1">One</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-xs-1">-->
+                    <!--<select class="custom-select form-control" id="product-expire-datetime-date">-->
+                        <!--<option selected>일</option>-->
+                        <!--<option value="1">One</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-xs-1">-->
+                    <!--<select class="custom-select form-control" id="product-expire-datetime-hour">-->
+                        <!--<option selected>시</option>-->
+                        <!--<option value="1">One</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-xs-1">-->
+                    <!--<select class="custom-select form-control" id="product-expire-datetime-minute">-->
+                        <!--<option selected>분</option>-->
+                        <!--<option value="1">One</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-2 control-label">나눔시간</label>-->
+                <!--<div class="col-xs-1">-->
+                    <!--<select class="custom-select form-control" id="product-share-datetime-year">-->
+                        <!--<option selected>년</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-xs-1">-->
+                    <!--<select class="custom-select form-control" id="product-share-datetime-month">-->
+                        <!--<option selected>월</option>-->
+                        <!--<option value="1">One</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-xs-1">-->
+                    <!--<select class="custom-select form-control" id="product-share-datetime-date">-->
+                        <!--<option selected>일</option>-->
+                        <!--<option value="1">One</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-xs-1">-->
+                    <!--<select class="custom-select form-control" id="product-share-datetime-hour">-->
+                        <!--<option selected>시</option>-->
+                        <!--<option value="1">One</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <!--<div class="col-xs-1">-->
+                    <!--<select class="custom-select form-control" id="product-share-datetime-minute">-->
+                        <!--<option selected>분</option>-->
+                        <!--<option value="1">One</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">나눔용기</label>
+                <div class="col-sm-4">
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>필요함
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">필요하지 않음
+                    </label>
+                </div>
+            </div>
+
+
+
+        </form>
+    </div>
+<script src="js/productForm.js"></script>
+<!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/datepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="js/datepicker/locale/bootstrap-datetimepicker.ko.js"></script>
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        format: "yyyy/mm/dd - HH:ii p",
+        autoclose: true,
+        todayBtn: true,
+        startDate: new Date(),
+        minuteStep: 30
+    });
+</script>
+
+</body>
+</html>
