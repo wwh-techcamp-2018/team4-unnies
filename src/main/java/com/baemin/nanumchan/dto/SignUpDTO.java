@@ -2,7 +2,7 @@ package com.baemin.nanumchan.dto;
 
 import com.baemin.nanumchan.domain.User;
 import com.baemin.nanumchan.exception.UnAuthenticationException;
-import com.baemin.nanumchan.utils.Regex;
+import com.baemin.nanumchan.utils.ValidateRegex;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,22 +19,22 @@ import javax.validation.constraints.Pattern;
 public class SignUpDTO {
 
     @NotNull
-    @Pattern(regexp = Regex.EMAIL)
+    @Pattern(regexp = ValidateRegex.EMAIL)
     private String email;
 
     @NotNull
-    @Pattern(regexp = Regex.USERNAME)
+    @Pattern(regexp = ValidateRegex.USERNAME)
     private String name;
 
     @NotNull
-    @Pattern(regexp = Regex.PASSWORD)
+    @Pattern(regexp = ValidateRegex.PASSWORD)
     private String password;
 
     @NotNull
     private String confirmPassword;
 
     @NotNull
-    @Pattern(regexp = Regex.PHONE)
+    @Pattern(regexp = ValidateRegex.PHONE)
     private String phoneNumber;
 
     @NotNull
