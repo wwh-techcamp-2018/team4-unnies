@@ -1,6 +1,5 @@
 package com.baemin.nanumchan.web;
 
-import com.baemin.nanumchan.domain.SignUpDTO;
 import com.baemin.nanumchan.dto.SignUpDTO;
 import com.baemin.nanumchan.utils.RestResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -37,12 +36,22 @@ public class ApiUserAcceptanceTest extends AcceptanceTest {
     }
     @Test
     public void create_실패() {
-        signUpDTO.setEmail("unnies");
+        signUpDTO.setEmail(null);
         signUpDTO.setPassword("haha11");
-        signUpDTO.setName("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        signUpDTO.setAddress(null);
         ResponseEntity<RestResponse> response = template.postForEntity("/api/users", signUpDTO, RestResponse.class);
 
-        log.info("response : {}", response.getBody().getError());
+        log.info("response : {}", response.getBody().getErrors());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
+    public void create_실패_비밀번호불일치() {
+        signUpDTO.setConfirmPassword("haha123!!");
+        ResponseEntity<RestResponse> response = template.postForEntity("/api/users", signUpDTO, RestResponse.class);
+
+        log.info("response : {}", response.getBody().getErrors());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }

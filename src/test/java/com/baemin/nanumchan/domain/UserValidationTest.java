@@ -54,6 +54,13 @@ public class UserValidationTest {
     }
 
     @Test
+    public void email_NULL() {
+        user.setEmail(null);
+        Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
+        assertThat(constraintViolations.size()).isEqualTo(1);
+    }
+
+    @Test
     public void name_올바른형식() {
         Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
         assertThat(constraintViolations.size()).isEqualTo(0);
@@ -83,6 +90,13 @@ public class UserValidationTest {
     @Test
     public void name_틀린형식_특수문자포함() {
         user.setName("김$이혁진");
+        Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
+        assertThat(constraintViolations.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void name_NULL() {
+        user.setName(null);
         Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
         assertThat(constraintViolations.size()).isEqualTo(1);
     }
@@ -122,6 +136,20 @@ public class UserValidationTest {
     }
 
     @Test
+    public void password_NULL() {
+        user.setPassword(null);
+        Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
+        assertThat(constraintViolations.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void confirmPassword_NULL() {
+        user.setConfirmPassword(null);
+        Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
+        assertThat(constraintViolations.size()).isEqualTo(1);
+    }
+
+    @Test
     public void phoneNumber_올바른형식() {
         Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
         assertThat(constraintViolations.size()).isEqualTo(0);
@@ -140,4 +168,19 @@ public class UserValidationTest {
         Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
         assertThat(constraintViolations.size()).isEqualTo(1);
     }
+
+    @Test
+    public void phoneNumber_NULL() {
+        user.setPhoneNumber(null);
+        Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
+        assertThat(constraintViolations.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void address_NULL() {
+        user.setAddress(null);
+        Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
+        assertThat(constraintViolations.size()).isEqualTo(1);
+    }
+
 }
