@@ -42,7 +42,7 @@ function test_execDaumPostcode() {
             width : '100%',
             height : '100%',
             maxSuggestItems : 5
-        }).embed(element_layer);
+        }).open();
 
         // iframe을 넣은 element를 보이게 한다.
         element_layer.style.display = 'block';

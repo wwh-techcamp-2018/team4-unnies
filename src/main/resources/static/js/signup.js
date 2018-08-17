@@ -192,4 +192,3 @@ function validatePhone(){
         registerFlag["phone"] = true;
     }
 }
-
