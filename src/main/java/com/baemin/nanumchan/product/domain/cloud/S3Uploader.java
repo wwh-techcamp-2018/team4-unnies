@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.baemin.nanumchan.product.exception.FileConvertException;
+import com.baemin.nanumchan.product.exception.UploadFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -37,13 +38,18 @@ public class S3Uploader {
 
     private String upload(File file) {
         String uploadImageUrl = putS3(file, STATIC + "/" + file.getName());
-        remove(file);
         return uploadImageUrl;
     }
 
     private String putS3(File file, String location) {
-        amazonS3Client.putObject(new PutObjectRequest(bucket, location, file).withCannedAcl(CannedAccessControlList.PublicRead));
-        return amazonS3Client.getUrl(bucket, location).toString();
+        try {
+            amazonS3Client.putObject(new PutObjectRequest(bucket, location, file).withCannedAcl(CannedAccessControlList.PublicRead));
+            return amazonS3Client.getUrl(bucket, location).toString();
+        } catch (Exception e) {
+            throw new UploadFailedException();
+        } finally {
+            remove(file);
+        }
     }
 
     private void remove(File file) {
