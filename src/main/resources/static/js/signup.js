@@ -37,8 +37,9 @@ function signupHandler(evt){
         if(response.status >= 400 && response.status <= 404){
             validateError(response);
             return location.reload();
+        }else if(response.status === 201){
+            alert('회원가입을 축하드립니다.');
         }
-        alert('회원가입을 축하드립니다.');
     })
     .catch(error=>{
         location.reload();
@@ -126,10 +127,10 @@ function validateEmail(){
     const email = $('#email').value;
 
     if(!email.match(regex_email)){
-        $('#email').parentElement.nextElementSibling.style.visibility='visible';
+        $('#invalid-email').style.visibility='visible';
         registerFlag['email'] = false;
     }else{
-        $('#email').parentElement.nextElementSibling.style.visibility='hidden';
+        $('#invalid-email').style.visibility='hidden';
         registerFlag['email'] = true;
     }
 }
@@ -138,10 +139,10 @@ function validateName(){
     const regex_name = /[가-힣]{2,16}|[a-zA-Z]{2,16}/;
     const name = $('#name').value;
     if(!name.match(regex_name)){
-        $('#name').parentElement.nextElementSibling.style.visibility='visible';
+        $('#invalid-name').style.visibility='visible';
         registerFlag['name'] = false;
     }else{
-        $('#name').parentElement.nextElementSibling.style.visibility='hidden';
+        $('#invalid-name').style.visibility='hidden';
         registerFlag['name'] = true;
     }
 
@@ -151,10 +152,10 @@ function validatePassword(){
     const regex_password = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/;
     const password = $('#password').value;
     if(!password.match(regex_password)){
-        $('#password').parentElement.nextElementSibling.style.visibility='visible';
+        $('#invalid-password').style.visibility='visible';
         registerFlag['password'] = false;
     }else{
-        $('#password').parentElement.nextElementSibling.style.visibility='hidden';
+        $('#invalid-password').style.visibility='hidden';
         registerFlag['password'] = true;
     }
 
@@ -164,10 +165,10 @@ function validateConfirmPassword(){
     const confirm = $('#confirm').value;
     const password = $('#password').value;
     if(password !== confirm){
-        $('#confirm').parentElement.nextElementSibling.style.visibility='visible';
+        $('#invalid-confirmPassword').style.visibility='visible';
         registerFlag['confirmPassword'] = false;
     }else{
-        $('#confirm').parentElement.nextElementSibling.style.visibility='hidden';
+        $('#invalid-confirmPassword').style.visibility='hidden';
         registerFlag['confirmPassword'] = true;
     }
 
@@ -176,10 +177,10 @@ function validatePhone(){
     const regex_phone = /(01[016789])-(\d{3,4})-(\d{4})$/;
     const phone = $('#phone').value;
     if(!phone.match(regex_phone)){
-        $('#phone').parentElement.nextElementSibling.style.visibility='visible';
+        $('#invalid-phone').style.visibility='visible';
         registerFlag['phone'] = false;
     }else{
-        $('#phone').parentElement.nextElementSibling.style.visibility='hidden';
+        $('#invalid-phone').style.visibility='hidden';
         registerFlag['phone'] = true;
     }
 }
