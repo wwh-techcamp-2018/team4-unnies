@@ -6,10 +6,7 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Builder
@@ -43,11 +40,11 @@ public class ProductDto {
 
     //TODO : 현재 일(day)단위인데 분(minute)단위로 변경하도록
     @FutureOrPresent(message = "현재 이후의 시간이어야 합니다.")
-    @DateTimeFormat
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDate expireDateTime;
 
     @FutureOrPresent(message = "모집시간 이후의 시간이어야 합니다.")
-    @DateTimeFormat
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDate shareDateTime;
 
     @NotNull(message = "나눔용기를 입력하여야 합니다.")

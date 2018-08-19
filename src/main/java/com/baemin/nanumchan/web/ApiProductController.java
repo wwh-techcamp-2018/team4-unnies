@@ -19,7 +19,7 @@ public class ApiProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> upload(@Valid @RequestBody ProductDto productDto) {
+    public ResponseEntity<Void> upload(@Valid ProductDto productDto) {
         return ResponseEntity.created(URI.create("/api/products/" + productService.create(productDto))).build();
     }
 }
