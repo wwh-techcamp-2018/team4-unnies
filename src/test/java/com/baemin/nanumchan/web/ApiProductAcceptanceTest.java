@@ -1,18 +1,19 @@
 package com.baemin.nanumchan.web;
 
-import com.baemin.nanumchan.domain.Category;
-import com.baemin.nanumchan.domain.CategoryRepository;
-import com.baemin.nanumchan.dto.ProductDto;
-import common.RestResponse;
+import com.baemin.nanumchan.utils.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import support.AcceptanceTest;
+import support.builder.HtmlFormDataBuilder;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,56 +22,84 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
 
     private final static String PRODUCT_URL = "/api/products";
 
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    private Category newCategory;
-    private ProductDto productDto;
-
+    private LocalDateTime now;
+    private DateTimeFormatter formatter;
 
     @Before
     public void setUp() throws Exception {
-        Category category = Category.builder()
-                .name("Good")
-                .build();
-
-        newCategory = categoryRepository.save(category);
-
-        productDto = ProductDto.builder()
-                .categoryId(newCategory.getId())
-                .name("이름")
-                .price(1000L)
-                .title("제목")
-                .description("디스크립션")
-                .maxParticipant(3)
-                .isBowlNeeded(false)
-                .expireDateTime(LocalDateTime.now().toLocalDate())
-                .shareDateTime(LocalDateTime.now().toLocalDate())
-                .build();
+        now = LocalDateTime.now();
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
     @Test
     public void upload() {
-        ResponseEntity<Void> response = template.postForEntity(PRODUCT_URL, productDto, Void.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
+                .multipartFormData()
+                .addParameter("categoryId", 1)
+                .addParameter("name", "이름")
+                .addParameter("price", 1000)
+                .addParameter("title", "제목")
+                .addParameter("description", "요약")
+                .addParameter("maxParticipant", 3)
+                .addParameter("isBowlNeeded", false)
+                .addParameter("expireDateTime", now.plusDays(1).format(formatter))
+                .addParameter("shareDateTime", now.plusDays(2).format(formatter))
+                .build();
+
+        log.info("request: {}", request);
+        ResponseEntity<Void> response = template.postForEntity(PRODUCT_URL, request, Void.class);
         assertThat(response.getHeaders().getLocation().getPath()).isNotEmpty();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
     @Test
     public void upload_유효하지않은필드에러메시지_이름없음() {
-        productDto.setName(null);
+        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
+                .multipartFormData()
+                .addParameter("categoryId", 1)
+                // no name field
+                .addParameter("price", 1000)
+                .addParameter("title", "제목")
+                .addParameter("description", "요약")
+                .addParameter("maxParticipant", 3)
+                .addParameter("isBowlNeeded", false)
+                .addParameter("expireDateTime", now.plusDays(1).format(formatter))
+                .addParameter("shareDateTime", now.plusDays(2).format(formatter))
+                .build();
 
-        ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL, productDto, RestResponse.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-        assertThat(response.getBody().getError().size()).isEqualTo(1);
+        ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL, request, RestResponse.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
     @Test
     public void upload_카테고리없음() {
-        productDto.setCategoryId(-1L);
+        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
+                .multipartFormData()
+                // no category field
+                .addParameter("name", "이름")
+                .addParameter("price", 1000)
+                .addParameter("title", "제목")
+                .addParameter("description", "요약")
+                .addParameter("maxParticipant", 3)
+                .addParameter("isBowlNeeded", false)
+                .addParameter("expireDateTime", now.plusDays(1).format(formatter))
+                .addParameter("shareDateTime", now.plusDays(2).format(formatter))
+                .build();
 
-        ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL, productDto, RestResponse.class);
+        ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL, request, RestResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(response.getBody().getError().size()).isEqualTo(1);
+        assertThat(response.getBody().getErrors().size()).isEqualTo(1);
     }
+
+    // Temporary test for merging
+    @Test
+    public void uploadImage() {
+        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
+                .multipartFormData()
+                .addParameter("files", new ClassPathResource("static/images/sample.png"))
+                .build();
+        ResponseEntity<String> result = template.postForEntity("/api/products/images", request, String.class);
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    }
+
 }

@@ -1,8 +1,8 @@
-package com.baemin.nanumchan.product.dto;
+package com.baemin.nanumchan.dto;
 
-import com.baemin.nanumchan.product.exception.ExceedMaximumAllowedFileSizeException;
-import com.baemin.nanumchan.product.exception.InvalidImageDimensionException;
-import com.baemin.nanumchan.product.exception.UnsupportMimeTypeException;
+import com.baemin.nanumchan.exception.ExceedMaximumAllowedFileSizeException;
+import com.baemin.nanumchan.exception.InvalidImageDimensionException;
+import com.baemin.nanumchan.exception.UnsupportMimeTypeException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;

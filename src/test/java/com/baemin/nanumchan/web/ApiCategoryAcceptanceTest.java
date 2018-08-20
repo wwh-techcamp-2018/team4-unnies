@@ -1,6 +1,6 @@
 package com.baemin.nanumchan.web;
 
-import common.RestResponse;
+import com.baemin.nanumchan.utils.RestResponse;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

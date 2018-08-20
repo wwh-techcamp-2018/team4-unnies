@@ -1,4 +1,4 @@
-package com.baemin.nanumchan.product.exception;
+package com.baemin.nanumchan.exception;
 
 public class InvalidImageDimensionException extends RuntimeException {
 }

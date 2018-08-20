@@ -1,10 +1,10 @@
-package com.baemin.nanumchan.product.domain.cloud;
+package com.baemin.nanumchan.domain.cloud;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.baemin.nanumchan.product.exception.FileConvertException;
-import com.baemin.nanumchan.product.exception.UploadFailedException;
+import com.baemin.nanumchan.exception.FileConvertException;
+import com.baemin.nanumchan.exception.UploadFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

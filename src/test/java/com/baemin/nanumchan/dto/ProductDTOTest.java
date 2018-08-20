@@ -24,11 +24,13 @@ public class ProductDTOTest {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
 
+        LocalDateTime now = LocalDateTime.now();
+
         productDto = ProductDto.builder()
                 .categoryId(10L)
                 .description("디스크립션")
-                .expireDateTime(LocalDateTime.now().toLocalDate())
-                .shareDateTime(LocalDateTime.now().toLocalDate())
+                .expireDateTime(now.plusDays(1))
+                .shareDateTime(now.plusDays(2))
                 .name("이름")
                 .title("제목")
                 .maxParticipant(3)
@@ -87,7 +89,7 @@ public class ProductDTOTest {
 
     @Test
     public void createProduct_마감시간보다과거() {
-        productDto.setExpireDateTime(LocalDateTime.of(2018, 8,15,15, 00).toLocalDate());
+        productDto.setExpireDateTime(productDto.getExpireDateTime().minusYears(1));
 
         Set<ConstraintViolation<ProductDto>> constraintViolations = validator.validate(productDto);
         assertThat(constraintViolations.size()).isEqualTo(1);
@@ -95,7 +97,7 @@ public class ProductDTOTest {
 
     @Test
     public void createProduct_나눔시간이현재보다과거() {
-        productDto.setShareDateTime(LocalDateTime.of(2018, 8,15,15, 00).toLocalDate());
+        productDto.setShareDateTime(productDto.getShareDateTime().minusYears(1));
 
         Set<ConstraintViolation<ProductDto>> constraintViolations = validator.validate(productDto);
         assertThat(constraintViolations.size()).isEqualTo(1);

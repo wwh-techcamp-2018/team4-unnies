@@ -12,7 +12,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Builder
@@ -50,11 +50,11 @@ public class Product {
 
     @FutureOrPresent
     @DateTimeFormat
-    private LocalDate expireDateTime;
+    private LocalDateTime expireDateTime;
 
     @FutureOrPresent
     @DateTimeFormat
-    private LocalDate shareDateTime;
+    private LocalDateTime shareDateTime;
 
     @Column(nullable = false)
     private boolean isBowlNeeded;

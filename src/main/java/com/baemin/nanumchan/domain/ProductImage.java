@@ -1,4 +1,4 @@
-package com.baemin.nanumchan.product.domain;
+package com.baemin.nanumchan.domain;
 
 import com.baemin.nanumchan.support.domain.AbstractEntity;
 import lombok.NonNull;
