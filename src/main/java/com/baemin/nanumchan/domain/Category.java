@@ -26,5 +26,6 @@ public class Category {
 
     @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
     private List<Product> products = new ArrayList<>();
 }

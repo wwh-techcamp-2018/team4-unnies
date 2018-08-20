@@ -1,0 +1,60 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>배민나눔찬</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/upload.css" rel="stylesheet">
+    <script src="/js/utils.js" defer></script>
+    <script src="/js/lib/handlebars.min.js" defer></script>
+    <script src="/js/lib/ImageUploader.js" type="module" defer></script>
+    <script src="/js/upload.js" type="module" defer></script>
+    <script src="/js/lib/jquery-3.3.1.slim.min.js" defer></script>
+    <script src="/js/lib/bootstrap.min.js" defer></script>
+</head>
+<body>
+    <form>
+        <div class="form-group">
+            <label for="image-input">상품 이미지</label>
+            <input multiple accept="image/png, image/jpeg" type="file" name="files" id="image-input">
+            <br>
+            <button class="btn btn-primary upload">이미지 선택</button>
+            <span class="feedback">
+                <strong>이미지 첨부 실패</strong> 최대 5장까지만 업로드할 수 있습니다.
+            </span>
+            <br>
+            <ul>
+                <li>상품 이미지를 끌어와 등록할 수 있습니다.</li>
+                <li>상품 이미지는 400*400에 최적화 되어있습니다.</li>
+                <li>이미지는 상품 등록시 정사각형으로 짤려서 등록됩니다.</li>
+                <li>확대하기를 누를 경우 원본이미지를 확인할 수 있습니다.</li>
+                <li>사진을 클릭 후 이동하여 등록순서를 변경할 수 있습니다.</li>
+                <li>최대 10M까지 업로드할 수 있습니다.</li>
+                <li>이미지를 첨부하지 않을 경우 카테고리에 해당하는 아이콘이 기본으로 등록됩니다.</li>
+            </ul>
+            <div class="image-preview">
+                <div class="main mb-3">
+                    <span class="img-thumb border"></span>
+                </div>
+                <div class="sub">
+                    <span class="img-thumb border"></span>
+                    <span class="img-thumb border"></span>
+                    <span class="img-thumb border"></span>
+                    <span class="img-thumb border"></span>
+                    <span class="img-thumb border"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script id="template-thumbnail-image" type="text/x-handlebars-template">
+        {{#if src}}
+        <img class="img-thumb border" src={{src}} alt="{{alt}}" draggable="true">
+        {{else}}
+        <span class="img-thumb border"></span>
+        {{/if}}
+    </script>
+</body>
+</html>
