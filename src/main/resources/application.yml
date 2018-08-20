@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    active: development
+
   servlet:
     multipart:
       enabled: true
@@ -7,7 +10,7 @@ spring:
 
   devtools:
     livereload:
-        enabled: true
+      enabled: true
 
   h2:
     console:
@@ -26,6 +29,9 @@ spring:
       hibernate:
         format_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
+
+logging:
+  config: classpath:logback-${spring.profiles.active}.xml
 
 cloud:
   aws:
