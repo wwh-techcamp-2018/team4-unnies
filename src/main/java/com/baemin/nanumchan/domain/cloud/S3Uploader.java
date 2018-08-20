@@ -1,10 +1,9 @@
-package com.baemin.nanumchan.product.domain.cloud;
+package com.baemin.nanumchan.domain.cloud;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.baemin.nanumchan.product.exception.FileConvertException;
-import com.baemin.nanumchan.product.exception.UploadFailedException;
+import com.baemin.nanumchan.exception.RestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -31,7 +30,7 @@ public class S3Uploader {
         try {
             file = convert(multipartFile);
         } catch (IOException e) {
-            throw new FileConvertException();
+            throw RestException.FileConvertFailed();
         }
         return upload(file);
     }
@@ -46,7 +45,7 @@ public class S3Uploader {
             amazonS3Client.putObject(new PutObjectRequest(bucket, location, file).withCannedAcl(CannedAccessControlList.PublicRead));
             return amazonS3Client.getUrl(bucket, location).toString();
         } catch (Exception e) {
-            throw new UploadFailedException();
+            throw RestException.UploadFailed();
         } finally {
             remove(file);
         }
@@ -66,6 +65,6 @@ public class S3Uploader {
             }
             return convertFile;
         }
-        throw new FileConvertException();
+        throw RestException.FileConvertFailed();
     }
 }
