@@ -2,7 +2,7 @@ package com.baemin.nanumchan.service;
 
 import com.baemin.nanumchan.domain.*;
 import com.baemin.nanumchan.domain.cloud.S3Uploader;
-import com.baemin.nanumchan.dto.ProductDto;
+import com.baemin.nanumchan.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,21 +26,17 @@ public class ProductService {
     @Autowired
     private S3Uploader s3Uploader;
 
-    public Long create(ProductDto productDto) {
-        Category category = categoryRepository.findById(productDto.getCategoryId())
+    public Long create(ProductDTO productDTO) {
+        Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(EntityNotFoundException::new);
-        Product product = productDto.toEntity(category);
 
-        return productRepository.save(product).getId();
-    }
-
-    public void uploadImage(List<MultipartFile> multipartFiles) {
-        System.out.println(multipartFiles.get(0));
-        List<ProductImage> productImages = multipartFiles.stream()
+        List<ProductImage> productImages = productDTO.getFiles().stream()
                 .map(s3Uploader::upload)
                 .map(ProductImage::new)
                 .collect(Collectors.toList());
-        productImageRepository.saveAll(productImages);
+
+        Product product = productDTO.toEntity(category, productImages);
+        return productRepository.save(product).getId();
     }
 
 }

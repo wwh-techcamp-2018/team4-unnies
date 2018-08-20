@@ -1,5 +1,6 @@
 package com.baemin.nanumchan.security;
 
+import com.baemin.nanumchan.exception.RestException;
 import com.baemin.nanumchan.exception.UnAuthenticationException;
 import com.baemin.nanumchan.utils.RestResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -24,20 +25,22 @@ public class ExceptionControllerAdvice {
     @Resource(name = "messageSourceAccessor")
     private MessageSourceAccessor messageSourceAccessor;
 
+    @ExceptionHandler(RestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestResponse apiError(RestException exception) {
+        return RestResponse.error(exception.getField(), exception.getMessage()).build();
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public RestResponse<?> emptyResultData(EntityNotFoundException exception) {
-        RestResponse.ErrorResponseBuilder errorResponseBuilder = RestResponse.error();
-        errorResponseBuilder.appendError("Entity", exception.getMessage());
-        return errorResponseBuilder.build();
+    public RestResponse emptyResultData(EntityNotFoundException exception) {
+        return RestResponse.error(exception.getMessage()).build();
     }
 
     @ExceptionHandler(UnAuthenticationException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    public RestResponse<?> unAuthentication(UnAuthenticationException exception) {
-        RestResponse.ErrorResponseBuilder errorResponseBuilder = RestResponse.error();
-        errorResponseBuilder.appendError(exception.getField(), exception.getMessage());
-        return errorResponseBuilder.build();
+    public RestResponse unAuthentication(UnAuthenticationException exception) {
+        return RestResponse.error(exception.getField(), exception.getMessage()).build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -36,14 +36,15 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
         HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
                 .multipartFormData()
                 .addParameter("categoryId", 1)
+                .addParameter("files", new ClassPathResource("static/images/sample.png"))
                 .addParameter("name", "이름")
-                .addParameter("price", 1000)
                 .addParameter("title", "제목")
                 .addParameter("description", "요약")
+                .addParameter("price", 1000)
                 .addParameter("maxParticipant", 3)
-                .addParameter("isBowlNeeded", false)
                 .addParameter("expireDateTime", now.plusDays(1).format(formatter))
                 .addParameter("shareDateTime", now.plusDays(2).format(formatter))
+                .addParameter("isBowlNeeded", false)
                 .build();
 
         log.info("request: {}", request);
@@ -89,17 +90,6 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
         ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL, request, RestResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody().getErrors().size()).isEqualTo(1);
-    }
-
-    // Temporary test for merging
-    @Test
-    public void uploadImage() {
-        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
-                .multipartFormData()
-                .addParameter("files", new ClassPathResource("static/images/sample.png"))
-                .build();
-        ResponseEntity<String> result = template.postForEntity("/api/products/images", request, String.class);
-        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
 }

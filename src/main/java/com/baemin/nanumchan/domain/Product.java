@@ -1,5 +1,7 @@
 package com.baemin.nanumchan.domain;
 
+import com.baemin.nanumchan.support.domain.AbstractEntity;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,17 +15,14 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Product extends AbstractEntity {
 
     // TODO: User owner
 
@@ -38,7 +37,7 @@ public class Product {
 
     // TODO: 1000원 단위 밸리데이터
     @DecimalMin("0")
-    private Long price;
+    private Integer price;
 
     @NotEmpty
     @Length(max = 2000)
@@ -62,4 +61,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_product_category"))
     private Category category;
+
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ProductImage> productImages;
 }
