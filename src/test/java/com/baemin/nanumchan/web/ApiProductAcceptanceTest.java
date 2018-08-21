@@ -1,5 +1,7 @@
 package com.baemin.nanumchan.web;
 
+import com.baemin.nanumchan.domain.DeliveryType;
+import com.baemin.nanumchan.dto.OrderDTO;
 import com.baemin.nanumchan.utils.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -70,4 +72,12 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
         assertThat(response.getBody().getErrors()).hasSize(12);
     }
 
+    @Test
+    public void getProductDetailInfo() {
+        ResponseEntity<RestResponse> response = template.getForEntity(PRODUCT_URL + "/1", RestResponse.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().getData()).isNotNull();
+
+    }
 }

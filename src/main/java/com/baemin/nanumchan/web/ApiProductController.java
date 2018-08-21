@@ -4,11 +4,10 @@ import com.baemin.nanumchan.domain.User;
 import com.baemin.nanumchan.dto.ProductDTO;
 import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.ProductService;
+import com.baemin.nanumchan.utils.RestResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -26,4 +25,8 @@ public class ApiProductController {
         return ResponseEntity.created(URI.create("/api/products/" + productService.create(user, productDTO).getId())).build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<RestResponse> getProductDetailInfo(@PathVariable Long id) {
+        return ResponseEntity.ok(RestResponse.success(productService.getProductDetailDTO(id)));
+    }
 }
