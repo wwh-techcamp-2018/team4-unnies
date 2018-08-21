@@ -29,4 +29,10 @@ public class ApiProductController {
     public ResponseEntity<RestResponse> getProductDetailInfo(@PathVariable Long id) {
         return ResponseEntity.ok(RestResponse.success(productService.getProductDetailDTO(id)));
     }
+
+    @PostMapping("/{id}/order")
+    public ResponseEntity<Void> order(@LoginUser User user, @Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
+        Order order = productService.order(id, orderDTO, user);
+        return ResponseEntity.created(URI.create("/api/products/" + id + "/order/" + order.getId())).build();
+    }
 }

@@ -80,4 +80,17 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
         assertThat(response.getBody().getData()).isNotNull();
 
     }
+
+    @Test
+    public void order() {
+        OrderDTO orderDTO = OrderDTO.builder()
+                .deliveryType(DeliveryType.BAEMIN_RIDER)
+                .build();
+
+        ResponseEntity<Void> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/1/order", orderDTO, Void.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getHeaders().getLocation().getPath()).isNotEmpty();
+
+    }
 }

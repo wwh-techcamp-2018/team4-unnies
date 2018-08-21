@@ -66,4 +66,25 @@ public class ProductService {
                 .status(product.calculateStatus(orderCount))
                 .build();
     }
+
+    public Order order(Long id, OrderDTO orderDTO, User user) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+
+        Integer orderCount = (int) (long) orderRepository.countByProduct(product).orElse(NO_ONE);
+
+        Status status = product.calculateStatus(orderCount);
+
+        if (status.equals(Status.ON_PARTICIPATING)) {
+            return orderRepository.save(
+                    Order.builder()
+                            .deliveryType(orderDTO.getDeliveryType())
+                            .product(product)
+                            .participant(user)
+                            .build()
+            );
+        }
+
+        throw new UnAuthenticationException("You can't order because of " + status.name());
+    }
 }
