@@ -30,4 +30,8 @@ public class Order extends AbstractEntity {
     @Enumerated(EnumType.STRING)
     private Status status = Status.ON_SHARING;
 
+    public boolean isCompleteSharing() {
+        return status.equals(Status.COMPLETE_SHARING);
+    }
+
 }
