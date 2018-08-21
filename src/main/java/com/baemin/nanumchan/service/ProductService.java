@@ -35,6 +35,9 @@ public class ProductService {
     private OrderRepository orderRepository;
 
     @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
     private S3Uploader s3Uploader;
 
     public Product create(User user, ProductDTO productDTO) {
@@ -54,8 +57,8 @@ public class ProductService {
     }
 
 
-    public ProductDetailDTO getProductDetailDTO(Long id) {
-        Product product = productRepository.findById(id)
+    public ProductDetailDTO getProductDetailDTO(Long productId) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(EntityNotFoundException::new);
 
         Integer orderCount = (int) (long) orderRepository.countByProduct(product).orElse(NO_ONE);
@@ -67,8 +70,8 @@ public class ProductService {
                 .build();
     }
 
-    public Order order(Long id, OrderDTO orderDTO, User user) {
-        Product product = productRepository.findById(id)
+    public Order order(Long productId, OrderDTO orderDTO, User user) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(EntityNotFoundException::new);
 
         Integer orderCount = (int) (long) orderRepository.countByProduct(product).orElse(NO_ONE);
@@ -87,4 +90,20 @@ public class ProductService {
 
         throw new UnAuthenticationException("You can't order because of " + status.name());
     }
+
+    public Review uploadReview(User user, Long productId, ReviewDTO reviewDTO) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        Order order = orderRepository.findByParticipantIdAndProductId(user.getId(), productId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        if (order.isCompleteSharing()) {
+            Review review = reviewDTO.toEntity(product, user, reviewDTO);
+            return reviewRepository.save(review);
+        }
+
+        throw new UnAuthenticationException("권한이 없습니다.");
+    }
+
 }

@@ -2,6 +2,7 @@ package com.baemin.nanumchan.web;
 
 import com.baemin.nanumchan.domain.DeliveryType;
 import com.baemin.nanumchan.dto.OrderDTO;
+import com.baemin.nanumchan.dto.ReviewDTO;
 import com.baemin.nanumchan.utils.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -92,5 +93,46 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getHeaders().getLocation().getPath()).isNotEmpty();
 
+    }
+
+    @Test
+    public void uploadReview_성공() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("이거 맛있었어요 쵝오에요?")
+                .rating(4)
+                .build();
+
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/2/review", reviewDTO, RestResponse.class);
+
+        log.info("getReviewData Info : {}", response.getBody().getData());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getBody().getData()).isNotNull();
+    }
+
+    @Test
+    public void uploadReview_실패_미신청() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("이거 맛있었어요 쵝오에요?")
+                .rating(4)
+                .build();
+
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/1/review", reviewDTO, RestResponse.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void uploadReview_실패_나눔완료X() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("이거 맛있었어요 쵝오에요?")
+                .rating(4)
+                .build();
+
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/3/review", reviewDTO, RestResponse.class);
+
+        log.info("fail Info : {}", response.getBody().getErrors());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 }

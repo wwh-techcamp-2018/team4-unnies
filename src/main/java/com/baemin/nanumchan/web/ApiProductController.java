@@ -35,4 +35,10 @@ public class ApiProductController {
         Order order = productService.order(id, orderDTO, user);
         return ResponseEntity.created(URI.create("/api/products/" + id + "/order/" + order.getId())).build();
     }
+
+    @PostMapping("/{id}/review")
+    public ResponseEntity<RestResponse> uploadReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
+        Review review = productService.uploadReview(user, id, reviewDTO);
+        return ResponseEntity.created(URI.create("/api/products/" + id + "/review/" + review.getId())).body(RestResponse.success(review));
+    }
 }
