@@ -65,7 +65,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
                 .addParameter("price", 0)
                 .build();
 
-        ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL, request, RestResponse.class);
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL, request, RestResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody().getErrors()).hasSize(12);
     }

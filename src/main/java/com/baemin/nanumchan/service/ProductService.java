@@ -28,7 +28,7 @@ public class ProductService {
     @Autowired
     private S3Uploader s3Uploader;
 
-    public Product create(ProductDTO productDTO) {
+    public Product create(User user, ProductDTO productDTO) {
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -39,7 +39,7 @@ public class ProductService {
 
         Location location = locationRepository.save(productDTO.getLocation());
 
-        Product product = productDTO.toEntity(category, productImages, location);
+        Product product = productDTO.toEntity(category, productImages, location, user);
         return productRepository.save(product);
     }
 

@@ -1,6 +1,8 @@
 package com.baemin.nanumchan.web;
 
+import com.baemin.nanumchan.domain.User;
 import com.baemin.nanumchan.dto.ProductDTO;
+import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.ProductService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,8 @@ public class ApiProductController {
     private ProductService productService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> upload(@Valid ProductDTO productDTO) {
-        return ResponseEntity.created(URI.create("/api/products/" + productService.create(productDTO).getId())).build();
+    public ResponseEntity<Void> upload(@LoginUser User user, @Valid ProductDTO productDTO) {
+        return ResponseEntity.created(URI.create("/api/products/" + productService.create(user, productDTO).getId())).build();
     }
 
 }
