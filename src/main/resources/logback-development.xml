@@ -7,7 +7,11 @@
         </layout>
     </appender>
 
-    <root level="DEBUG">
+    <logger name="com.baemin.nanumchan" level="DEBUG"/>
+
+    <logger name="org.hibernate.dialect" level="DEBUG"/>
+
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
