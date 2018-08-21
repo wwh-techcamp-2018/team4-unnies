@@ -17,7 +17,11 @@
         </encoder>
     </appender>
 
-    <root level="INFO">
+    <logger name="com.baemin.nanumchan" level="INFO"/>
+
+    <logger name="org.hibernate.dialect" level="INFO"/>
+
+    <root level="ERROR">
         <appender-ref ref="ROLLING"/>
     </root>
 </configuration>
