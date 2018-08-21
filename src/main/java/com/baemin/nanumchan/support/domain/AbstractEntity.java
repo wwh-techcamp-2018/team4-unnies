@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public abstract class AbstractEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     @Column(nullable = false, updatable = false)
