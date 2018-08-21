@@ -1,33 +1,30 @@
-import {$} from './utils.js';
+import {$, $all} from './utils.js';
 
 class Product {
 
     upload(formData) {
-        // upload(formElement) {
-        // const formData = new FormData(formElement);
-
+        // TODO: Spinner
         fetch('/api/products', {
             method: 'post',
             credentials: 'same-origin',
             body: formData
         }).then(response => {
-            document.querySelectorAll('.form-group .feedback').forEach(feedback => feedback.classList.remove('on'));
+            $all('.form-group .feedback').forEach(feedback => feedback.classList.remove('on'));
             if (!response.ok) {
                 return response.json();
             }
-            // console.log("response.headers : ", response.headers);
-            // return location.href = '/';// products/id 페이지로 변경필요
         }).then(responseBody => {
             if (!responseBody) {
                 return;
             }
-            responseBody.errors.forEach(({field, message}) => {
+            throw responseBody.errors;
+        }).catch(errors => {
+            errors.forEach(({field, message}) => {
                 const feedback = $(`*[name=${field}]`).closest('.form-group').querySelector('.feedback');
                 feedback.innerText = message;
                 feedback.classList.add('on');
             });
-
-        })
+        });
     }
 }
 

@@ -26,21 +26,27 @@ public class ExceptionControllerAdvice {
     @Resource(name = "messageSourceAccessor")
     private MessageSourceAccessor messageSourceAccessor;
 
-    @ExceptionHandler(RestException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RestResponse apiError(RestException exception) {
-        return RestResponse.error(exception.getField(), exception.getMessage()).build();
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public RestResponse emptyResultData(EntityNotFoundException exception) {
         return RestResponse.error(exception.getMessage()).build();
     }
 
+    @ExceptionHandler(UnAuthenticationException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public RestResponse unAuthentication(UnAuthenticationException exception) {
+        return RestResponse.error(exception.getField(), exception.getMessage()).build();
+    }
+
+    @ExceptionHandler(RestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestResponse apiError(RestException exception) {
+        return RestResponse.error(exception.getField(), exception.getMessage()).build();
+    }
+
     @ExceptionHandler(BindException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RestResponse some(BindException exception) {
+    public RestResponse formBindException(BindException exception) {
         List<ObjectError> errors = exception.getBindingResult().getAllErrors();
         RestResponse.ErrorResponseBuilder errorResponseBuilder = RestResponse.error();
         for (ObjectError objectError : errors) {
@@ -49,12 +55,6 @@ public class ExceptionControllerAdvice {
             errorResponseBuilder.appendError(fieldError.getField(), getErrorMessage(fieldError));
         }
         return errorResponseBuilder.build();
-    }
-
-    @ExceptionHandler(UnAuthenticationException.class)
-    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    public RestResponse unAuthentication(UnAuthenticationException exception) {
-        return RestResponse.error(exception.getField(), exception.getMessage()).build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -72,12 +72,9 @@ public class ExceptionControllerAdvice {
 
     private String getErrorMessage(FieldError fieldError) {
         Optional<String> code = getFirstCode(fieldError);
-        log.error("@@@fieldError : {}",fieldError);
         if (!code.isPresent()) {
             return null;
         }
-
-
 
         String errorMessage = messageSourceAccessor.getMessage(code.get(), fieldError.getArguments(), fieldError.getDefaultMessage());
         log.error("error message: {}", errorMessage);

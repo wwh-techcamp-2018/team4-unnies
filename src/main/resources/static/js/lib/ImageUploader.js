@@ -1,17 +1,14 @@
+import { thumbnailImage, thumbnailEmpty } from '../template/UploadTemplate.js';
+
 class ImageUploader {
 
     constructor(args) {
         this.FILE_LIMITS = 5;
         this.files = [];
 
-        args.templateSource && this.setTemplateSource(args.templateSource);
         args.input && this.setInput(args.input);
         args.preview && this.setPreview(args.preview);
         args.dropzone && this.setDropZone(args.dropzone);
-    }
-
-    setTemplateSource(templateSource) {
-        this.template = Handlebars.compile(templateSource);
     }
 
     setInput(element) {
@@ -147,7 +144,7 @@ class ImageUploader {
             .then(renderThumbnail.bind(this));
 
         function renderThumbnail(images) {
-            const defaultThumbnail = Array(this.FILE_LIMITS - images.length).fill(this.template());
+            const defaultThumbnail = Array(this.FILE_LIMITS - images.length).fill(thumbnailEmpty());
             sub.insertAdjacentHTML('afterbegin', [...images, ...defaultThumbnail].join(''));
             main.insertAdjacentHTML('afterbegin', images[0]);
         }
@@ -156,7 +153,7 @@ class ImageUploader {
     renderImageFile(file) {
         return new Promise(resolve => {
             function renderTemplate({ target: { result }}) {
-                resolve(this.template({
+                resolve(thumbnailImage({
                    src: result,
                    alt: file.name
                 }));

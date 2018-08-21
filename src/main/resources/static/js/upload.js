@@ -2,19 +2,11 @@ import { $ } from './lib/utils.js';
 import ImageUploader from './lib/ImageUploader.js';
 import DaumPostCode from './lib/DaumPostCode.js';
 import Category from './lib/Category.js';
-import { categorySelect } from './template/UploadTemplate.js';
 import Product from "./lib/Product.js";
 
-new Category()
-.getList()
-.then(({ data }) => {
-    const view = $('#category-section > div');
-    view.innerHTML = ''
-    view.insertAdjacentHTML('afterbegin', categorySelect(data));
-})
+new Category().load($('#category-section > .wrapper'));
 
 const imageUploader = new ImageUploader({
-    templateSource: $('#template-thumbnail-image').innerHTML,
     input: $('input[name=files]'),
     preview: $('.fluid-box'),
     dropzone: $('form')
@@ -30,7 +22,6 @@ new DaumPostCode({
 $('#upload-form').addEventListener('submit', e => {
     e.preventDefault();
     const formData = new FormData($('#upload-form'));
-
 
     // console.log(formData.getAll('files'), imageUploader.files);
     // formData.set('files', imageUploader.files);
@@ -72,19 +63,15 @@ function floorPrice(e) {
 function setZeroPrice(e) {
     const price = $('#product-price');
 
-    console.log("funck : ", price);
-
     if (e.target.checked) {
-        price.required = false;
         price.setAttribute('readonly', '');
+        price.required = false;
         price.value = 0;
-    }
-    else {
-        price.removeAttribute('readonly')
+    } else {
+        price.removeAttribute('readonly');
         price.required = true;
         price.value = '';
     }
-
 }
 
 document.addEventListener('DOMContentLoaded', () => {

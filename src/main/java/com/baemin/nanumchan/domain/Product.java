@@ -10,10 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,6 +23,14 @@ public class Product extends AbstractEntity {
 
     // TODO: User owner
 
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ProductImage> productImages;
+
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_product_category"))
+    private Category category;
+
     @NotEmpty
     private String name;
 
@@ -35,8 +40,7 @@ public class Product extends AbstractEntity {
     @Length(max = 40)
     private String title;
 
-    // TODO: 1000원 단위 밸리데이터
-    @DecimalMin("0")
+    @PositiveOrZero
     private Integer price;
 
     @NotEmpty
@@ -58,11 +62,4 @@ public class Product extends AbstractEntity {
     @Column(nullable = false)
     private boolean isBowlNeeded;
 
-    @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_product_category"))
-    private Category category;
-
-    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<ProductImage> productImages;
 }

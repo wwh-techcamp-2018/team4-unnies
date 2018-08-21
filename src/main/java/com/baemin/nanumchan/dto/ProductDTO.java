@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,6 +34,7 @@ public class ProductDTO {
     private static final Integer MAX_WIDTH = 640;
     private static final Integer MAX_HEIGHT = 640;
 
+    @Nullable
     private List<MultipartFile> files;
 
     @NotNull
@@ -53,8 +54,8 @@ public class ProductDTO {
     @Size(min = 1, max = 2000)
     private String description;
 
-    @DecimalMin("0")
-    private Integer price;
+    @PositiveOrZero
+    private int price;
 
     @NotNull
     @DecimalMin(value = "1", message = "모집인원은 1명 이상이어야 합니다.")
@@ -83,8 +84,8 @@ public class ProductDTO {
         this.isBowlNeeded = isBowlNeeded;
     }
 
-    public void setPrice(Integer price) {
-        if (price != null && price % 1000 != 0)
+    public void setPrice(int price) {
+        if (price % 1000 != 0)
             throw new RestException("price", "가격은 1000원 단위로 입력해야 합니다");
         this.price = price;
     }
@@ -122,11 +123,10 @@ public class ProductDTO {
     }
 
     public void setFiles(List<MultipartFile> files) {
-        if (files == null) {
-            this.files = null;
-            return;
+        if (Optional.ofNullable(files).isPresent()) {
+            files = validatedMultipartFiles(files);
         }
-        this.files = validatedMultipartFiles(files);
+        this.files = files;
     }
 
     public List<MultipartFile> validatedMultipartFiles(List<MultipartFile> files) {
