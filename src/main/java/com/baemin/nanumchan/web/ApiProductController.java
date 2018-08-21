@@ -41,4 +41,9 @@ public class ApiProductController {
         Review review = productService.uploadReview(user, id, reviewDTO);
         return ResponseEntity.created(URI.create("/api/products/" + id + "/review/" + review.getId())).body(RestResponse.success(review));
     }
+
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<RestResponse> getReviews(@PathVariable Long id) {
+        return ResponseEntity.ok(RestResponse.success(productService.getReviews(id)));
+    }
 }

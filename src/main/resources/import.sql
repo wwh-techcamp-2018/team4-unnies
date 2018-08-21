@@ -16,8 +16,16 @@ INSERT INTO Category(id, name, created_at) VALUES (11, '패스트푸드', now())
 
 INSERT INTO PRODUCT(id, description, expire_date_time, is_bowl_needed, max_participant, name, price, share_date_time, title, category_id, owner_id, created_at) VALUES(1, 'description', '2018-08-23 15:22:20', false, 2, 'name', 1000, '2018-08-24 15:22:20', 'title', 1, 1, now());
 INSERT INTO PRODUCT(id, description, expire_date_time, is_bowl_needed, max_participant, name, price, share_date_time, title, category_id, owner_id, created_at) VALUES(2, 'description2', '2018-08-23 15:22:20', false, 2, 'name2', 2000, '2018-08-24 15:22:20', 'title2', 2, 2, now());
-INSERT INTO PRODUCT(id, description, expire_date_time, is_bowl_needed, max_participant, name, price, share_date_time, title, category_id, owner_id, created_at) VALUES(3, 'description3', '2018-08-23 15:22:20', false, 3, 'name3', 3000, '2018-08-24 15:22:20', 'title2', 3, 2, now());
+INSERT INTO PRODUCT(id, description, expire_date_time, is_bowl_needed, max_participant, name, price, share_date_time, title, category_id, owner_id, created_at) VALUES(3, 'description3', '2018-08-23 15:22:20', false, 3, 'name3', 3000, '2018-08-24 15:22:20', 'title2', 3, 1, now());
 
 INSERT INTO order_product(id, product_id, participant_id, delivery_type, status, created_at) VALUES(1, 1, 2, 'BAEMIN_RIDER', 'ON_SHARING', now());
 INSERT INTO order_product(id, product_id, participant_id, delivery_type, status, created_at) VALUES(2, 2, 1, 'BAEMIN_RIDER', 'COMPLETE_SHARING', now());
-INSERT INTO order_product(id, product_id, participant_id, delivery_type, status, created_at) VALUES(3, 3, 1, 'BAEMIN_RIDER', 'ON_SHARING', now());
+INSERT INTO order_product(id, product_id, participant_id, delivery_type, status, created_at) VALUES(3, 3, 2, 'BAEMIN_RIDER', 'ON_SHARING', now());
+INSERT INTO order_product(id, product_id, participant_id, delivery_type, status, created_at) VALUES(4, 1, 1, 'BAEMIN_RIDER', 'ON_SHARING', now());
+
+INSERT INTO Review(id, product_id, writer_id, comment, rating, created_at) VALUES(1, 1, 1, 'comment1',1, now());
+INSERT INTO Review(id, product_id, writer_id, comment, rating, created_at) VALUES(2, 1, 1, 'comment2',1, now());
+INSERT INTO Review(id, product_id, writer_id, comment, rating, created_at) VALUES(3, 1, 1, 'comment3',1, now());
+INSERT INTO Review(id, product_id, writer_id, comment, rating, created_at) VALUES(4, 1, 1, 'comment4',1, now());
+INSERT INTO Review(id, product_id, writer_id, comment, rating, created_at) VALUES(5, 1, 1, 'comment5',1, now());
+

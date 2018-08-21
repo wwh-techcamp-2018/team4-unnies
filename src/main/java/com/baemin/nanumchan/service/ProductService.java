@@ -106,4 +106,10 @@ public class ProductService {
         throw new UnAuthenticationException("권한이 없습니다.");
     }
 
+    public List<Review> getReviews(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        return reviewRepository.findTop10ByWriterOrderByIdDesc(product.getOwner());
+    }
 }

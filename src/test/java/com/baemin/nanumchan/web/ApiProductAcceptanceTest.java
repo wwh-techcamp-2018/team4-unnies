@@ -88,7 +88,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
                 .deliveryType(DeliveryType.BAEMIN_RIDER)
                 .build();
 
-        ResponseEntity<Void> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/1/order", orderDTO, Void.class);
+        ResponseEntity<Void> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/3/order", orderDTO, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getHeaders().getLocation().getPath()).isNotEmpty();
@@ -117,7 +117,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
                 .rating(4)
                 .build();
 
-        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/1/review", reviewDTO, RestResponse.class);
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/3/review", reviewDTO, RestResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -129,10 +129,21 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
                 .rating(4)
                 .build();
 
-        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/3/review", reviewDTO, RestResponse.class);
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/1/review", reviewDTO, RestResponse.class);
 
         log.info("fail Info : {}", response.getBody().getErrors());
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
+
+    @Test
+    public void showReviews() {
+        ResponseEntity<RestResponse> response = template.getForEntity(PRODUCT_URL + "/1/reviews", RestResponse.class);
+
+        log.info("review list data : {}", response.getBody().getData());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().getData()).isNotNull();
+    }
+
 }

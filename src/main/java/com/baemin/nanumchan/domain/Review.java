@@ -28,7 +28,7 @@ public class Review extends AbstractEntity {
 
     @Override
     public String toString() {
-        return "Review{" +
+        return "Review{id=" + id + '\'' +
                 ", comment='" + comment + '\'' +
                 ", rating=" + rating +
                 '}';
