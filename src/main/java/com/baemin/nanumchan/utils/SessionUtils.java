@@ -1,6 +1,8 @@
 package com.baemin.nanumchan.utils;
 
 import com.baemin.nanumchan.domain.User;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,7 +17,22 @@ public class SessionUtils {
         return session.getAttribute(USER_SESSION_KEY) != null;
     }
 
+
     public static void removeUserInSession(HttpSession session) {
         session.removeAttribute(USER_SESSION_KEY);
     }
+
+
+    public static boolean isLoginUser(NativeWebRequest webRequest) {
+        Object loginedUser = webRequest.getAttribute(USER_SESSION_KEY, WebRequest.SCOPE_SESSION);
+        return loginedUser != null;
+    }
+
+    public static User getUserFromSession(NativeWebRequest webRequest) {
+        if (!isLoginUser(webRequest)) {
+            return User.GUEST_USER;
+        }
+        return (User) webRequest.getAttribute(USER_SESSION_KEY, WebRequest.SCOPE_SESSION);
+    }
+
 }
