@@ -27,7 +27,6 @@ class ImageUploader {
             }
             this.files = [...this.files, ...files];
             this.renderPreview.bind(this)(this.files);
-            this.input.value = '';
         }
     }
 
