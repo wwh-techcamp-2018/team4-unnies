@@ -28,7 +28,6 @@ cloud:
   aws:
     s3:
       bucket: team4-unnies-static
-      directory: static
     region:
       static: ap-northeast-2
     stack:
@@ -76,9 +75,9 @@ logging:
 spring:
   profiles: production
   datasource:
-#    url: jdbc:mysql://(real-server):3306/baemin-nanumchan?useSSL=false
-#    username:
-#    password:
+    url: jdbc:${db.url}
+    username: ${db.username}
+    password: ${db.password}
 
 jpa:
   show-sql: false
