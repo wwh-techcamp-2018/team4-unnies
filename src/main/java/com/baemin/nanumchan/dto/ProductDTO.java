@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Builder
 @Getter
 @Setter
@@ -54,14 +56,15 @@ public class ProductDTO {
     @DecimalMin("0")
     private Integer price;
 
+    @NotNull
     @DecimalMin(value = "1", message = "모집인원은 1명 이상이어야 합니다.")
     @DecimalMax(value = "6", message = "모집인원은 6명 이하이어야 합니다.")
     private Integer maxParticipant;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime expireDateTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime shareDateTime;
 
     @NotNull
@@ -81,12 +84,16 @@ public class ProductDTO {
     }
 
     public void setPrice(Integer price) {
-        if (price % 1000 != 0)
+        if (price != null && price % 1000 != 0)
             throw new RestException("price", "가격은 1000원 단위로 입력해야 합니다");
         this.price = price;
     }
 
     public void setExpireDateTime(LocalDateTime expireDateTime) {
+        if (expireDateTime == null) {
+            throw new RestException("expireDateTime", "모집기간을 입력해야 합니다");
+        }
+
         int min = expireDateTime.getMinute();
         if (min % 10 != 0) {
             min = (min / 10 + 1) * 10;
@@ -101,6 +108,13 @@ public class ProductDTO {
     }
 
     public void setShareDateTime(LocalDateTime shareDateTime) {
+        if (expireDateTime == null) {
+            throw new RestException("expireDateTime", "모집기간을 먼저 입력해야 합니다");
+        }
+        if (shareDateTime == null) {
+            throw new RestException("shareDateTime", "나눔시간을 입력해야 합니다");
+        }
+
         if (shareDateTime.isBefore(expireDateTime)) {
             throw new RestException("shareDateTime", "나눔시간은 모집기간 이후로 입력해야 합니다");
         }
@@ -108,11 +122,16 @@ public class ProductDTO {
     }
 
     public void setFiles(List<MultipartFile> files) {
+        if (files == null) {
+            this.files = null;
+            return;
+        }
         this.files = validatedMultipartFiles(files);
     }
 
     public List<MultipartFile> validatedMultipartFiles(List<MultipartFile> files) {
         return files.stream()
+                .filter(file -> !file.isEmpty())
                 .filter(this::isMimeTypeImage)
                 .filter(this::lessThanMaximumAllowedSize)
                 .filter(this::isValidDimension)

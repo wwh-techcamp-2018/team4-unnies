@@ -6,6 +6,7 @@ import com.baemin.nanumchan.utils.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,6 +38,19 @@ public class ExceptionControllerAdvice {
         return RestResponse.error(exception.getMessage()).build();
     }
 
+    @ExceptionHandler(BindException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestResponse some(BindException exception) {
+        List<ObjectError> errors = exception.getBindingResult().getAllErrors();
+        RestResponse.ErrorResponseBuilder errorResponseBuilder = RestResponse.error();
+        for (ObjectError objectError : errors) {
+            log.error("object error : {}", objectError);
+            FieldError fieldError = (FieldError) objectError;
+            errorResponseBuilder.appendError(fieldError.getField(), getErrorMessage(fieldError));
+        }
+        return errorResponseBuilder.build();
+    }
+
     @ExceptionHandler(UnAuthenticationException.class)
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public RestResponse unAuthentication(UnAuthenticationException exception) {
@@ -58,9 +72,12 @@ public class ExceptionControllerAdvice {
 
     private String getErrorMessage(FieldError fieldError) {
         Optional<String> code = getFirstCode(fieldError);
+        log.error("@@@fieldError : {}",fieldError);
         if (!code.isPresent()) {
             return null;
         }
+
+
 
         String errorMessage = messageSourceAccessor.getMessage(code.get(), fieldError.getArguments(), fieldError.getDefaultMessage());
         log.error("error message: {}", errorMessage);

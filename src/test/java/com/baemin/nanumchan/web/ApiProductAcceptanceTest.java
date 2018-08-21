@@ -28,7 +28,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
     @Before
     public void setUp() throws Exception {
         now = LocalDateTime.now();
-        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
     }
 
     @Test

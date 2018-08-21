@@ -20,7 +20,7 @@ public class ApiProductController {
 
     @PostMapping
     public ResponseEntity<Void> upload(@Valid ProductDTO productDTO) {
-        return ResponseEntity.created(URI.create("/api/products/" + productService.create(productDTO))).build();
+        return ResponseEntity.created(URI.create("/api/products/" + productService.create(productDTO).getId())).build();
     }
 
 }
