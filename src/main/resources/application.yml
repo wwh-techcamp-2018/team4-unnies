@@ -55,7 +55,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
       format_sql: true
 
 logging:
