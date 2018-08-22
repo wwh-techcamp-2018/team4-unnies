@@ -1,8 +1,8 @@
 import { $ } from './lib/utils.js';
 import ImageUploader from './lib/ImageUploader.js';
-import DaumPostCode from './lib/DaumPostCode.js';
 import Category from './lib/Category.js';
-import Product from "./lib/Product.js";
+import Product from './lib/Product.js';
+import DaumMap from './lib/DaumMap.js';
 
 new Category().load($('#category-section > .wrapper'));
 
@@ -14,10 +14,6 @@ const imageUploader = new ImageUploader({
     .delegate($('.btn.upload'))
     .draggable();
 
-new DaumPostCode({
-    input: $('#product-address'),
-    searchButton: $("#product-address-search")
-}).load();
 
 $('#upload-form').addEventListener('submit', e => {
     e.preventDefault();
@@ -74,9 +70,49 @@ function setZeroPrice(e) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    setDateTime();
+setDateTime();
+$('#product-price').addEventListener('blur', floorPrice);
+$('#price-free').addEventListener('change', setZeroPrice)
 
-    $('#product-price').addEventListener('blur', floorPrice);
-    $('#price-free').addEventListener('change', setZeroPrice)
+const daumMap = new DaumMap();
+daumMap.setZoomable(false);
+daumMap.setZoomControl();
+
+daumMap.addMarkerListener('dragend', () => {
+    daumMap.getAddress(address => {
+        $('#product-address').value = address.address_name;
+    });
+});
+
+$('#product-address').addEventListener('input', ({ target }) => {
+    daumMap.addressSearch(target.value, latLng => {
+        const latitude = latLng.getLat();
+        const longitude = latLng.getLng();
+        $('input[name=latitude]').value = latitude;
+        $('input[name=longitude]').value = longitude;
+        daumMap.setPosition(latitude, longitude);
+    });
+});
+
+$('.location button.current').addEventListener('click', e => {
+    e.preventDefault();
+    markCurrentLocation();
+});
+
+// $('.location button.home').addEventListener('click', TODO);
+
+function markCurrentLocation() {
+    daumMap.getCurrentLocation(({ coords: { latitude, longitude }}) => {
+        $('input[name=latitude]').value = latitude;
+        $('input[name=longitude]').value = longitude;
+
+        daumMap.setPosition(latitude, longitude);
+        daumMap.getAddress(address => {
+            $('#product-address').value = address.address_name;
+        });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    markCurrentLocation();
 });

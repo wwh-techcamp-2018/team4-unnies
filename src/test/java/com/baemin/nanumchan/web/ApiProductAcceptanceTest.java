@@ -40,6 +40,10 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
                 .addParameter("name", "이름")
                 .addParameter("title", "제목")
                 .addParameter("description", "요약")
+                .addParameter("address", "주소")
+                .addParameter("addressDetail", "상세주소")
+                .addParameter("latitude", 100.0)
+                .addParameter("longitude", 100.0)
                 .addParameter("price", 1000)
                 .addParameter("maxParticipant", 3)
                 .addParameter("expireDateTime", now.plusDays(1).format(formatter))
@@ -58,39 +62,12 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
     public void upload_유효하지않은필드에러메시지_이름없음() {
         HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
                 .multipartFormData()
-                .addParameter("categoryId", 1)
-                // no name field
-                .addParameter("price", 1000)
-                .addParameter("title", "제목")
-                .addParameter("description", "요약")
-                .addParameter("maxParticipant", 3)
-                .addParameter("isBowlNeeded", false)
-                .addParameter("expireDateTime", now.plusDays(1).format(formatter))
-                .addParameter("shareDateTime", now.plusDays(2).format(formatter))
+                .addParameter("price", 0)
                 .build();
 
         ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL, request, RestResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-    }
-
-    @Test
-    public void upload_카테고리없음() {
-        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
-                .multipartFormData()
-                // no category field
-                .addParameter("name", "이름")
-                .addParameter("price", 1000)
-                .addParameter("title", "제목")
-                .addParameter("description", "요약")
-                .addParameter("maxParticipant", 3)
-                .addParameter("isBowlNeeded", false)
-                .addParameter("expireDateTime", now.plusDays(1).format(formatter))
-                .addParameter("shareDateTime", now.plusDays(2).format(formatter))
-                .build();
-
-        ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL, request, RestResponse.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(response.getBody().getErrors().size()).isEqualTo(1);
+        assertThat(response.getBody().getErrors()).hasSize(12);
     }
 
 }

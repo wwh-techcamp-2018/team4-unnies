@@ -1,6 +1,7 @@
 package com.baemin.nanumchan.dto;
 
 import com.baemin.nanumchan.domain.Category;
+import com.baemin.nanumchan.domain.Location;
 import com.baemin.nanumchan.domain.Product;
 import com.baemin.nanumchan.domain.ProductImage;
 import com.baemin.nanumchan.exception.RestException;
@@ -44,40 +45,56 @@ public class ProductDTO {
     @Size(min = 1, max = 32)
     private String name;
 
-    // TODO: Location address
-
     @NotNull
     @Size(min = 1, max = 40)
     private String title;
+
+    @PositiveOrZero
+    private int price;
 
     @NotNull
     @Size(min = 1, max = 2000)
     private String description;
 
-    @PositiveOrZero
-    private int price;
+    @NotNull
+    private String address;
+
+    @NotNull
+    private String addressDetail;
+
+    @NotNull
+    private Double latitude;
+
+    @NotNull
+    private Double longitude;
 
     @NotNull
     @DecimalMin(value = "1", message = "모집인원은 1명 이상이어야 합니다.")
     @DecimalMax(value = "6", message = "모집인원은 6명 이하이어야 합니다.")
     private Integer maxParticipant;
 
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime expireDateTime;
 
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime shareDateTime;
 
     @NotNull
     private Boolean isBowlNeeded;
 
-    public ProductDTO(List<MultipartFile> files, Long categoryId, String name, String title, String description, Integer price, Integer maxParticipant, LocalDateTime expireDateTime, LocalDateTime shareDateTime, boolean isBowlNeeded) {
+    public ProductDTO(List<MultipartFile> files, Long categoryId, String name, String title, int price, String description, String address, String addressDetail, Double latitude, Double longitude, Integer maxParticipant, LocalDateTime expireDateTime, LocalDateTime shareDateTime, Boolean isBowlNeeded) {
         setFiles(files);
         this.categoryId = categoryId;
         this.name = name;
         this.title = title;
-        this.description = description;
         setPrice(price);
+        this.description = description;
+        this.address = address;
+        this.addressDetail = addressDetail;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.maxParticipant = maxParticipant;
         setExpireDateTime(expireDateTime);
         setShareDateTime(shareDateTime);
@@ -176,7 +193,11 @@ public class ProductDTO {
         return true;
     }
 
-    public Product toEntity(Category category, List<ProductImage> productImages) {
+    public Location getLocation() {
+        return new Location(address, addressDetail, latitude, longitude);
+    }
+
+    public Product toEntity(Category category, List<ProductImage> productImages, Location location) {
         return Product.builder()
                 .category(category)
                 .productImages(productImages)
@@ -184,6 +205,7 @@ public class ProductDTO {
                 .title(title)
                 .description(description)
                 .price(price)
+                .location(location)
                 .maxParticipant(maxParticipant)
                 .expireDateTime(expireDateTime)
                 .shareDateTime(shareDateTime)
