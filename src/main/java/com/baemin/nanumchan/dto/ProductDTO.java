@@ -195,6 +195,7 @@ public class ProductDTO {
 
     public Product toEntity(Category category, List<ProductImage> productImages, Location location, User user) {
         return Product.builder()
+                .owner(user)
                 .category(category)
                 .productImages(productImages)
                 .name(name)
