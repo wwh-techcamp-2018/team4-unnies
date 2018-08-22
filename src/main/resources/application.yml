@@ -66,6 +66,11 @@ logging:
 
 ---
 
+spring.profiles: test
+spring.profiles.include: development # development가 활성화되면 test도 포함
+
+---
+
 spring:
   profiles: production
   datasource:
