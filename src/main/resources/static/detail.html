@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>배민나눔찬</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/detail.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
 
-    <script src="//code.jquery.com/jquery-1.11.1.min.js" defer></script>
+    <script src="/js/lib/jquery-3.3.1.slim.min.js" defer></script>
     <script src="/js/lib/bootstrap.min.js" defer></script>
-    <script src="/js/utils.js" defer></script>
-    <script src="/js/modal.js" defer></script>
     <script src="/js/rating.js" defer></script>
-    <script src="/js/detail.js" defer></script>
+    <script src="/js/detail.js" type="module" defer></script>
 
 </head>
 <body>
@@ -21,7 +19,7 @@
     <div class="card">
         <div class="container-fliud">
             <div class="wrapper row">
-                <div class="col-xs-6">
+                <div class="col-6">
 
                     <div class="preview-pic tab-content">
                         <div class="tab-pane active" id="pic-1"><img
@@ -54,20 +52,20 @@
                     </ul>
                 </div>
 
-                <div class="details col-xs-6">
-                    <h3 class="product-name">${product.name}</h3>
+                <div class="details col-6">
+                    <h3 class="product-name"></h3>
                     <div class="product-title">
-                        <span id="product-title"><strong>${product.title}</strong></span>
+                        <span id="product-title"><strong></strong></span>
                     </div>
-                    <h4 class="cook"><strong>요리사 : </strong><span id="cook">${product.cook}</span></h4>
-                    <h4 class="participate-number"><strong>모집현황 : </strong><span id="participate-number">${product.maxParticipant}</span>
+                    <h4 class="cook"><strong>요리사 : </strong><span id="cook"></span></h4>
+                    <h4 class="participate-number"><strong>모집현황 : </strong><span id="participate-number"></span>
                     </h4>
-                    <h4 class="participate-date"><strong>모집기간 : </strong><span id="participate-date">${product.expireDatetime}</span>
+                    <h4 class="participate-date"><strong>모집기간 : </strong><span id="participate-date"></span>
                     </h4>
                     <h4 class="give-time"><strong>나눔시각 : </strong><span
-                            id="give-time"><strong>${product.shareDatetime}</strong></span></h4>
-                    <h4 class="give-place"><strong>나눔장소 : </strong><span id="give-place">${product.address}</span></h4>
-                    <h4 class="give-plate"><strong>나눔용기 : </strong><span id="give-plate">${product.isBowlNeeded}</span>
+                            id="give-time"><strong></strong></span></h4>
+                    <h4 class="give-place"><strong>나눔장소 : </strong><span id="give-place"></span></h4>
+                    <h4 class="give-plate"><strong>나눔용기 : </strong><span id="give-plate"></span>
                     </h4>
                     <!--<hr>-->
                     <div class="line-top" style="margin-top:12px; margin-bottom:12px;"></div>
@@ -78,11 +76,12 @@
                         <label class="form-check-label" for="radio-self">직접방문</label>
                     </div>
 
-                    <h2 class="price"><strong>나눔금액 : </strong><span id="price">${product.price}</span><span>원</span>
+                    <h2 class="price"><strong>나눔금액 : </strong><span id="price"></span><span>원</span>
                     </h2>
 
                     <div class="action">
-                        <button class="add-to-cart btn btn-default" type="button">나눔신청</button>
+                        <button class="add-to-cart btn btn-default" type="button" id="register-share"
+                                disabled="true"></button>
                     </div>
                 </div>
             </div>
@@ -90,11 +89,10 @@
     </div>
 
     <div class="row card">
-        <div class="col-xs-12">
+        <div class="col-12">
             <section id="user-profile">
                 <!--user 마이페이지로 이동하는 부분-->
                 <a id="user-profile-link" href="#">
-                    <h3 class="hide">프로필</h3>
                     <div class="user-space">
                         <div>
                             <div id="user-profile-image">
@@ -102,8 +100,8 @@
                                      src="https://d3qlrgda07sb6k.cloudfront.net/assets/users/default_profile_80-b3d7d85c7ce9ebedc38fb1a755a7c56f5a9173a10ec16cc79e880f88aad06fa4.png">
                             </div>
                             <div id="user-profile-left">
-                                <div id="nickname">user.name</div>
-                                <div id="region-name">user.address</div>
+                                <div id="nickname"></div>
+                                <div id="region-name"></div>
                             </div>
                         </div>
 
@@ -111,33 +109,27 @@
                             <dl id="rating-app">
                                 <dt>
                                 </dt>
-                                <dd class="text-color-03">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
+                                <dd id="user-rating">
+
                                 </dd>
                             </dl>
                         </div>
                     </div>
                 </a></section>
         </div>
-        <div class="col-xs-12">
+        <div class="col-12">
             <div style="width:100%;border-top:1px solid #e9ecef">
 
                 <section id="product-description">
-                    <div class="status">product.status</div>
-                    <h1 id="product-name">product.name</h1>
+                    <div class="status"></div>
+                    <h1 id="product-name"></h1>
                     <p id="product-category">
-                        product.categroy
                     </p>
-                    <time id="product-create-time">product.createdDate</time>
+                    <time id="product-create-time"></time>
                     <p id="product-price">
-                        product.price
                     </p>
                     <div id="product-detail">
-                        <p>product.description</p>
+                        <p></p>
                     </div>
                 </section>
 
@@ -148,20 +140,21 @@
                             <div id="reviews-count">
                             </div>
                             <div id="review-register">
-                                <a onclick="openModal();" href="#">리뷰 등록</a>
+                                <a href="#" id="open-modal">리뷰 등록</a>
                             </div>
                         </div>
+                        <a href="#" id="show-review-prev" style="visibility: hidden;">이전 보기</a>
+                        <a href="#" id="show-review-next">다음 보기</a>
                         <ul id="product-comments-list">
-                            <!--review가 여기 나옵니다!-->
                         </ul>
                     </section>
 
                     <div class="overlay is-hidden" id="overlay">
                         <div class="modal-content">
-                            <span class="button-close" onclick="closeModal();">&times;</span>
+                            <span class="button-close" id="close-modal">&times;</span>
                             <h4>리뷰 등록</h4>
                             <div class="form-group line">
-                                <textarea class="form-control" rows="5" id="comment" placeholder="리뷰를 등록해주세요"
+                                <textarea class="form-control" id="comment" rows="5" placeholder="리뷰를 등록해주세요"
                                           style="margin-top:10px;"></textarea>
                             </div>
 

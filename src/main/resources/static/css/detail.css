@@ -60,11 +60,21 @@
     line-height: 1.27;
     letter-spacing: -0.6px;
     text-align: center;
-    background-color: #2ac1bc;
     padding: 7px 12px;
     display: inline-block;
     margin-top:10px;
     color: #fff;
+}
+.on {
+    background-color: #2ac1bc;
+}
+
+.full {
+    background-color: #37b24d;
+}
+
+.expired {
+    background-color: #495057;
 }
 
 
@@ -120,8 +130,8 @@
     line-height: 1.47;
     letter-spacing: -0.5px;
 }
-.product-comment-time {
-    display: block;
+.product-comment-address {
+    display: inline-block;
     font-size: 13px;
     line-height: 1.46;
     letter-spacing: -0.5px;
@@ -221,6 +231,7 @@ img {
   background: #fff;
   padding: 3em;
   line-height: 1.5em;
+  border: 0px;
 }
 .row.card{
     margin-top: 0px;
@@ -274,17 +285,11 @@ img {
 
 .add-to-cart {
     width: 100%;
-    background: #1fcbc7;
     padding: 1.2em 1.5em;
     border: none;
     font-weight: bold;
     color: #fff;
     transition: background .3s ease;
-}
-
-.add-to-cart:hover {
-    background: #b36800;
-    color: #fff;
 }
 
 @keyframes opacity {
@@ -300,3 +305,21 @@ img {
     }
 }
 
+#user-rating {
+    color : black;
+}
+#product-comment-rating {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+#product-comments-list {
+    list-style: none;
+}
+
+.form-check-label {
+    margin-right: 25px;
+}
+.form-check-input {
+    margin-top: 0px;
+}
