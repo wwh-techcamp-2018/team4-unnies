@@ -5,7 +5,6 @@ import com.baemin.nanumchan.domain.cloud.S3Uploader;
 import com.baemin.nanumchan.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -26,7 +25,7 @@ public class ProductService {
     @Autowired
     private S3Uploader s3Uploader;
 
-    public Long create(ProductDTO productDTO) {
+    public Product create(ProductDTO productDTO) {
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -36,7 +35,7 @@ public class ProductService {
                 .collect(Collectors.toList());
 
         Product product = productDTO.toEntity(category, productImages);
-        return productRepository.save(product).getId();
+        return productRepository.save(product);
     }
 
 }

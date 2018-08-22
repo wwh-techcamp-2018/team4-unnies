@@ -1,60 +1,141 @@
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>배민나눔찬</title>
+
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/upload.css" rel="stylesheet">
-    <script src="/js/utils.js" defer></script>
-    <script src="/js/lib/handlebars.min.js" defer></script>
-    <script src="/js/lib/ImageUploader.js" type="module" defer></script>
+    <script src="/js/lib/postcode.v2.js" async></script>
     <script src="/js/upload.js" type="module" defer></script>
     <script src="/js/lib/jquery-3.3.1.slim.min.js" defer></script>
     <script src="/js/lib/bootstrap.min.js" defer></script>
+    <script src="/js/lib/moment.js" defer></script>
+    <script src="/js/lib/moment-round.min.js" defer></script>
+
 </head>
-<body>
-    <form>
+<body class="this-is-temporary" style=" background: #ccc; padding: 20px;">
+<div class="this-is-temporary" style="width: 1024px; background: #fff; margin: 0 auto; padding: 20px;">
+    <form class="form-horizontal" id="upload-form" enctype="multipart/form-data">
+        <h1 class="form-upload-heading mt-3 mb-5">업로드 페이지</h1>
         <div class="form-group">
-            <label for="image-input">상품 이미지</label>
-            <input multiple accept="image/png, image/jpeg" type="file" name="files" id="image-input">
-            <br>
-            <button class="btn btn-primary upload">이미지 선택</button>
-            <span class="feedback">
-                <strong>이미지 첨부 실패</strong> 최대 5장까지만 업로드할 수 있습니다.
-            </span>
-            <br>
-            <ul>
-                <li>상품 이미지를 끌어와 등록할 수 있습니다.</li>
-                <li>상품 이미지는 400*400에 최적화 되어있습니다.</li>
-                <li>이미지는 상품 등록시 정사각형으로 짤려서 등록됩니다.</li>
-                <li>확대하기를 누를 경우 원본이미지를 확인할 수 있습니다.</li>
-                <li>사진을 클릭 후 이동하여 등록순서를 변경할 수 있습니다.</li>
-                <li>최대 10M까지 업로드할 수 있습니다.</li>
-                <li>이미지를 첨부하지 않을 경우 카테고리에 해당하는 아이콘이 기본으로 등록됩니다.</li>
-            </ul>
-            <div class="image-preview">
-                <div class="main mb-3">
-                    <span class="img-thumb border"></span>
+            <label for="image-input">이미지 등록</label>
+            <div class="fluid-box">
+                <div class="left-group">
+                    <div class="main mb-1">
+                        <span class="img-thumb border"></span>
+                    </div>
+                    <div class="sub">
+                        <span class="img-thumb border"></span>
+                        <span class="img-thumb border"></span>
+                        <span class="img-thumb border"></span>
+                        <span class="img-thumb border"></span>
+                        <span class="img-thumb border"></span>
+                    </div>
                 </div>
-                <div class="sub">
-                    <span class="img-thumb border"></span>
-                    <span class="img-thumb border"></span>
-                    <span class="img-thumb border"></span>
-                    <span class="img-thumb border"></span>
-                    <span class="img-thumb border"></span>
+                <div class="left-group">
+                    <ul>
+                        <li>상품 이미지를 끌어와 등록할 수 있습니다.</li>
+                        <li>상품 이미지는 400*400에 최적화 되어있습니다.</li>
+                        <li>이미지는 상품 등록시 정사각형으로 짤려서 등록됩니다.</li>
+                        <li>확대하기를 누를 경우 원본이미지를 확인할 수 있습니다.</li>
+                        <li>사진을 클릭 후 이동하여 등록순서를 변경할 수 있습니다.</li>
+                        <li>최대 10M까지 업로드할 수 있습니다.</li>
+                        <li>이미지를 첨부하지 않을 경우 카테고리에 해당하는 아이콘이 기본으로 등록됩니다.</li>
+                    </ul>
+                    <input multiple accept="image/png, image/jpeg" type="file" name="files" id="image-input" style="display: none">
+                    <br>
+                    <button class="btn btn-primary upload ml-4">이미지 선택</button>
+                    <span class="feedback ml-4"></span>
                 </div>
             </div>
         </div>
-    </form>
 
-    <script id="template-thumbnail-image" type="text/x-handlebars-template">
-        {{#if src}}
-        <img class="img-thumb border" src={{src}} alt="{{alt}}" draggable="true">
-        {{else}}
-        <span class="img-thumb border"></span>
-        {{/if}}
-    </script>
+        <div id="category-section" class="form-group">
+            <label class="control-label">카테고리</label>
+            <div class="wrapper"></div>
+            <span class="feedback"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">음식명</label>
+            <input type="text" class="form-control" name="name" id="product-name" placeholder="음식명을 입력하세요." required>
+            <span class="feedback"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">나눔 장소</label>
+            <div class="input-group">
+                <div class="input-group-prepend" id="button-addon3">
+                    <button class="btn btn-primary" type="button" id="product-address-search">주소검색</button>
+                </div>
+                <input type="text" class="form-control" name="address" id="product-address" placeholder="나눔장소를 입력하세요." readonly>
+                <input type="text" class="form-control" name="addressDetail" id="product-address-detail" placeholder="상세 주소 입력" required>
+                <span class="feedback"></span>
+            </div>
+            <input type="checkbox"> 내주소로 입력하기
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">제목</label>
+            <input type="text" class="form-control" name="title" id="product-title" placeholder="제목을 입력하세요. (최대 40자)" required>
+            <span class="feedback"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">가격</label>
+            <input type="number" class="form-control" name="price" id="product-price" placeholder="가격을 입력하세요. (숫자로만 입력 / 1000원 단위)" step="1000" min="0" required>
+            <input type="checkbox" id="price-free"> 무료
+            <span class="feedback"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">내용</label>
+            <textarea class="form-control" name="description" id="product-description" placeholder="상품 설명을 해주세요. (최대 2000자)" rows="7" required></textarea>
+            <span class="feedback"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">모집인원</label>
+            <select class="custom-select form-control" name="maxParticipant" id="product-max-participant" required>
+                <option value="">모집인원 선택</option>
+                <option value="1">1명</option>
+                <option value="2">2명</option>
+                <option value="3">3명</option>
+                <option value="4">4명</option>
+                <option value="5">5명</option>
+                <option value="6">6명</option>
+            </select>
+            <span class="feedback"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">모집기간</label>
+            <input type="datetime-local" class="form-control" id="product-expire" step="600"
+                   name="expireDateTime" value="2018-06-12T19:30" min="2018-06-07T00:00" max=""/>
+            <span class="feedback"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">나눔시간</label>
+            <input type="datetime-local" class="form-control" id="product-share" step="600"
+                   name="shareDateTime" value="2018-06-12T19:30" min="2018-06-07T00:00" max=""/>
+            <span class="feedback"></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label">나눔용기</label><br>
+            <input type="radio" name="isBowlNeeded" id="inlineRadio1" value="true" checked> 필요함
+            <input type="radio" name="isBowlNeeded" id="inlineRadio2" value="false"> 필요하지 않음
+            <span class="feedback"></span>
+        </div>
+
+        <button type="submit" id="upload-button" class="btn btn-primary btn-block mt-5">확인</button>
+
+    </form>
+</div>
 </body>
 </html>

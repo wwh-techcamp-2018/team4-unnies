@@ -19,7 +19,8 @@ class DaumPostCode {
                 oncomplete: ({ address }) => this.input.value = address
             });
 
-            this.searchButton.addEventListener('click', () => {
+            this.searchButton.addEventListener('click', e => {
+                e.preventDefault();
                 this.postcode.open();
             });
         });

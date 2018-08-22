@@ -6,8 +6,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class RestException extends RuntimeException {
+
     protected String field;
-    protected String message;
+
+    public RestException(String field, String message) {
+        super(message);
+        this.field = field;
+    }
 
     public static RestException UnsupportMimeType() {
         return new RestException("files", "JPG 혹은 PNG 파일만 업로드할 수 있습니다");

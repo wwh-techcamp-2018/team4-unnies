@@ -6,6 +6,7 @@ import com.baemin.nanumchan.utils.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,12 +26,6 @@ public class ExceptionControllerAdvice {
     @Resource(name = "messageSourceAccessor")
     private MessageSourceAccessor messageSourceAccessor;
 
-    @ExceptionHandler(RestException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RestResponse apiError(RestException exception) {
-        return RestResponse.error(exception.getField(), exception.getMessage()).build();
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public RestResponse emptyResultData(EntityNotFoundException exception) {
@@ -41,6 +36,25 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
     public RestResponse unAuthentication(UnAuthenticationException exception) {
         return RestResponse.error(exception.getField(), exception.getMessage()).build();
+    }
+
+    @ExceptionHandler(RestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestResponse apiError(RestException exception) {
+        return RestResponse.error(exception.getField(), exception.getMessage()).build();
+    }
+
+    @ExceptionHandler(BindException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RestResponse formBindException(BindException exception) {
+        List<ObjectError> errors = exception.getBindingResult().getAllErrors();
+        RestResponse.ErrorResponseBuilder errorResponseBuilder = RestResponse.error();
+        for (ObjectError objectError : errors) {
+            log.error("object error : {}", objectError);
+            FieldError fieldError = (FieldError) objectError;
+            errorResponseBuilder.appendError(fieldError.getField(), getErrorMessage(fieldError));
+        }
+        return errorResponseBuilder.build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
