@@ -1,3 +1,5 @@
+import { $, $all } from './lib/utils.js';
+
 $('#button').addEventListener('click',signupHandler);
 
 const registerFlag = {
@@ -106,9 +108,9 @@ function validateCheck(value){
     }
 
     if(monitorRegisterButton()){
-        $('#button').disabled=false;
+        $('#button').disabled = false;
     }else{
-        $('#button').disabled=true;
+        $('#button').disabled = true;
     }
 }
 

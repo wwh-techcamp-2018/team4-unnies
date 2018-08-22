@@ -1,3 +1,5 @@
+import { $, $all } from './lib/utils.js';
+
 $('#button').addEventListener('click',loginHandler);
 
 const registerFlag = {
