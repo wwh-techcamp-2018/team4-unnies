@@ -104,10 +104,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
 
         ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/2/review", reviewDTO, RestResponse.class);
 
-        log.info("getReviewData Info : {}", response.getBody().getData());
-
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(response.getBody().getData()).isNotNull();
     }
 
     @Test
