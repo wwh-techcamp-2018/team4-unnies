@@ -1,10 +1,15 @@
 package com.baemin.nanumchan.web;
 
+import com.baemin.nanumchan.domain.Order;
+import com.baemin.nanumchan.domain.Review;
 import com.baemin.nanumchan.domain.User;
+import com.baemin.nanumchan.dto.OrderDTO;
 import com.baemin.nanumchan.dto.ProductDTO;
+import com.baemin.nanumchan.dto.ReviewDTO;
 import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.ProductService;
 import com.baemin.nanumchan.utils.RestResponse;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,13 +42,13 @@ public class ApiProductController {
     }
 
     @PostMapping("/{id}/review")
-    public ResponseEntity<RestResponse> uploadReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
+    public ResponseEntity<Void> uploadReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
         Review review = productService.uploadReview(user, id, reviewDTO);
-        return ResponseEntity.created(URI.create("/api/products/" + id + "/review/" + review.getId())).body(RestResponse.success(review));
+        return ResponseEntity.created(URI.create("/api/products/" + id + "/review/" + review.getId())).build();
     }
 
     @GetMapping("/{id}/reviews")
-    public ResponseEntity<RestResponse> getReviews(@PathVariable Long id) {
-        return ResponseEntity.ok(RestResponse.success(productService.getReviews(id)));
+    public ResponseEntity<RestResponse> getReviews(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(RestResponse.success(productService.getReviews(id, pageable)));
     }
 }

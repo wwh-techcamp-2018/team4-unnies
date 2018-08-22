@@ -1,10 +1,15 @@
 package com.baemin.nanumchan.domain;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    List<Review> findTop10ByWriterOrderByIdDesc(User writer);
+    Page<Review> findAllByWriterOrderByIdDesc(User writer, Pageable pageRequest);
 
+    @Query(
+            value = "Select avg(r.rating) From Review r where r.writer_id = ?",
+            nativeQuery = true)
+    Double getAvgRatingByWriterId(Long writerId);
 }

@@ -24,7 +24,7 @@ public class Review extends AbstractEntity {
     private String comment;
 
     @Column(nullable = false)
-    private int rating;
+    private Double rating;
 
     @Override
     public String toString() {

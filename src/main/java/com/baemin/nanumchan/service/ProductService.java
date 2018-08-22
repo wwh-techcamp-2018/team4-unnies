@@ -7,7 +7,11 @@ import com.baemin.nanumchan.dto.ProductDTO;
 import com.baemin.nanumchan.dto.ProductDetailDTO;
 import com.baemin.nanumchan.dto.ReviewDTO;
 import com.baemin.nanumchan.exception.UnAuthenticationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -15,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class ProductService {
 
     private static final Long NO_ONE = 0L;
@@ -62,11 +67,17 @@ public class ProductService {
                 .orElseThrow(EntityNotFoundException::new);
 
         Integer orderCount = (int) (long) orderRepository.countByProduct(product).orElse(NO_ONE);
+        Double ownerRating = reviewRepository.getAvgRatingByWriterId(product.getOwner().getId());
+
+        if (ownerRating == null) {
+            ownerRating = 0.0;
+        }
 
         return ProductDetailDTO.builder()
                 .product(product)
                 .orderCount(orderCount)
                 .status(product.calculateStatus(orderCount))
+                .ownerRating(ownerRating)
                 .build();
     }
 
@@ -106,10 +117,11 @@ public class ProductService {
         throw new UnAuthenticationException("권한이 없습니다.");
     }
 
-    public List<Review> getReviews(Long productId) {
+    public List<Review> getReviews(Long productId, Pageable pageable) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(EntityNotFoundException::new);
+        List<Review> reviews= reviewRepository.findAllByWriterOrderByIdDesc(product.getOwner(), pageable).getContent();
 
-        return reviewRepository.findTop10ByWriterOrderByIdDesc(product.getOwner());
+        return reviews;
     }
 }

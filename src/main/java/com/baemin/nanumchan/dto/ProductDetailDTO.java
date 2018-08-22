@@ -20,4 +20,6 @@ public class ProductDetailDTO {
     @NotNull
     private Status status;
 
+    private Double ownerRating;
+
 }

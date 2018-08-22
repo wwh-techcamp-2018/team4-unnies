@@ -17,7 +17,7 @@ public class ReviewDTO {
     private String comment;
 
     @NotNull
-    private int rating;
+    private Double rating;
 
     public Review toEntity(Product product, User user, ReviewDTO reviewDTO) {
         return Review.builder()

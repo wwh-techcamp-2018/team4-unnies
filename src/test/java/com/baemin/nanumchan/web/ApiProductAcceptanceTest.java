@@ -99,7 +99,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
     public void uploadReview_성공() {
         ReviewDTO reviewDTO = ReviewDTO.builder()
                 .comment("이거 맛있었어요 쵝오에요?")
-                .rating(4)
+                .rating(4.2)
                 .build();
 
         ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/2/review", reviewDTO, RestResponse.class);
@@ -114,7 +114,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
     public void uploadReview_실패_미신청() {
         ReviewDTO reviewDTO = ReviewDTO.builder()
                 .comment("이거 맛있었어요 쵝오에요?")
-                .rating(4)
+                .rating(4.2)
                 .build();
 
         ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/3/review", reviewDTO, RestResponse.class);
@@ -126,7 +126,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
     public void uploadReview_실패_나눔완료X() {
         ReviewDTO reviewDTO = ReviewDTO.builder()
                 .comment("이거 맛있었어요 쵝오에요?")
-                .rating(4)
+                .rating(4.2)
                 .build();
 
         ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/1/review", reviewDTO, RestResponse.class);
