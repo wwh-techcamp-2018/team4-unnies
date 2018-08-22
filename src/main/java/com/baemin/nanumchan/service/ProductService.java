@@ -23,6 +23,9 @@ public class ProductService {
     private ProductImageRepository productImageRepository;
 
     @Autowired
+    private LocationRepository locationRepository;
+
+    @Autowired
     private S3Uploader s3Uploader;
 
     public Product create(ProductDTO productDTO) {
@@ -34,7 +37,9 @@ public class ProductService {
                 .map(ProductImage::new)
                 .collect(Collectors.toList());
 
-        Product product = productDTO.toEntity(category, productImages);
+        Location location = locationRepository.save(productDTO.getLocation());
+
+        Product product = productDTO.toEntity(category, productImages, location);
         return productRepository.save(product);
     }
 

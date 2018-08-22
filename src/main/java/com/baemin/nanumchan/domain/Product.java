@@ -34,7 +34,9 @@ public class Product extends AbstractEntity {
     @NotEmpty
     private String name;
 
-    // TODO: Location address
+    @OneToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     @NotEmpty
     @Length(max = 40)
