@@ -8,17 +8,18 @@
     <title>배민나눔찬</title>
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/upload.css" rel="stylesheet">
-    <script src="/js/lib/postcode.v2.js" async></script>
-    <script src="/js/upload.js" type="module" defer></script>
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=60b17dbcebe7c345e753fc50e2e245d3&libraries=services"></script>
     <script src="/js/lib/jquery-3.3.1.slim.min.js" defer></script>
     <script src="/js/lib/bootstrap.min.js" defer></script>
     <script src="/js/lib/moment.js" defer></script>
     <script src="/js/lib/moment-round.min.js" defer></script>
+    <script src="/js/upload.js" type="module" defer></script>
 
 </head>
 <body class="this-is-temporary" style=" background: #ccc; padding: 20px;">
-<div class="this-is-temporary" style="width: 1024px; background: #fff; margin: 0 auto; padding: 20px;">
+<div class="this-is-temporary" style="width: 1000px; background: #fff; margin: 0 auto; padding: 20px;">
     <form class="form-horizontal" id="upload-form" enctype="multipart/form-data">
         <h1 class="form-upload-heading mt-3 mb-5">업로드 페이지</h1>
         <div class="form-group">
@@ -67,19 +68,6 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label">나눔 장소</label>
-            <div class="input-group">
-                <div class="input-group-prepend" id="button-addon3">
-                    <button class="btn btn-primary" type="button" id="product-address-search">주소검색</button>
-                </div>
-                <input type="text" class="form-control" name="address" id="product-address" placeholder="나눔장소를 입력하세요." readonly>
-                <input type="text" class="form-control" name="addressDetail" id="product-address-detail" placeholder="상세 주소 입력" required>
-                <span class="feedback"></span>
-            </div>
-            <input type="checkbox"> 내주소로 입력하기
-        </div>
-
-        <div class="form-group">
             <label class="control-label">제목</label>
             <input type="text" class="form-control" name="title" id="product-title" placeholder="제목을 입력하세요. (최대 40자)" required>
             <span class="feedback"></span>
@@ -96,6 +84,23 @@
             <label class="control-label">내용</label>
             <textarea class="form-control" name="description" id="product-description" placeholder="상품 설명을 해주세요. (최대 2000자)" rows="7" required></textarea>
             <span class="feedback"></span>
+        </div>
+
+        <hr class="m-5">
+
+        <div class="form-group location">
+            <label class="control-label">나눔 장소</label>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend" id="button-addon3">
+                    <button class="btn btn-primary current" type="button"><i class="fa fa-location-arrow"></i></button>
+                    <button class="btn btn-secondary home" type="button"><i class="fa fa-home"></i></button>
+                </div>
+                <input type="text" class="form-control" name="address" id="product-address" placeholder="나눔장소를 입력하세요." required>
+                <input type="text" class="form-control" name="addressDetail" id="product-address-detail" placeholder="상세 주소 입력" required>
+                <input type="hidden" name="latitude">
+                <input type="hidden" name="longitude">
+            </div>
+            <div id="map" style="width:960px;height:600px;"></div>
         </div>
 
         <div class="form-group">
