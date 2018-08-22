@@ -77,11 +77,14 @@ spring:
     url: jdbc:${db.url}
     username: ${db.username}
     password: ${db.password}
+  flyway:
+    enabled: true
 
 jpa:
   show-sql: false
   hibernate:
     ddl-auto: validate
+  open-in-view: true
 
 logging:
   level:
