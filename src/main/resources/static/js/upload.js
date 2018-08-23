@@ -113,6 +113,18 @@ function markCurrentLocation() {
     });
 }
 
+const editor = new tui.Editor({
+    el: $('#editSection'),
+    initialEditType: 'wysiwyg',
+    previewStyle: 'vertical',
+    height: '500px',
+    events: {
+        change: () => {
+            $('input[name=description]').value = editor.getValue();
+        }
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     markCurrentLocation();
 });
