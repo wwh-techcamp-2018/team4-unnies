@@ -9,10 +9,10 @@ export function closeModal(){
     $('#overlay').classList.add("is-hidden");
     $('#comment').value = '';
 
-    const selectedStars = $('#product1').getElementsByClassName('star');
+    const selectedStars = $all('#product1 .star');
 
-    for (let selectedStar of selectedStars) {
-        if(selectedStar.className.indexOf('selected') > -1){
+    for (const selectedStar of selectedStars) {
+        if(selectedStar.classList.contains('selected')){
             selectedStar.classList.remove('selected');
         }
     }

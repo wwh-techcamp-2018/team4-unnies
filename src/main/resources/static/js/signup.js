@@ -1,4 +1,4 @@
-import { $, $all } from './lib/utils.js';
+import { $ } from './lib/utils.js';
 
 $('#button').addEventListener('click',signupHandler);
 
@@ -10,8 +10,8 @@ const registerFlag = {
     'phone':false,
 };
 
-function signupHandler(evt){
-    evt.preventDefault();
+function signupHandler(event){
+    event.preventDefault();
 
     const email = $('#email').value;
     const name = $('#name').value;

@@ -10,8 +10,8 @@ let reviewPage = 0;
 new ProductDetail().load(productId);
 new ReviewList().load(productId, reviewPage);
 
-function moveToSelectedImage(e) {
-    e.preventDefault();
+function moveToSelectedImage(event) {
+    event.preventDefault();
 
     const index = getElementParentIndex(e.target);
 
@@ -24,10 +24,14 @@ function getElementParentIndex(element){
     return [...element.parentElement.children].indexOf(element) + 1;
 }
 
-function registerShare(e){
-    e.preventDefault();
+function registerShare(event){
+    event.preventDefault();
 
-    let deliveryType = $('#radio-riders').value === '배민라이더스' ? 'BAEMIN_RIDER' : 'PICKUP';
+    const checkRider = $('input[name="groupOfRadioGap"]:checked');
+    if(checkRider == null)
+        return;
+
+    const deliveryType = checkRider.id === 'radio-riders' ? 'BAEMIN_RIDER' : 'PICKUP';
 
     fetch(`/api/products/${productId}/order`, {
         method:'post',
@@ -46,13 +50,13 @@ function registerShare(e){
     })
 }
 
-function registerReview(e){
-    e.preventDefault();
+function registerReview(event){
+    event.preventDefault();
 
     const comment = $('#comment').value;
     const rating = $all('.star.selected').length;
 
-    fetch(`/api/products/${productId}/review`, {
+    fetch(`/api/products/${productId}/reviews`, {
             method:'post',
             headers:{'content-type':'application/json'},
             credentials:'same-origin',
@@ -82,18 +86,17 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#open-modal').addEventListener('click',openModal);
     $('#close-modal').addEventListener('click',closeModal);
     $('#register-review').addEventListener('click', registerReview);
-    $('#show-review-prev').addEventListener('click', (e) => {
-        e.preventDefault();
+
+    $('#show-review-prev').addEventListener('click', (event) => {
+        event.preventDefault();
         reviewPage -= 1;
-        if(reviewPage == 0){
-            $('#show-review-prev').style.visibility = 'hidden';
-        }
         new ReviewList().load(productId, reviewPage);
     });
-    $('#show-review-next').addEventListener('click', (e) => {
-        e.preventDefault();
+
+    $('#show-review-next').addEventListener('click', (event) => {
+        event.preventDefault();
         reviewPage += 1;
         new ReviewList().load(productId, reviewPage);
-        $('#show-review-prev').style.visibility = 'display';
     });
+
 });

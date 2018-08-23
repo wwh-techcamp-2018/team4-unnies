@@ -5,21 +5,18 @@ class ReviewList {
     load(productId,page) {
         fetch(`/api/products/${productId}/reviews?page=${page}&size=5`)
         .then(response => {
-                if (response.ok) {
-                    return response.json();
+                if (!response.ok) {
+                    console.log('error 발생');
                 }
+                return response.json();
             }).then(({ data }) => {
+                const { content, first, last, totalElements } = data;
 
-                if(data.length == 0){
-                    $('#show-review-next').style.visibility = 'hidden';
-                    alert("다음 리뷰가 존재하지 않습니다.");
-                    return;
-                }
+                $('#show-review-prev').style.visibility = first === true ?  'hidden' :  'visible';
+                $('#show-review-next').style.visibility = last === true ? 'hidden' : 'visible';
 
-                $('#reviews-count').innerHTML = '리뷰 '+data.length;
-                $('#product-comments-list').innerHTML = data.map(review => reviewTemplate(review)).join('');
-                $('#show-review-prev').style.visibility = 'display';
-
+                $('#reviews-count').innerHTML = '리뷰 '+totalElements;
+                $('#product-comments-list').innerHTML = content.map(reviewTemplate).join('');
             })
             .catch(error => {
                 // todo error 처리

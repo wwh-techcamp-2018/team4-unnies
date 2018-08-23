@@ -35,7 +35,7 @@ class ProductDetail {
         $('#product-name').innerText = product.name;
         $('#product-category').innerText = product.category.name;
         $('#product-create-time').innerText = product.shareDateTime;
-        $('#product-price').innerText = product.price;
+        $('#product-price').innerText = product.price == 0 ? '무료 나눔' : product.price;
         $('#product-detail').innerText = product.description;
 
         this.loadStatus(status);
