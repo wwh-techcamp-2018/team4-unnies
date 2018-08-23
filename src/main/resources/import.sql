@@ -52,17 +52,5 @@ insert into order_product(id, product_id, participant_id, delivery_type, status,
 -- 6번 음식
 insert into order_product(id, product_id, participant_id, delivery_type, status, created_at) values(10, 6, 2, 'PICKUP', 'COMPLETE_SHARING', now());
 
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(1, 1, 1, 4,'comment1',3, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(2, 2, 2, 1, 'comment2',4, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(3, 1, 1, 3, 'comment3',2, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(4, 1, 1, 5, 'comment4',2, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(5, 1, 1, 5, 'comment5',5, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(6, 1, 1, 2, 'comment6',3, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(7, 1, 1, 2,'comment7',2, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(8, 1, 1, 5,'comment8',3, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(9, 1, 1, 3,'comment9',4, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(10, 1, 1, 2,'comment10',5, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(11, 2, 2, 'comment11',1, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(12, 3, 3, 'comment12',2, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(13, 4, 4, 'comment13',3, now());
-insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(14, 5, 5, 'comment14',4, now());
+insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(1, 1, 1, 4,'성열 답글',3, now());
+insert into review(id, product_id, chef_id, writer_id, comment, rating, created_at) values(2, 2, 2, 1, '석윤 답글',4, now());
