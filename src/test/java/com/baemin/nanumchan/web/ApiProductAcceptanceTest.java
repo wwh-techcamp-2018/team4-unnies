@@ -88,7 +88,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
                 .deliveryType(DeliveryType.BAEMIN_RIDER)
                 .build();
 
-        ResponseEntity<Void> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/3/order", orderDTO, Void.class);
+        ResponseEntity<Void> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/4/orders", orderDTO, Void.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getHeaders().getLocation().getPath()).isNotEmpty();
@@ -102,7 +102,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
                 .rating(4.2)
                 .build();
 
-        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/2/review", reviewDTO, RestResponse.class);
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/2/reviews", reviewDTO, RestResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
@@ -114,7 +114,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
                 .rating(4.2)
                 .build();
 
-        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/3/review", reviewDTO, RestResponse.class);
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/5/reviews", reviewDTO, RestResponse.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
@@ -126,7 +126,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
                 .rating(4.2)
                 .build();
 
-        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/1/review", reviewDTO, RestResponse.class);
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/3/reviews", reviewDTO, RestResponse.class);
 
         log.info("fail Info : {}", response.getBody().getErrors());
 

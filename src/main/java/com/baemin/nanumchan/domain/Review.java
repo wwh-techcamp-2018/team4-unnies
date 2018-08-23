@@ -20,6 +20,10 @@ public class Review extends AbstractEntity {
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_review_writer"))
     private User writer;
 
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_review_chef"))
+    private User chef;
+
     @Column(nullable = false)
     private String comment;
 

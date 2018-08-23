@@ -31,7 +31,7 @@ public class ApiUserAcceptanceTest extends AcceptanceTest {
                 .build();
 
         loginDTO = LoginDTO.builder()
-                .email("unnies@naver.com")
+                .email("tech_syk@woowahan.com")
                 .password("123456a!")
                 .build();
     }

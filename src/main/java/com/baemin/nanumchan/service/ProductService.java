@@ -22,8 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductService {
 
-    private static final Long NO_ONE = 0L;
-
+    private static final Double ZERO = 0.0;
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -66,12 +65,9 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        Integer orderCount = (int) (long) orderRepository.countByProduct(product).orElse(NO_ONE);
-        Double ownerRating = reviewRepository.getAvgRatingByWriterId(product.getOwner().getId());
+        Integer orderCount = (int) (long) orderRepository.countByProduct(product);
 
-        if (ownerRating == null) {
-            ownerRating = 0.0;
-        }
+        Double ownerRating = reviewRepository.getAvgRatingByWriterId(product.getOwner().getId()).orElse(ZERO);
 
         return ProductDetailDTO.builder()
                 .product(product)
@@ -85,7 +81,7 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        Integer orderCount = (int) (long) orderRepository.countByProduct(product).orElse(NO_ONE);
+        Integer orderCount = (int) (long) orderRepository.countByProduct(product);
 
         Status status = product.calculateStatus(orderCount);
 
@@ -117,11 +113,10 @@ public class ProductService {
         throw new UnAuthenticationException("권한이 없습니다.");
     }
 
-    public List<Review> getReviews(Long productId, Pageable pageable) {
+    public Page<Review> getReviews(Long productId, Pageable pageable) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(EntityNotFoundException::new);
-        List<Review> reviews= reviewRepository.findAllByWriterOrderByIdDesc(product.getOwner(), pageable).getContent();
 
-        return reviews;
+        return reviewRepository.findAllByChefOrderByIdDesc(product.getOwner(), pageable);
     }
 }

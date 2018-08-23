@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "spring.config.location=classpath:application.yml,classpath:aws.yml")
 public abstract class AcceptanceTest {
 
-    private static final String DEFAULT_LOGIN_USER = "unnies@naver.com";
+    private static final String DEFAULT_LOGIN_USER = "tech_syk@woowahan.com";
     private static final String DEFAULT_LOGIN_PASSWORD = "123456a!";
 
     @Autowired

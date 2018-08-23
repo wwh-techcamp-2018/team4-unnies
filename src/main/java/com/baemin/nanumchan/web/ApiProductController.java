@@ -9,6 +9,7 @@ import com.baemin.nanumchan.dto.ReviewDTO;
 import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.ProductService;
 import com.baemin.nanumchan.utils.RestResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +36,13 @@ public class ApiProductController {
         return ResponseEntity.ok(RestResponse.success(productService.getProductDetailDTO(id)));
     }
 
-    @PostMapping("/{id}/order")
+    @PostMapping("/{id}/orders")
     public ResponseEntity<Void> order(@LoginUser User user, @Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
         Order order = productService.order(id, orderDTO, user);
         return ResponseEntity.created(URI.create("/api/products/" + id + "/order/" + order.getId())).build();
     }
 
-    @PostMapping("/{id}/review")
+    @PostMapping("/{id}/reviews")
     public ResponseEntity<Void> uploadReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
         Review review = productService.uploadReview(user, id, reviewDTO);
         return ResponseEntity.created(URI.create("/api/products/" + id + "/review/" + review.getId())).build();
