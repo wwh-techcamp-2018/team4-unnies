@@ -1,0 +1,18 @@
+.container {
+    width: 1000px;
+}
+
+.search-selector {
+    width: 150px;
+}
+
+.input-group {
+    width: 750px;
+}
+
+.btn-upload {
+    position: fixed;
+    top: 150px;
+    right: calc(50% + 10px);
+    transform: translateX(730%);
+}
