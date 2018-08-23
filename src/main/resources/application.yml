@@ -89,3 +89,8 @@ jpa:
 logging:
   level:
     org.hibernate: error
+
+server:
+  error:
+    whitelabel:
+      enabled: false
