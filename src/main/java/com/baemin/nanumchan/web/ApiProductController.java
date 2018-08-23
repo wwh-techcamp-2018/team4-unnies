@@ -1,12 +1,19 @@
 package com.baemin.nanumchan.web;
 
+import com.baemin.nanumchan.domain.Order;
+import com.baemin.nanumchan.domain.Review;
+import com.baemin.nanumchan.domain.User;
+import com.baemin.nanumchan.dto.OrderDTO;
 import com.baemin.nanumchan.dto.ProductDTO;
+import com.baemin.nanumchan.dto.ReviewDTO;
+import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.ProductService;
+import com.baemin.nanumchan.utils.RestResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -20,8 +27,29 @@ public class ApiProductController {
     private ProductService productService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> upload(@Valid ProductDTO productDTO) {
-        return ResponseEntity.created(URI.create("/api/products/" + productService.create(productDTO).getId())).build();
+    public ResponseEntity<Void> upload(@LoginUser User user, @Valid ProductDTO productDTO) {
+        return ResponseEntity.created(URI.create("/api/products/" + productService.create(user, productDTO).getId())).build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<RestResponse> getProductDetailInfo(@PathVariable Long id) {
+        return ResponseEntity.ok(RestResponse.success(productService.getProductDetailDTO(id)));
+    }
+
+    @PostMapping("/{id}/orders")
+    public ResponseEntity<Void> order(@LoginUser User user, @Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
+        Order order = productService.order(id, orderDTO, user);
+        return ResponseEntity.created(URI.create("/api/products/" + id + "/order/" + order.getId())).build();
+    }
+
+    @PostMapping("/{id}/reviews")
+    public ResponseEntity<Void> uploadReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
+        Review review = productService.uploadReview(user, id, reviewDTO);
+        return ResponseEntity.created(URI.create("/api/products/" + id + "/review/" + review.getId())).build();
+    }
+
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<RestResponse> getReviews(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(RestResponse.success(productService.getReviews(id, pageable)));
+    }
 }

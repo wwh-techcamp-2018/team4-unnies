@@ -1,3 +1,5 @@
+import { $, $all } from './lib/utils.js';
+
 $('#button').addEventListener('click',loginHandler);
 
 const registerFlag = {
@@ -5,8 +7,8 @@ const registerFlag = {
     'password':false,
 };
 
-function loginHandler(evt){
-    evt.preventDefault();
+function loginHandler(event){
+    event.preventDefault();
 
     const email = $('#email').value;
     const password = $('#password').value;

@@ -1,21 +1,22 @@
 package com.baemin.nanumchan.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.baemin.nanumchan.support.domain.AbstractEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
 
 @Getter
 @Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@ToString
+public class User extends AbstractEntity {
+
+    public static final GuestUser GUEST_USER = new GuestUser();
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -35,4 +36,15 @@ public class User {
     @Lob
     private String aboutMe;
 
+    @JsonIgnore
+    public boolean isGuestUser() {
+        return false;
+    }
+
+    private static class GuestUser extends User {
+        @Override
+        public boolean isGuestUser() {
+            return true;
+        }
+    }
 }

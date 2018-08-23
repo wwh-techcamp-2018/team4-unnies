@@ -22,7 +22,7 @@ public class ApiUserAcceptanceTest extends AcceptanceTest {
     @Before
     public void setUp() throws Exception {
         signUpDTO = SignUpDTO.builder()
-                .email("unnies2@naver.com")
+                .email("unnies3@naver.com")
                 .password("haha123!")
                 .confirmPassword("haha123!")
                 .name("강석윤")
@@ -31,7 +31,7 @@ public class ApiUserAcceptanceTest extends AcceptanceTest {
                 .build();
 
         loginDTO = LoginDTO.builder()
-                .email("unnies@naver.com")
+                .email("tech_syk@woowahan.com")
                 .password("123456a!")
                 .build();
     }

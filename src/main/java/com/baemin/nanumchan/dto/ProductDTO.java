@@ -1,9 +1,6 @@
 package com.baemin.nanumchan.dto;
 
-import com.baemin.nanumchan.domain.Category;
-import com.baemin.nanumchan.domain.Location;
-import com.baemin.nanumchan.domain.Product;
-import com.baemin.nanumchan.domain.ProductImage;
+import com.baemin.nanumchan.domain.*;
 import com.baemin.nanumchan.exception.RestException;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +15,6 @@ import javax.imageio.ImageIO;
 import javax.validation.constraints.*;
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -197,8 +193,9 @@ public class ProductDTO {
         return new Location(address, addressDetail, latitude, longitude);
     }
 
-    public Product toEntity(Category category, List<ProductImage> productImages, Location location) {
+    public Product toEntity(Category category, List<ProductImage> productImages, Location location, User user) {
         return Product.builder()
+                .owner(user)
                 .category(category)
                 .productImages(productImages)
                 .name(name)

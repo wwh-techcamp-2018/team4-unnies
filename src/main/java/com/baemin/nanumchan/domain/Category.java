@@ -1,5 +1,6 @@
 package com.baemin.nanumchan.domain;
 
+import com.baemin.nanumchan.support.domain.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,11 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Category extends AbstractEntity {
 
     @Column(nullable = false)
     private String name;

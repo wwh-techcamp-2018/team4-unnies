@@ -21,7 +21,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Product extends AbstractEntity {
 
-    // TODO: User owner
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_product_owner"))
+    private User owner;
 
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -63,5 +65,24 @@ public class Product extends AbstractEntity {
 
     @Column(nullable = false)
     private boolean isBowlNeeded;
+
+    public boolean isExpiredDateTime() {
+        return expireDateTime.isBefore(LocalDateTime.now());
+    }
+
+    public boolean compareMaxParticipants(Integer orderCount) {
+        return maxParticipant.equals(orderCount);
+    }
+
+    public Status calculateStatus(Integer orderCount) {
+        if (isExpiredDateTime()) {
+            return Status.EXPIRED;
+        }
+        if (compareMaxParticipants(orderCount)) {
+            return Status.FULL_PARTICIPANTS;
+        }
+        return Status.ON_PARTICIPATING;
+
+    }
 
 }

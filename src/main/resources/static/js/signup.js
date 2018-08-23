@@ -1,3 +1,5 @@
+import { $ } from './lib/utils.js';
+
 $('#button').addEventListener('click',signupHandler);
 
 const registerFlag = {
@@ -8,8 +10,8 @@ const registerFlag = {
     'phone':false,
 };
 
-function signupHandler(evt){
-    evt.preventDefault();
+function signupHandler(event){
+    event.preventDefault();
 
     const email = $('#email').value;
     const name = $('#name').value;
@@ -106,9 +108,9 @@ function validateCheck(value){
     }
 
     if(monitorRegisterButton()){
-        $('#button').disabled=false;
+        $('#button').disabled = false;
     }else{
-        $('#button').disabled=true;
+        $('#button').disabled = true;
     }
 }
 
