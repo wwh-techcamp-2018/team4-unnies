@@ -1,4 +1,6 @@
 -- password origin : 123456a!
+--insert into user(id, email, password, name, phone_number, address, about_me) values(1, 'unnies@naver.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '강석윤', '010-1111-2222', '서울특별시 배민동 배민아파트',null);
+
 insert into user(id, email, password, name, phone_number, address, about_me, created_at) values(1, 'tech_syk@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '강석윤', '010-1234-2222', '경기도 용인시 수지구 죽전동 내대지마을', '나대는 사람', now());
 insert into user(id, email, password, name, phone_number, address, about_me, created_at) values(2, 'tech_lhj@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '이혁진', '010-3555-2342', '광주광역시 서구 화정동','퍽하는 사람', now());
 insert into user(id, email, password, name, phone_number, address, about_me, created_at) values(3, 'tech_rms@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '유민성', '010-1351-8221', '서울특별시 송파구 잠실동','클랜 장인 사람', now());
