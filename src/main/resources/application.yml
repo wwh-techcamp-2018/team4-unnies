@@ -91,6 +91,10 @@ logging:
     org.hibernate: error
 
 server:
+  port: 80
   error:
     whitelabel:
       enabled: false
+
+handlebars:
+  cache: true
