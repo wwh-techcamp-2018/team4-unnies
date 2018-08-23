@@ -62,7 +62,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    public void upload_유효하지않은필드에러메시지_이름없음() {
+    public void upload_필수항목_누락() {
         HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
                 .multipartFormData()
                 .addParameter("price", 0)
@@ -73,14 +73,23 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
         assertThat(response.getBody().getErrors()).hasSize(12);
     }
 
+    @Test
+    public void uploadImage() {
+        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
+                .multipartFormData()
+                .addParameter("file", new ClassPathResource("static/images/sample.png"))
+                .build();
+        ResponseEntity<Void> response = template.postForEntity(PRODUCT_URL + "/images", request, Void.class);
+        assertThat(response.getHeaders().getLocation().getPath()).isNotEmpty();
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    }
+
     // travis test 실패로 임시 주석 처리.
     @Test
     public void getProductDetailInfo() {
         ResponseEntity<RestResponse> response = template.getForEntity(PRODUCT_URL + "/1", RestResponse.class);
-
 //        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 //        assertThat(response.getBody().getData()).isNotNull();
-
     }
 
     @Test

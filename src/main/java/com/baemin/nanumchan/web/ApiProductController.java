@@ -9,11 +9,11 @@ import com.baemin.nanumchan.dto.ReviewDTO;
 import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.ProductService;
 import com.baemin.nanumchan.utils.RestResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -31,6 +31,11 @@ public class ApiProductController {
         return ResponseEntity.created(URI.create("/api/products/" + productService.create(user, productDTO).getId())).build();
     }
 
+    @PostMapping(path = "/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> uploadEditorImage(MultipartFile file) {
+        return ResponseEntity.created(URI.create(productService.uploadImage(file))).build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<RestResponse> getProductDetailInfo(@PathVariable Long id) {
         return ResponseEntity.ok(RestResponse.success(productService.getProductDetailDTO(id)));
@@ -42,14 +47,15 @@ public class ApiProductController {
         return ResponseEntity.created(URI.create("/api/products/" + id + "/order/" + order.getId())).build();
     }
 
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<RestResponse> getReviews(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(RestResponse.success(productService.getReviews(id, pageable)));
+    }
+
     @PostMapping("/{id}/reviews")
     public ResponseEntity<Void> uploadReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
         Review review = productService.uploadReview(user, id, reviewDTO);
         return ResponseEntity.created(URI.create("/api/products/" + id + "/review/" + review.getId())).build();
     }
 
-    @GetMapping("/{id}/reviews")
-    public ResponseEntity<RestResponse> getReviews(@PathVariable Long id, Pageable pageable) {
-        return ResponseEntity.ok(RestResponse.success(productService.getReviews(id, pageable)));
-    }
 }
