@@ -1,0 +1,64 @@
+
+.off {
+    border: none;
+    background-color:#FFF !important;
+}
+
+textarea {
+    resize: none;
+}
+
+#mypage-image {
+    width: 250px;
+    height: 250px;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/*
+하단
+*/
+
+section {
+   padding: 60px 0;
+}
+
+section .section-title {
+   text-align: center;
+   color: #fff;
+   margin-bottom: 50px;
+   text-transform: uppercase;
+}
+#tabs{
+    background: #fff;
+   color: #000;
+}
+#tabs h6.section-title{
+   color: #000;
+}
+
+#tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+   color: #0000;
+   background-color: transparent;
+   border-color: transparent transparent #f3f3f3;
+   border-bottom: 4px solid !important;
+   font-size: 20px;
+   font-weight: bold;
+}
+#tabs .nav-tabs .nav-link {
+   border: 1px solid transparent;
+   border-top-left-radius: .25rem;
+   border-top-right-radius: .25rem;
+   color: #000;
+   font-size: 20px;
+}
+
+.fade.show {
+   display: block;
+}
+
