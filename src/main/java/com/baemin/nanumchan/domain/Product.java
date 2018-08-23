@@ -48,7 +48,9 @@ public class Product extends AbstractEntity {
     private Integer price;
 
     @NotEmpty
-    @Length(max = 2000)
+    @Length(max = 100000)
+    @Lob
+    @Column(length = 100000)
     private String description;
 
     @DecimalMin("1")

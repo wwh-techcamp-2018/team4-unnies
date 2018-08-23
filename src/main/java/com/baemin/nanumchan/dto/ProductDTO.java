@@ -49,7 +49,7 @@ public class ProductDTO {
     private int price;
 
     @NotNull
-    @Size(min = 1, max = 2000)
+    @Size(min = 1)
     private String description;
 
     @NotNull
