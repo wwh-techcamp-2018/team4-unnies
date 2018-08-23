@@ -113,6 +113,36 @@ function markCurrentLocation() {
     });
 }
 
+const editor = new tui.Editor({
+    el: $('#editSection'),
+    initialEditType: 'wysiwyg',
+    previewStyle: 'vertical',
+    height: '500px',
+    events: {
+        change: () => {
+            $('input[name=description]').value = editor.getValue();
+        }
+    },
+    hooks: {
+        addImageBlobHook: (blob, callback) => {
+            const formData = new FormData();
+            formData.set('file', blob);
+            fetch('/api/products/images', {
+                method: 'post',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw blob;
+                    }
+                    const url = response.headers.get('Location');
+                    callback(url);
+                })
+                .catch(callback);
+        }
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     markCurrentLocation();
 });

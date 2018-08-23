@@ -10,9 +10,9 @@ import com.baemin.nanumchan.exception.UnAuthenticationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private static final Double ZERO = 0.0;
+
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -48,10 +49,13 @@ public class ProductService {
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(EntityNotFoundException::new);
 
-        List<ProductImage> productImages = productDTO.getFiles().stream()
-                .map(s3Uploader::upload)
-                .map(ProductImage::new)
-                .collect(Collectors.toList());
+        List<ProductImage> productImages = productImageRepository.saveAll(
+                productDTO.getFiles()
+                        .stream()
+                        .map(s3Uploader::upload)
+                        .map(ProductImage::new)
+                        .collect(Collectors.toList())
+        );
 
         Location location = locationRepository.save(productDTO.getLocation());
 
@@ -60,6 +64,9 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public String uploadImage(MultipartFile file) {
+        return s3Uploader.upload(file);
+    }
 
     public ProductDetailDTO getProductDetailDTO(Long productId) {
         Product product = productRepository.findById(productId)
@@ -119,4 +126,5 @@ public class ProductService {
 
         return reviewRepository.findAllByChefOrderByIdDesc(product.getOwner(), pageable);
     }
+
 }

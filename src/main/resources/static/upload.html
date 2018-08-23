@@ -9,12 +9,29 @@
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/css/tui/codemirror.css" rel="stylesheet">
+    <link href="/css/tui/github.css" rel="stylesheet">
+    <link href="/css/tui/tui-editor.min.css" rel="stylesheet">
+    <link href="/css/tui/tui-editor-contents.min.css" rel="stylesheet">
+
     <link href="/css/upload.css" rel="stylesheet">
+
     <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=60b17dbcebe7c345e753fc50e2e245d3&libraries=services"></script>
+
     <script src="/js/lib/jquery-3.3.1.slim.min.js" defer></script>
     <script src="/js/lib/bootstrap.min.js" defer></script>
     <script src="/js/lib/moment.js" defer></script>
     <script src="/js/lib/moment-round.min.js" defer></script>
+
+    <script src="/js/lib/tui/markdown-it.js" defer></script>
+    <script src="/js/lib/tui/to-mark.js" defer></script>
+    <script src="/js/lib/tui/tui-code-snippet.js" defer></script>
+    <script src="/js/lib/tui/codemirror.js" defer></script>
+    <script src="/js/lib/tui/highlight.pack.js" defer></script>
+    <script src="/js/lib/tui/squire-raw.js" defer></script>
+    <script src="/js/lib/tui/tui-editor-Editor.min.js" defer></script>
+
     <script src="/js/upload.js" type="module" defer></script>
 
 </head>
@@ -82,7 +99,8 @@
 
         <div class="form-group">
             <label class="control-label">내용</label>
-            <textarea class="form-control" name="description" id="product-description" placeholder="상품 설명을 해주세요. (최대 2000자)" rows="7" required></textarea>
+            <input type="hidden" name="description">
+            <div id="editSection"></div>
             <span class="feedback"></span>
         </div>
 
