@@ -91,4 +91,23 @@ public class ApiUserAcceptanceTest extends AcceptanceTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
+
+    @Test
+    public void get_마이페이지_유저활동정보() {
+        ResponseEntity<RestResponse> response = template.getForEntity("/api/users/1/mypage", RestResponse.class);
+        log.info("response : {}", response.getBody());
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void get_마이페이지_유저_내가한리뷰() {
+        ResponseEntity<RestResponse> response = template.getForEntity("/api/users/1/reviews", RestResponse.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void get_마이페이지_유저_내가한나눔() {
+        ResponseEntity<RestResponse> response = template.getForEntity("/api/users/1/products", RestResponse.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
 }
