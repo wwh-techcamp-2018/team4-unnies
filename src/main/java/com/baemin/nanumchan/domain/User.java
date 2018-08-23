@@ -2,6 +2,7 @@ package com.baemin.nanumchan.domain;
 
 import com.baemin.nanumchan.support.domain.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -21,6 +22,7 @@ public class User extends AbstractEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
