@@ -1,8 +1,7 @@
-import { $, $all } from './lib/utils.js';
-import { reviewTemplate } from './template/DetailTemplate.js';
-import ProductDetail from './ProductDetail.js';
-import ReviewList from './ReviewList.js';
-import { openModal, closeModal } from './modal.js'
+import {$, $all} from './lib/utils.js';
+import ProductDetail from './class/ProductDetail.js';
+import ReviewList from './class/ReviewList.js';
+import {closeModal, openModal} from './modal.js'
 
 // for Test!
 const productId = 1;
@@ -13,7 +12,7 @@ new ReviewList().load(productId, reviewPage);
 function moveToSelectedImage(event) {
     event.preventDefault();
 
-    const index = getElementParentIndex(e.target);
+    const index = getElementParentIndex(event.target);
 
     $('.preview-pic.tab-content .tab-pane.active').classList.remove('active');
     $(`.preview-pic.tab-content .tab-pane:nth-child(${index})`).classList.add('active');
@@ -33,7 +32,7 @@ function registerShare(event){
 
     const deliveryType = checkRider.id === 'radio-riders' ? 'BAEMIN_RIDER' : 'PICKUP';
 
-    fetch(`/api/products/${productId}/order`, {
+    fetch(`/api/products/${productId}/orders`, {
         method:'post',
         headers:{'content-type':'application/json'},
         credentials:'same-origin',

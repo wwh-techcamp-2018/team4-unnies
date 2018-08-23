@@ -1,5 +1,5 @@
-import { $, $all } from './lib/utils.js';
-import { ratingTemplate } from './template/DetailTemplate.js';
+import { $ } from '../lib/utils.js';
+import { ratingTemplate } from '../template/DetailTemplate.js';
 class ProductDetail {
 
     load(productId){
@@ -36,7 +36,13 @@ class ProductDetail {
         $('#product-category').innerText = product.category.name;
         $('#product-create-time').innerText = product.shareDateTime;
         $('#product-price').innerText = product.price == 0 ? '무료 나눔' : product.price;
-        $('#product-detail').innerText = product.description;
+
+        tui.Editor.factory({
+            el: $('#product-detail'),
+            height: 'auto',
+            viewer: true,
+            initialValue: product.description
+        });
 
         this.loadStatus(status);
         const userRating = Math.round(data.ownerRating)
