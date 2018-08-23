@@ -18,6 +18,14 @@ class ReviewList {
 
                 $('#reviews-count').innerHTML = '리뷰 '+totalElements;
                 $('#product-comments-list').innerHTML = content.map(reviewTemplate).join('');
+                content.map(({ comment }, index) => {
+                    tui.Editor.factory({
+                        el: $(`li.product-comment:nth-child(${index + 1}) .product-comment-text`),
+                        height: 'auto',
+                        viewer: true,
+                        initialValue: comment
+                    });
+                });
             })
             .catch(error => {
                 // todo error 처리
