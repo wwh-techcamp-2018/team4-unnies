@@ -7,7 +7,6 @@ import com.baemin.nanumchan.dto.ProductDTO;
 import com.baemin.nanumchan.dto.ProductDetailDTO;
 import com.baemin.nanumchan.dto.ReviewDTO;
 import com.baemin.nanumchan.exception.UnAuthenticationException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Slf4j
 public class ProductService {
 
     private static final Double ZERO = 0.0;
