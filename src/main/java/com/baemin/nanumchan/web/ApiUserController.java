@@ -6,11 +6,9 @@ import com.baemin.nanumchan.dto.SignUpDTO;
 import com.baemin.nanumchan.service.UserService;
 import com.baemin.nanumchan.utils.RestResponse;
 import com.baemin.nanumchan.utils.SessionUtils;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -37,4 +35,18 @@ public class ApiUserController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{id}/mypage")
+    public ResponseEntity<RestResponse> getInfo(@PathVariable Long id) {
+        return ResponseEntity.ok(RestResponse.success(userService.getUserInfo(id)));
+    }
+
+    @GetMapping("/{id}/reviews")
+    public ResponseEntity<RestResponse> getMyReviews(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(RestResponse.success(userService.getMyReviews(id, pageable)));
+    }
+
+    @GetMapping("/{id}/products")
+    public ResponseEntity<RestResponse> getMyProducts(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(RestResponse.success(userService.getMyProducts(id, pageable)));
+    }
 }

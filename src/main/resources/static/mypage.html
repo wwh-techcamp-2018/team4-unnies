@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>배민나눔찬</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/mypage.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <script src="/js/lib/jquery-3.3.1.slim.min.js" defer></script>
+    <script src="/js/lib/bootstrap.min.js" defer></script>
+    <script src="/js/mypage.js" type="module" defer></script>
+</head>
+<body class="this-is-temporary" style=" background: #ccc; padding: 20px;">
+<div class="this-is-temporary" style="width: 1000px; background: #fff; margin: 0 auto; padding: 20px;">
+    <form class="form-horizontal" id="upload-form" enctype="multipart/form-data">
+        <h1 class="form-upload-heading mt-3 mb-5">마이 페이지</h1>
+        <!--<div class="container">-->
+        <div class="card">
+            <div class="container-fluid">
+                <form class="form-horizontal" id="mypage-form" enctype="multipart/form-data">
+                    <div class="wrapper row">
+                        <div class="col-4">
+                            <div class="preview-pic">
+                                <div class="img-thumb border" id="mypage-image">
+                                    <img id="img-placeholder">
+                                    <div class="centered">프로필 이미지를 등록해보아요.</div>
+                                    <input accept="image/png, image/jpeg" type="file" multiple name="file"
+                                           id="image-input" style="display: none">
+                                    <!--<img src="https://cdn.bmf.kr/_data/product/I21A3/b3b7ce9d8cf1ee91166fe97785d51d8a.jpg"/>-->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="text" class="form-control off" name="name" id="mypage-name"
+                                       value="나는요리사다(iamyorisa@gmail.com)" readonly>
+                            </div>
+
+                            <hr>
+                            <div class="row pl-2">
+                                <div class="col"><i class="fa fa-heart mr-1"></i>나눔수</div>
+                                <div class="col"><i class="fa fa-heart-o mr-1"></i>받음수</div>
+                                <div class="col"><i class="fa fa-comment mr-1"></i>남긴리뷰</div>
+                                <div class="col"><i class="fa fa-comment-o mr-1"></i>받은리뷰</div>
+                                <div class="col"><i class="fa fa-star mr-1"></i>평균평점</div>
+                            </div>
+                            <hr>
+                            <div class="form-group">
+                                <textarea class="form-control off" rows="3" name="aboutMe" id="mypage-aboutme"
+                                          placeholder="자기소개를 입력해보아요." readonly></textarea>
+                            </div>
+
+                            <button hidden type="button" id="mypage-submit" class="btn btn-primary float-right ml-2">변경</button>
+                            <button hidden type="button" id="mypage-cancel" class="btn btn-primary float-right ml-2">취소</button>
+                            <button type="button" id="mypage-modify" class="btn btn-primary float-right ml-2">프로필 수정</button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </form>
+
+    <section id="tabs">
+        <div class="container5">
+            <div class="row">
+                <div class="col-12">
+                    <nav>
+                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link" id="nav-give-tab" data-toggle="tab" href="#nav-give" role="tab"
+                               aria-controls="nav-give" aria-selected="true">나눔</a>
+                            <a class="nav-item nav-link active" id="nav-take-tab" data-toggle="tab" href="#nav-take"
+                               role="tab" aria-controls="nav-take" aria-selected="false">받음</a>
+                            <a class="nav-item nav-link" id="nav-get-review-tab" data-toggle="tab"
+                               href="#nav-get-review" role="tab" aria-controls="nav-get-review" aria-selected="false">받은
+                                리뷰</a>
+                            <a class="nav-item nav-link" id="nav-give-review-tab" data-toggle="tab"
+                               href="#nav-give-review" role="tab" aria-controls="nav-give-review" aria-selected="false">남긴
+                                리뷰</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-give" role="tabpanel"
+                             aria-labelledby="nav-give-tab">
+                            Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim
+                            occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit
+                            dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse
+                            consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod
+                            tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa
+                            non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis
+                            occaecat ex.
+                        </div>
+                        <div class="tab-pane fade" id="nav-take" role="tabpanel" aria-labelledby="nav-take-tab">
+                            proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt
+                            anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing
+                            aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat.
+                            Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui
+                            sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis
+                            reprehenderit occaecat anim ullamco ad duis occaecat ex.
+                        </div>
+                        <div class="tab-pane fade" id="nav-get-review" role="tabpanel"
+                             aria-labelledby="nav-get-review-tab">
+                            WTF
+                        </div>
+                        <div class="tab-pane fade" id="nav-give-review" role="tabpanel"
+                             aria-labelledby="nav-give-review-tab">
+                            shit
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

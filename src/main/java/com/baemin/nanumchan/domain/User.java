@@ -38,6 +38,8 @@ public class User extends AbstractEntity {
     @Lob
     private String aboutMe;
 
+    private String imageUrl;
+
     @JsonIgnore
     public boolean isGuestUser() {
         return false;
