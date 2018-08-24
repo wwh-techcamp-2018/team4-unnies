@@ -21,6 +21,7 @@ public class ReviewDTO {
 
     public Review toEntity(Product product, User user, ReviewDTO reviewDTO) {
         return Review.builder()
+                .chef(product.getOwner())
                 .product(product)
                 .writer(user)
                 .comment(reviewDTO.getComment())

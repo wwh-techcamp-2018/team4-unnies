@@ -29,7 +29,7 @@ insert into product(id, description, expire_date_time, is_bowl_needed, max_parti
 insert into product(id, description, expire_date_time, is_bowl_needed, max_participant, name, price, share_date_time, title, category_id, owner_id, created_at) values(6, '석윤이가 두 번째로 1만년 지하수보다 더 깊은 국물 맛을 내는 오뎅탕입니다. 소주 한짝은 눈감고도 비우고 다음날 전혀 무리가 없즈오! ', '2018-08-26 15:22:20', false, 1, '국물의 왕 오뎅탕', 5000, '2018-08-27 15:22:20', '오뎅탕 호로록', 1, 1, now());
 
 -- 1번 음식
-insert into order_product(id, product_id, participant_id, delivery_type, status, created_at) values(1, 1, 3, 'BAEMIN_RIDER', 'ON_SHARING', now());
+insert into order_product(id, product_id, participant_id, delivery_type, status, created_at) values(1, 1, 3, 'BAEMIN_RIDER', 'COMPLETE_SHARING', now());
 insert into order_product(id, product_id, participant_id, delivery_type, status, created_at) values(2, 1, 4, 'PICKUP', 'COMPLETE_SHARING', now());
 insert into order_product(id, product_id, participant_id, delivery_type, status, created_at) values(3, 1, 5, 'BAEMIN_RIDER', 'ON_SHARING', now());
 
