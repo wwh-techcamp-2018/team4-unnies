@@ -2,6 +2,20 @@ import { $ } from "./lib/utils.js";
 
 function onDOMContentLoaded() {
     fetchCategories($('.categories'));
+    $('.logout') && $('.logout').addEventListener('click',logout);
+}
+
+function logout(){
+    fetch('/api/users/logout')
+    .then(response => {
+        if(!response.ok){
+            throw '로그아웃에 실패하였습니다.'
+        }
+        location.href = '/';
+    })
+    .catch(error =>{
+        alert(error);
+    })
 }
 
 function fetchCategories(container) {

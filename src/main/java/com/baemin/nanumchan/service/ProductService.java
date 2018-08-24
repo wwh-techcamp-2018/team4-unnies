@@ -99,7 +99,6 @@ public class ProductService {
                             .build()
             );
         }
-
         throw new UnAuthenticationException("You can't order because of " + status.name());
     }
 
@@ -114,14 +113,12 @@ public class ProductService {
             Review review = reviewDTO.toEntity(product, user, reviewDTO);
             return reviewRepository.save(review);
         }
-
         throw new UnAuthenticationException("권한이 없습니다.");
     }
 
     public Page<Review> getReviews(Long productId, Pageable pageable) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(EntityNotFoundException::new);
-
         return reviewRepository.findAllByChefOrderByIdDesc(product.getOwner(), pageable);
     }
 

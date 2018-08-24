@@ -78,7 +78,7 @@ spring:
     username: ${db.username}
     password: ${db.password}
   flyway:
-    enabled: true
+    enabled: false
 
 jpa:
   show-sql: false

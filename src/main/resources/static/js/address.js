@@ -1,5 +1,5 @@
 // 우편번호 찾기 화면을 넣을 element
-const element_layer = $('#layer');
+const element_layer = document.querySelector('#layer');
 
 function closeDaumPostcode() {
     // iframe을 넣은 element를 안보이게 한다.
@@ -7,6 +7,7 @@ function closeDaumPostcode() {
 }
 
 function test_execDaumPostcode() {
+    console.log(element_layer);
     daum.postcode.load(function(){
         new daum.Postcode({
             oncomplete: function(data) {
@@ -32,8 +33,8 @@ function test_execDaumPostcode() {
                 }
 
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                $('#postcode').value = data.zonecode; //5자리 새우편번호 사용
-                $('#address').value = fullAddr;
+                document.querySelector('#postcode').value = data.zonecode; //5자리 새우편번호 사용
+                document.querySelector('#address').value = fullAddr;
 
                 // iframe을 넣은 element를 안보이게 한다.
                 // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)

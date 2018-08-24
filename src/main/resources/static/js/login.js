@@ -1,7 +1,5 @@
 import { $, $all } from './lib/utils.js';
 
-$('#button').addEventListener('click',loginHandler);
-
 const registerFlag = {
     'email':false,
     'password':false,
@@ -27,7 +25,7 @@ function loginHandler(event){
             validateError(response);
             return location.reload();
         }else if(response.status === 200){
-            alert('로그인을 하였습니다.');
+            location.href = '/';
         }
     })
     .catch(error=>{
@@ -55,16 +53,7 @@ function validateError(response){
 }
 
 
-function validateCheck(value){
-    switch(value){
-        case 'email':
-            validateEmail();
-            break;
-        case 'password':
-            validatePassword();
-            break;
-    }
-
+function validateCheck(){
     if(monitorRegisterButton()){
         $('#button').disabled=false;
     }else{
@@ -92,6 +81,7 @@ function validateEmail(){
     }else{
         $('#invalid-email').style.visibility='hidden';
         registerFlag['email'] = true;
+        validateCheck();
     }
 }
 
@@ -105,6 +95,13 @@ function validatePassword(){
     }else{
         $('#invalid-password').style.visibility='hidden';
         registerFlag['password'] = true;
+        validateCheck();
     }
 
 }
+document.addEventListener('DOMContentLoaded', () => {
+    $('#button').addEventListener('click',loginHandler);
+
+    $('#email').onchange = validateEmail;
+    $('#password').onchange = validatePassword;
+});

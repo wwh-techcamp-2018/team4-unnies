@@ -3,6 +3,7 @@ package com.baemin.nanumchan.web;
 import com.baemin.nanumchan.domain.User;
 import com.baemin.nanumchan.dto.LoginDTO;
 import com.baemin.nanumchan.dto.SignUpDTO;
+import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.UserService;
 import com.baemin.nanumchan.utils.RestResponse;
 import com.baemin.nanumchan.utils.SessionUtils;
@@ -48,5 +49,11 @@ public class ApiUserController {
     @GetMapping("/{id}/products")
     public ResponseEntity<RestResponse> getMyProducts(@PathVariable Long id, Pageable pageable) {
         return ResponseEntity.ok(RestResponse.success(userService.getMyProducts(id, pageable)));
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout(@LoginUser User user, HttpSession session){
+        SessionUtils.removeUserInSession(session);
+        return ResponseEntity.ok().build();
     }
 }
