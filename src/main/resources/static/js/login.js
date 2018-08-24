@@ -1,6 +1,6 @@
 import { $, $all } from './lib/utils.js';
 
-$('#button').addEventListener('click',loginHandler);
+
 
 const registerFlag = {
     'email':false,
@@ -55,16 +55,7 @@ function validateError(response){
 }
 
 
-function validateCheck(value){
-    switch(value){
-        case 'email':
-            validateEmail();
-            break;
-        case 'password':
-            validatePassword();
-            break;
-    }
-
+function validateCheck(){
     if(monitorRegisterButton()){
         $('#button').disabled=false;
     }else{
@@ -92,6 +83,7 @@ function validateEmail(){
     }else{
         $('#invalid-email').style.visibility='hidden';
         registerFlag['email'] = true;
+        validateCheck();
     }
 }
 
@@ -105,6 +97,13 @@ function validatePassword(){
     }else{
         $('#invalid-password').style.visibility='hidden';
         registerFlag['password'] = true;
+        validateCheck();
     }
 
 }
+document.addEventListener('DOMContentLoaded', () => {
+    $('#button').addEventListener('click',loginHandler);
+
+    $('#email').onchange = validateEmail;
+    $('#password').onchange = validatePassword;
+});

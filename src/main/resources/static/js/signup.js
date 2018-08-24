@@ -1,7 +1,5 @@
 import { $ } from './lib/utils.js';
 
-$('#button').addEventListener('click',signupHandler);
-
 const registerFlag = {
     'email':false,
     'name':false,
@@ -88,25 +86,7 @@ function validateError(response){
 }
 
 
-function validateCheck(value){
-    switch(value){
-        case 'email':
-            validateEmail();
-            break;
-        case 'name':
-            validateName();
-            break;
-        case 'password':
-            validatePassword();
-            break;
-        case 'confirmPassword':
-            validateConfirmPassword();
-            break;
-        case 'phone':
-            validatePhone();
-            break;
-    }
-
+function validateCheck(){
     if(monitorRegisterButton()){
         $('#button').disabled = false;
     }else{
@@ -134,6 +114,7 @@ function validateEmail(){
     }else{
         $('#invalid-email').style.visibility='hidden';
         registerFlag['email'] = true;
+        validateCheck();
     }
 }
 
@@ -146,6 +127,7 @@ function validateName(){
     }else{
         $('#invalid-name').style.visibility='hidden';
         registerFlag['name'] = true;
+        validateCheck();
     }
 
 }
@@ -159,6 +141,7 @@ function validatePassword(){
     }else{
         $('#invalid-password').style.visibility='hidden';
         registerFlag['password'] = true;
+        validateCheck();
     }
 
 }
@@ -172,6 +155,7 @@ function validateConfirmPassword(){
     }else{
         $('#invalid-confirmPassword').style.visibility='hidden';
         registerFlag['confirmPassword'] = true;
+        validateCheck();
     }
 
 }
@@ -184,5 +168,16 @@ function validatePhone(){
     }else{
         $('#invalid-phone').style.visibility='hidden';
         registerFlag['phone'] = true;
+        validateCheck();
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    $('#button').addEventListener('click',signupHandler);
+
+    $('#email').onchange = validateEmail;
+    $('#name').onchange = validateName;
+    $('#password').onchange = validatePassword;
+    $('#confirm').onchange = validateConfirmPassword;
+    $('#phone').onchange = validatePhone;
+});

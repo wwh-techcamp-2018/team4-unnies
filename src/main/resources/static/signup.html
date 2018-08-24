@@ -13,7 +13,7 @@
     <script src="/js/signup.js" type="module" defer></script>
 </head>
 <body>
-<div class="container">
+<div class="container" style="width:1000px;">
     <div class="row main">
         <div class="main-login main-center" style="width : 50%; margin : auto;">
             <form class="" method="post" action="#">
@@ -21,9 +21,8 @@
                     <label for="email" class="cols-sm-2 control-label">이메일</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="email" id="email"
-                                   placeholder="이메일을 입력하세요" onchange="validateCheck('email')"/>
+                                   placeholder="이메일을 입력하세요"/>
                         </div>
                         <strong id="invalid-email" style="color:red; visibility:hidden;">유효하지 않은 이메일입니다.</strong>
                     </div>
@@ -33,9 +32,7 @@
                     <label for="name" class="cols-sm-2 control-label">이름</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="이름을 입력하세요"
-                                   onchange="validateCheck('name')"/>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="이름을 입력하세요"/>
                         </div>
                         <strong id="invalid-name" style="color:red; visibility:hidden;">유효하지 않은 이름입니다.</strong>
                     </div>
@@ -45,10 +42,8 @@
                     <label for="password" class="cols-sm-2 control-label">비밀번호</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                             <input type="password" class="form-control" name="password" id="password"
-                                   placeholder="비밀번호를 입력하세요(영어 소문자, 숫자, 특수문자 포함 8~16자)"
-                                   onchange="validateCheck('password')"/>
+                                   placeholder="비밀번호를 입력하세요(영어 소문자, 숫자, 특수문자 포함 8~16자)"/>
                         </div>
                         <strong id="invalid-password" style="color:red; visibility:hidden;">유효하지 않은 비밀번호입니다.</strong>
                     </div>
@@ -58,9 +53,8 @@
                     <label for="confirm" class="cols-sm-2 control-label">비밀번호 확인</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                             <input type="password" class="form-control" name="confirm" id="confirm"
-                                   placeholder="비밀번호를 한번 더 입력하세요" onchange="validateCheck('confirmPassword')"/>
+                                   placeholder="비밀번호를 한번 더 입력하세요"/>
                         </div>
                         <strong id="invalid-confirmPassword" style="color:red; visibility:hidden;">비밀번호와 동일하지 않습니다.</strong>
                     </div>
@@ -70,9 +64,7 @@
                     <label for="phone" class="cols-sm-2 control-label">이동전화</label>
                     <div class="cols-sm-10">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-phone fa-lg" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="phone" id="phone" placeholder="전화번호를 입력하세요"
-                                   onchange="validateCheck('phone')"/>
+                            <input type="text" class="form-control" name="phone" id="phone" placeholder="전화번호를 입력하세요"/>
                         </div>
                         <strong id="invalid-phone" style="color:red; visibility:hidden;">유효하지 않은 전화번호입니다.</strong>
                     </div>
@@ -81,14 +73,16 @@
                 <div class="form-group">
                     <label for="address" class="cols-sm-2 control-label">주소</label>
                     <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-home fa-lg" aria-hidden="true"></i></span>
-                            <input type="text" id="postcode" class="form-control" placeholder="우편번호"
-                                   style="width : 25%;">
-                            <input type="button" class="btn btn-primary btn-sm" onclick="test_execDaumPostcode();"
-                                   value="우편번호 찾기"/><br>
-                            <input type="text" id="address" class="form-control" placeholder="주소를 입력하세요" readonly>
-                            <input type="text" id="address_detail" class="form-control" placeholder="상세 주소를 입력하세요">
+                            <div style="display:inline-block;">
+                                <input type="text" id="postcode" placeholder="우편번호" style="width:80px;">
+                                <input type="button" class="btn btn-primary btn-sm" onclick="test_execDaumPostcode();"
+                                       value="우편번호 찾기"/><br>
+                            </div>
+
+                            <div>
+                                <input type="text" id="address" class="form-control" placeholder="주소를 입력하세요" readonly>
+                                <lsinput type="text" id="address_detail" class="form-control" placeholder="상세 주소를 입력하세요">
+                            </div>
 
                             <div id="layer"
                                  style="visibility:hidden;position:fixed;overflow:hidden;z-index:10;-webkit-overflow-scrolling:touch;">
@@ -97,7 +91,6 @@
                                      style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1"
                                      onclick="closeDaumPostcode()" alt="닫기 버튼">
                             </div>
-                        </div>
                         <strong id="invalid-address" style="color:red; visibility:hidden;">주소를 입력하세요.</strong>
                     </div>
                 </div>
