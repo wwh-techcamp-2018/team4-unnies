@@ -56,7 +56,8 @@
                             <input type="password" class="form-control" name="confirm" id="confirm"
                                    placeholder="비밀번호를 한번 더 입력하세요"/>
                         </div>
-                        <strong id="invalid-confirmPassword" style="color:red; visibility:hidden;">비밀번호와 동일하지 않습니다.</strong>
+                        <strong id="invalid-confirmPassword" style="color:red; visibility:hidden;">비밀번호와 동일하지
+                            않습니다.</strong>
                     </div>
                 </div>
 
@@ -73,24 +74,24 @@
                 <div class="form-group">
                     <label for="address" class="cols-sm-2 control-label">주소</label>
                     <div class="cols-sm-10">
-                            <div style="display:inline-block;">
-                                <input type="text" id="postcode" placeholder="우편번호" style="width:80px;">
-                                <input type="button" class="btn btn-primary btn-sm" onclick="test_execDaumPostcode();"
-                                       value="우편번호 찾기"/><br>
-                            </div>
+                        <div style="display:inline-block;">
+                            <input type="text" id="postcode" placeholder="우편번호" style="width:80px;">
+                            <input type="button" class="btn btn-primary btn-sm" onclick="test_execDaumPostcode();"
+                                   value="우편번호 찾기"/><br>
+                        </div>
 
-                            <div>
-                                <input type="text" id="address" class="form-control" placeholder="주소를 입력하세요" readonly>
-                                <lsinput type="text" id="address_detail" class="form-control" placeholder="상세 주소를 입력하세요">
-                            </div>
+                        <div>
+                            <input type="text" id="address" class="form-control" placeholder="주소를 입력하세요" readonly>
+                            <input type="text" id="address_detail" class="form-control" placeholder="상세 주소를 입력하세요">
+                        </div>
 
-                            <div id="layer"
-                                 style="visibility:hidden;position:fixed;overflow:hidden;z-index:10;-webkit-overflow-scrolling:touch;">
-                                <img src="//t1.daumcdn.net/localimg/localimages/07/postcode/320/close.png"
-                                     id="btnCloseLayer"
-                                     style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1"
-                                     onclick="closeDaumPostcode()" alt="닫기 버튼">
-                            </div>
+                        <div id="layer"
+                             style="visibility:hidden;position:fixed;overflow:hidden;z-index:10;-webkit-overflow-scrolling:touch;">
+                            <img src="//t1.daumcdn.net/localimg/localimages/07/postcode/320/close.png"
+                                 id="btnCloseLayer"
+                                 style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1"
+                                 onclick="closeDaumPostcode()" alt="닫기 버튼">
+                        </div>
                         <strong id="invalid-address" style="color:red; visibility:hidden;">주소를 입력하세요.</strong>
                     </div>
                 </div>

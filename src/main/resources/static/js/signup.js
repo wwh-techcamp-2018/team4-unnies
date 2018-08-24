@@ -38,7 +38,7 @@ function signupHandler(event){
             validateError(response);
             return location.reload();
         }else if(response.status === 201){
-            alert('회원가입을 축하드립니다.');
+            location.href = '/';
         }
     })
     .catch(error=>{

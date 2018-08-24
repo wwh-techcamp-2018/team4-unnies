@@ -1,7 +1,5 @@
 import { $, $all } from './lib/utils.js';
 
-
-
 const registerFlag = {
     'email':false,
     'password':false,
@@ -27,7 +25,7 @@ function loginHandler(event){
             validateError(response);
             return location.reload();
         }else if(response.status === 200){
-            alert('로그인을 하였습니다.');
+            location.href = '/';
         }
     })
     .catch(error=>{
