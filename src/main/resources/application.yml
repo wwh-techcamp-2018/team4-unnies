@@ -96,5 +96,8 @@ server:
     whitelabel:
       enabled: false
 
+security:
+  require-ssl: true
+
 handlebars:
   cache: true
