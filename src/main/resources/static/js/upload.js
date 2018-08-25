@@ -4,9 +4,22 @@ import ImageViewer from './class/ImageViewer.js';
 import Category from './class/Category.js';
 import Product from './class/Product.js';
 import DaumMap from './class/DaumMap.js';
-import { mainView, thumbnailView, imageView } from './template/UploadTemplate.js';
+import { mainView, thumbnailView, imageView, categorySelect } from './template/UploadTemplate.js';
 
-new Category().load($('#category-section > .wrapper'));
+new Category().load(onLoadSuccessCategory, onLoadFailCategory);
+
+function onLoadSuccessCategory(data) {
+    const element = $('#category-section > .wrapper');
+    element.innerHTML = ''
+    element.insertAdjacentHTML('afterbegin', categorySelect(data));
+}
+
+function onLoadFailCategory(error) {
+    const element = $('#category-section > .wrapper');
+    const feedback = element.closest('.form-group').querySelector('.feedback');
+    feedback.innerHTML = error;
+    feedback.classList.add('on');
+}
 
 const imageViewer = new ImageViewer();
 imageViewer.setViewTemplate(mainView);

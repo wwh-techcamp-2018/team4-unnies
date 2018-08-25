@@ -1,8 +1,6 @@
-import { categorySelect } from '../template/UploadTemplate.js';
-
 class Category {
 
-    load(element) {
+    load(success, fail) {
         fetch('/api/categories')
         .then(response => {
             if (!response.ok) {
@@ -11,14 +9,10 @@ class Category {
             return response.json();
         })
         .then(({ data }) => {
-            element.innerHTML = ''
-            element.insertAdjacentHTML('afterbegin', categorySelect(data));
+            success(data);
         })
         .catch(error => {
-            const feedback = element.closest('.form-group').querySelector('.feedback');
-            feedback.innerHTML = error;
-            feedback.classList.add('on');
-            feedback.focus();
+            fail(error);
         });
     }
 
