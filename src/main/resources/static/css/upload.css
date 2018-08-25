@@ -1,24 +1,4 @@
-.main, .sub {
-    overflow: auto;
-}
-
-.img-thumb {
-    float: left;
-    margin-right: 5px;
-}
-
-.main .img-thumb {
-    width: 320px;
-    height: 320px;
-}
-
-.sub .img-thumb {
-    width: 60px;
-    height: 60px;
-}
-
 .feedback {
-    /*display: 'inline-block';*/
     visibility: hidden;
     width: 100%;
     margin-top: .25rem;
@@ -46,9 +26,4 @@
 .form-group label {
     font-size: 1.3rem;
     font-weight: bold;
-}
-
-.btn-primary {
-    background-color: #2ac1bc;
-    border-color: #2ac1bc;
 }
