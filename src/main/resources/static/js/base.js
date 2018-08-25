@@ -1,4 +1,4 @@
-import { $ } from "./lib/utils.js";
+import { $, $all, $index } from "./lib/utils.js";
 import Category from "./lib/Category.js";
 
 $('.logout') && $('.logout').addEventListener('click', logout);
@@ -20,6 +20,7 @@ new Category().load(onLoadSuccessCategory, onLoadFailCategory);
 
 function onLoadSuccessCategory(data) {
     insertIntoCategoryContainer(templateCategories(data));
+    $all('.categories > .nav-item').forEach(item => item.addEventListener('click', clickCategory));
 }
 
 function onLoadFailCategory(error) {
@@ -43,4 +44,11 @@ function templateCategory({ id, name }) {
 
 function templateCategoryError(error) {
     return `<span class="category-error text-muted">카테고리를 가져오는데 실패했습니다.(${error})</span>`;
+}
+
+function clickCategory(event) {
+    const activeItem = $('.categories > .nav-item.active');
+    activeItem && activeItem.classList.remove('active');
+    const index = $index(event.target);
+    $(`.categories > .nav-item:nth-child(${index})`).classList.add('active');
 }
