@@ -1,5 +1,6 @@
 {{#partial "header"}}
 <link href="/css/index.css" rel="stylesheet">
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2241f6e152f592bddb033558fa71eaa9&libraries=services"></script>
 <script src="/js/index.js" type="module" defer></script>
 {{/partial}}
 
@@ -10,25 +11,50 @@
 </div>
 
 <!-- search bar -->
-<div class="container justify-content-center d-flex pl-5 pr-5 pb-5">
-    <select class="custom-select form-control search-selector" required="">
-        <option value="1" selected>지역</option>
-        <option value="2">요리사</option>
-        <option value="3">요리</option>
-    </select>
-    <div class="input-group ml-3">
-        <input type="text" class="form-control" placeholder="검색어를 입력해주세요." aria-label="검색어를 입력해주세요." aria-describedby="button-search">
-        <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="button-search">찾기</button>
+<div class="container justify-content-center pl-5 pr-5 pb-5">
+    <div class="m-2 location">
+        <div class="current">
+            <button class="btn btn-primary">
+                <i class="fa fa-map-pin" aria-hidden="true"></i>
+                <span class="ml-1">현 위치</span>
+            </button>
+        </div>
+        <div class="modification">
+            <button class="btn btn-primary">
+                <i class="fa fa-map-o" aria-hidden="true"></i>
+                <span class="ml-1">변경</span>
+            </button>
+        </div>
+        <div class="settings">
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+            <span class="ml-1 address"></span>
+            <input type="hidden" name="latitude">
+            <input type="hidden" name="longitude">
+        </div>
+    </div>
+    <!-- reference : http://apis.map.daum.net/web/sample/keywordList/ -->
+    <div class="map_wrap">
+        <div id="map" style="width:960px;height:600px;"></div>
+        <div id="menu_wrap">
+            <div class="input-group mb-2">
+                <input type="text" id="keyword" class="form-control" placeholder="주소를 입력해주세요.">
+                <div class="input-group-append">
+                    <button class="btn btn-primary search" type="button">
+                        <i class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <span class="error"></span>
+            <hr>
+            <ul id="placesList"></ul>
+            <div id="pagination"></div>
         </div>
     </div>
 </div>
 
 <!-- products -->
-<div class="card-columns">
-
+<div class="container card-columns">
 </div>
-
 {{/partial}}
 
 {{> base }}

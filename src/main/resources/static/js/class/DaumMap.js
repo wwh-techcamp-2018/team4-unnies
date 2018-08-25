@@ -69,6 +69,10 @@ class DaumMap {
     getCurrentLocation(callback) {
         navigator.geolocation.getCurrentPosition(callback);
     }
+
+    relayout() {
+        this.map.relayout();
+    }
 }
 
 export default DaumMap;

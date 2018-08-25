@@ -1,4 +1,100 @@
 import { $ } from "./lib/utils.js";
+import DaumMapSearch from "./lib/DaumMapSearch.js";
+
+
+const LOADING_TEXT = '(loading...)';
+
+const daumMap = new DaumMapSearch(onSetAddress, onErrorSearchAddress);
+daumMap.setZoomable(false);
+daumMap.setZoomControl();
+
+hideMap();
+getCurrentLocation();
+
+$('.location .current').addEventListener('click', getCurrentLocation);
+$('.location .modification').addEventListener('click', modifyLocation);
+$('.map_wrap .input-group button.search').addEventListener('click', searchAddress);
+
+
+function onSetAddress() {
+    hideMap();
+    daumMap.addressSearch(this.address_name, onSearchAddress);
+    setLocation(this.address_name);
+}
+
+function onErrorSearchAddress() {
+    setErrorMessageSearchAddress(this);
+}
+
+function setErrorMessageSearchAddress(error) {
+    $('.map_wrap .error').innerHTML = error;
+}
+
+function onSearchAddress(latLng) {
+    const latitude = latLng.getLat();
+    const longitude = latLng.getLng();
+    setGIS(latitude, longitude);
+}
+
+function setGIS(latitude, longitude) {
+    $('input[name=latitude]').value = latitude;
+    $('input[name=longitude]').value = longitude;
+    daumMap.setPosition(latitude, longitude);
+}
+
+function getCurrentLocation() {
+    hideMap();
+    setLocation(LOADING_TEXT);
+    daumMap.getCurrentLocation(({ coords: { latitude, longitude }}) => {
+        setGIS(latitude, longitude);
+        daumMap.getAddress(address => onGetAddress(address));
+    });
+}
+
+function onGetAddress(address) {
+    address && address.address_name && setLocation(address.address_name);
+}
+
+function modifyLocation() {
+    showMap();
+}
+
+function setLocation(address) {
+    $('.location .settings .address').innerHTML = address;
+}
+
+function showMap() {
+    clearAddressSearchKeyword();
+
+    $('.map_wrap').style.display = 'block';
+    $('#map').style.width = "900px";
+    $('#map').style.height = "500px";
+
+    daumMap.relayout();
+
+    const latitude = $('input[name=latitude]').value;
+    const longitude = $('input[name=longitude]').value;
+    daumMap.setPosition(latitude, longitude);
+}
+
+function hideMap() {
+    $('.map_wrap').style.display = 'none';
+}
+
+function clearAddressSearchKeyword() {
+    $('#keyword').value = '';
+    $('#pagination').innerHTML = '';
+    $('#placesList').innerHTML = '';
+    setErrorMessageSearchAddress('');
+}
+
+function searchAddress(event) {
+    event.preventDefault();
+    setErrorMessageSearchAddress('');
+    daumMap.searchPlaces();
+}
+
+
 
 function onDOMContentLoaded() {
     $(".card-columns").insertAdjacentHTML('afterbegin', templateCard());
