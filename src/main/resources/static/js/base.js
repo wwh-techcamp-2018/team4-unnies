@@ -19,7 +19,7 @@ function logout(){
 new Category().load(onLoadSuccessCategory, onLoadFailCategory);
 
 function onLoadSuccessCategory(data) {
-    insertIntoCategoryContainer(addCategories(data));
+    insertIntoCategoryContainer(templateCategories(data));
 }
 
 function onLoadFailCategory(error) {
@@ -32,7 +32,7 @@ function insertIntoCategoryContainer(template) {
     container.insertAdjacentHTML('afterbegin', template);
 }
 
-function addCategories(data) {
+function templateCategories(data) {
     return `${data && data.map(templateCategory).join('')}`;
 }
 
