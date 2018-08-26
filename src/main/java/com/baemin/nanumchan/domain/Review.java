@@ -16,14 +16,17 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class Review extends AbstractEntity {
 
+    @NotNull
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_review_product"))
     private Product product;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_review_writer"))
     private User writer;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_review_chef"))
     private User chef;

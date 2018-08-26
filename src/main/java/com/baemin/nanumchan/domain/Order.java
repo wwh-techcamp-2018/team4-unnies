@@ -1,6 +1,5 @@
 package com.baemin.nanumchan.domain;
 
-import com.baemin.nanumchan.exception.RestException;
 import com.baemin.nanumchan.support.domain.AbstractEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
