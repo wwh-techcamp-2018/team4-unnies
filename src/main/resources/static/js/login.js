@@ -35,7 +35,6 @@ function loginHandler(event){
 function validateError(response){
     response.json().then(({ errors })=>{
         errors.forEach((error)=>{
-            console.log(error);
             switch(error.field){
                 case 'email' :
                     $('#invalid-email').style.visibility='visible';
