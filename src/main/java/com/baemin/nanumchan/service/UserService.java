@@ -32,6 +32,9 @@ public class UserService {
     private ReviewRepository reviewRepository;
 
     public User save(SignUpDTO signUpDTO) {
+        if (userRepository.findByEmail(signUpDTO.getEmail()).isPresent()) {
+            throw UnAuthenticationException.existEmail();
+        }
         return userRepository.save(signUpDTO.toEntity(passwordEncoder));
     }
 
