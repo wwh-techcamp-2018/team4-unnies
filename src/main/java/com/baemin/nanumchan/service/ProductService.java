@@ -6,6 +6,8 @@ import com.baemin.nanumchan.dto.ProductDTO;
 import com.baemin.nanumchan.dto.ProductDetailDTO;
 import com.baemin.nanumchan.dto.ReviewDTO;
 import com.baemin.nanumchan.exception.NotAllowedException;
+import com.baemin.nanumchan.dto.NearProductsDTO;
+import com.baemin.nanumchan.utils.DistanceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -101,5 +104,31 @@ public class ProductService {
         }
 
         return reviewRepository.save(reviewDTO.toEntity(user, product));
+    }
+
+    public List<NearProductsDTO> getNearProducts(Double longitude, Double latitude, int offset, int limit) {
+        List<Product> products = productRepository.findNearProducts(longitude, latitude, offset, limit);
+        return getNearProductDTO(products, longitude, latitude);
+    }
+
+    public List<NearProductsDTO> getNearProductsByCategory(Long categoryId, Double longitude, Double latitude, int offset, int limit) {
+        List<Product> products = productRepository.findNearProductsByCategoryId(categoryId, longitude, latitude, offset, limit);
+        return getNearProductDTO(products, longitude, latitude);
+    }
+
+    private List<NearProductsDTO> getNearProductDTO(List<Product> products, Double longitude, Double latitude) {
+        return products.stream()
+                .map(p -> NearProductsDTO.builder()
+                        .productTitle(p.getTitle())
+                        .productImgUrl(p.getProductImages().stream().findFirst().isPresent() ? p.getProductImages().get(0).getUrl() : null)
+                        .distanceMeter(DistanceUtils.distanceInMeter(p.getLatitude(), p.getLongitude(), latitude, longitude))
+                        .userName(p.getOwner().getName())
+                        .userImgUrl(p.getOwner().getImageUrl())
+                        .orderCnt(orderRepository.countByProductId(p.getId()))
+                        .maxParticipant(p.getMaxParticipant())
+                        .expireDateTime(p.getExpireDateTime())
+                        .price(p.getPrice())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
