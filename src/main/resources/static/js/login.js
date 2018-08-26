@@ -35,17 +35,9 @@ function loginHandler(event){
 function validateError(response){
     response.json().then(({ errors })=>{
         errors.forEach((error)=>{
-            switch(error.field){
-                case 'email' :
-                    $('strong[name=invalid-email]').style.visibility='visible';
-                    $('strong[name=invalid-email]').innerText=error.message;
-                    registerFlag['email'] = false;
-                    break;
-                case 'password' :
-                    $('strong[name=invalid-password]').style.visibility='visible';
-                    $('strong[name=invalid-password]').innerText=error.message;
-                    registerFlag['password'] = false;
-                    break;
+            $(`strong[name=invalid-${error.field}`).style.visibility='visible';
+            $(`strong[name=invalid-${error.field}`).innerText=error.message;
+            registerFlag[`${error.field}`] = false;
             }
         });
     })
@@ -53,11 +45,7 @@ function validateError(response){
 
 
 function validateCheck(){
-    if(monitorRegisterButton()){
-        $('#button').disabled=false;
-    }else{
-        $('#button').disabled=true;
-    }
+    $('#button').disabled = !monitorRegisterButton();
 }
 
 function monitorRegisterButton(){

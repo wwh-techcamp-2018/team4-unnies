@@ -49,7 +49,7 @@ function signupHandler(event){
         })
     })
     .then(response => {
-        if(response.status >= 400 && response.status <= 405){
+        if(response.status >= 400 && response.status <= 404){
             validateError(response);
         }else if(response.status === 201){
             location.href = '/';
