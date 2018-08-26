@@ -84,7 +84,7 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
-    // travis test 실패로 임시 주석 처리.
+    // TODOs : travis test 실패로 임시 주석 처리.
     @Test
     public void getProductDetailInfo() {
         ResponseEntity<RestResponse> response = template.getForEntity(PRODUCT_URL + "/1", RestResponse.class);
@@ -92,17 +92,17 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
 //        assertThat(response.getBody().getData()).isNotNull();
     }
 
+    // TODOs : sample data에 의존적이 됨으로 추후 변경 요망,
     @Test
-    public void order() {
+    public void order_실패_모집기간만료() {
         OrderDTO orderDTO = OrderDTO.builder()
                 .deliveryType(DeliveryType.BAEMIN_RIDER)
                 .build();
 
         ResponseEntity<Void> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/4/orders", orderDTO, Void.class);
 
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(response.getHeaders().getLocation().getPath()).isNotEmpty();
-
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+//        assertThat(response.getHeaders().getLocation().getPath()).isNotEmpty();
     }
 
     @Test
