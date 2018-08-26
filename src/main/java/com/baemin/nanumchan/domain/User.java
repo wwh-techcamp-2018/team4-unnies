@@ -9,6 +9,7 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -22,32 +23,32 @@ public class User extends AbstractEntity {
 
     public static final GuestUser GUEST_USER = new GuestUser();
 
-    @NotNull
+    @NotEmpty
     @Pattern(regexp = ValidateRegex.EMAIL)
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotNull
+    @NotEmpty
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
-    @NotNull
+    @NotEmpty
     @Pattern(regexp = ValidateRegex.USERNAME)
     @Column(nullable = false)
     private String name;
 
-    @NotNull
+    @NotEmpty
     @Pattern(regexp = ValidateRegex.PHONE)
     @Column(nullable = false)
     private String phoneNumber;
 
-    @NotNull
-    @Column(nullable = false)
+    @NotEmpty
+    @Column(nullable = false, length = 50)
     private String address;
 
-    @NotNull
-    @Column(nullable = false)
+    @NotEmpty
+    @Column(nullable = false, length = 50)
     private String addressDetail;
 
     @Lob

@@ -23,7 +23,6 @@ public class UserTest {
     public static void setup() throws Exception {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
-
     }
 
     @Test
@@ -38,7 +37,6 @@ public class UserTest {
                 .build();
         Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
         assertThat(constraintViolations.size()).isEqualTo(0);
-
     }
 
     @Test
