@@ -36,7 +36,9 @@
         <div class="container-fliud">
             <div class="wrapper row">
                 <div class="col-6">
-
+                    {{# productId }}
+                    <input type="hidden" value="{{ productId }}" id="productId"/>
+                    {{/ productId }}
                     <div class="preview-pic tab-content">
                         <div class="tab-pane active" id="pic-1"><img
                                 src="https://cdn.bmf.kr/_data/product/I21A3/b3b7ce9d8cf1ee91166fe97785d51d8a.jpg"/>
@@ -87,11 +89,13 @@
                     <div class="line-top" style="margin-top:12px; margin-bottom:12px;"></div>
                     <div class="form-check">
                         <label class="form-check-label" for="radio-riders">
-                        <input type="radio" class="form-check-input with-gap" id="radio-riders" name="groupOfRadioGap">
-                        배민라이더스</label>
+                            <input type="radio" class="form-check-input with-gap" id="radio-riders"
+                                   name="groupOfRadioGap">
+                            배민라이더스</label>
                         <label class="form-check-label" for="radio-self">
-                        <input type="radio" class="form-check-input with-gap" id="radio-self" name="groupOfRadioGap">
-                        직접방문</label>
+                            <input type="radio" class="form-check-input with-gap" id="radio-self"
+                                   name="groupOfRadioGap">
+                            직접방문</label>
                     </div>
 
                     <h2 class="price"><strong>나눔금액 : </strong><span id="price"></span><span>원</span>

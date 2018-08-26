@@ -3,8 +3,7 @@ import Product from './class/Product.js';
 import Review from './class/Review.js';
 import {closeModal, openModal} from './modal.js'
 
-// for Test!
-const productId = 1;
+const productId = $('#productId').value;
 let reviewPage = 0;
 new Product().load(productId);
 new Review().load(productId, reviewPage);
