@@ -40,6 +40,9 @@ public class SignUpDTO {
     @NotNull
     private String address;
 
+    @NotNull
+    private String addressDetail;
+
     private boolean matchPassword() {
         return password.equals(confirmPassword);
     }
@@ -55,6 +58,7 @@ public class SignUpDTO {
                 .email(email)
                 .phoneNumber(phoneNumber)
                 .address(address)
+                .addressDetail(addressDetail)
                 .build();
     }
 }

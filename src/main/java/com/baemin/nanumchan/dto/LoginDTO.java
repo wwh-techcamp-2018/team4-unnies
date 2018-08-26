@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
@@ -16,9 +17,11 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class LoginDTO {
 
+    @NotNull
     @Pattern(regexp = ValidateRegex.EMAIL)
     private String email;
 
+    @NotNull
     @Pattern(regexp = ValidateRegex.PASSWORD)
     private String password;
 

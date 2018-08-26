@@ -1,6 +1,7 @@
 package com.baemin.nanumchan.domain;
 
 import com.baemin.nanumchan.support.domain.AbstractEntity;
+import com.baemin.nanumchan.utils.ValidateRegex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -8,6 +9,8 @@ import lombok.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Builder
@@ -19,21 +22,33 @@ public class User extends AbstractEntity {
 
     public static final GuestUser GUEST_USER = new GuestUser();
 
+    @NotNull
+    @Pattern(regexp = ValidateRegex.EMAIL)
     @Column(nullable = false, unique = true)
     private String email;
 
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
+    @NotNull
+    @Pattern(regexp = ValidateRegex.USERNAME)
     @Column(nullable = false)
     private String name;
 
+    @NotNull
+    @Pattern(regexp = ValidateRegex.PHONE)
     @Column(nullable = false)
     private String phoneNumber;
 
+    @NotNull
     @Column(nullable = false)
     private String address;
+
+    @NotNull
+    @Column(nullable = false)
+    private String addressDetail;
 
     @Lob
     private String aboutMe;
