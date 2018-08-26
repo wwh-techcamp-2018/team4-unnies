@@ -23,4 +23,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     int countByChefId(Long chefId);
 
+    boolean existsByWriterAndProduct(User writer, Product product);
 }

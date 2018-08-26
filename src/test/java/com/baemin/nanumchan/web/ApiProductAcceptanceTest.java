@@ -208,4 +208,118 @@ public class ApiProductAcceptanceTest extends AcceptanceTest {
         log.info("success : {}", response.getHeaders().getLocation().getPath());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
+
+    // 리뷰 등록
+    @Test
+    public void uploadReview_실패_로그인X() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("이거 맛있었어요 쵝오에요?")
+                .rating(4.2)
+                .build();
+
+        ResponseEntity<RestResponse> response = template.postForEntity(PRODUCT_URL + "/2/reviews", reviewDTO, RestResponse.class);
+
+        log.info("error : {}", response.getBody().getErrors());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
+    public void uploadReview_실패_답글X() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("")
+                .rating(4.2)
+                .build();
+
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/2/reviews", reviewDTO, RestResponse.class);
+
+        log.info("error : {}", response.getBody().getErrors());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    public void uploadReview_실패_점수범위벗어남() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("")
+                .rating(6.0)
+                .build();
+
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/2/reviews", reviewDTO, RestResponse.class);
+
+        log.info("error : {}", response.getBody().getErrors());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
+    public void uploadReview_실패_상품존재X() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("안녕하세요")
+                .rating(5.0)
+                .build();
+
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/100/reviews", reviewDTO, RestResponse.class);
+
+        log.info("error : {}", response.getBody().getErrors());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void uploadReview_실패_주문존재X() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("안녕하세요")
+                .rating(5.0)
+                .build();
+
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/12/reviews", reviewDTO, RestResponse.class);
+
+        log.info("error : {}", response.getBody().getErrors());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void uploadReview_실패_이미작성() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("안녕하세요")
+                .rating(5.0)
+                .build();
+
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/9/reviews", reviewDTO, RestResponse.class);
+
+        log.info("error : {}", response.getBody().getErrors());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
+    public void uploadReview_실패_나눔완료X_test() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("안녕하세요")
+                .rating(5.0)
+                .build();
+
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/8/reviews", reviewDTO, RestResponse.class);
+
+        log.info("error : {}", response.getBody().getErrors());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
+    public void uploadReview_성공_test() {
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .comment("안녕하세요")
+                .rating(5.0)
+                .build();
+
+        ResponseEntity<Void> response = basicAuthTemplate().postForEntity(PRODUCT_URL + "/11/reviews", reviewDTO, Void.class);
+
+        log.info("success : {}", response.getHeaders().getLocation().getPath());
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    }
 }
+

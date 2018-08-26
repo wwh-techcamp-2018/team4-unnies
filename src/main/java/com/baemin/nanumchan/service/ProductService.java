@@ -106,14 +106,13 @@ public class ProductService {
         Order order = orderRepository.findByParticipantIdAndProductId(user.getId(), productId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        int orderCount = orderRepository.countByProductId(productId);
-
-        Status status = product.calculateStatus(orderCount);
-
-        if (!status.isSharingCompleted()) {
-            throw new RestException(status.getMessage());
+        if (reviewRepository.existsByWriterAndProduct(user, product)) {
+            throw new RestException("이미 리뷰를 등록하였습니다");
         }
 
+        if (!order.isCompleteSharing()) {
+            throw new RestException("나눔완료가 되지 않았습니다");
+        }
         Review review = reviewDTO.toEntity(product, user, reviewDTO);
         return reviewRepository.save(review);
     }
