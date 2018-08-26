@@ -22,12 +22,13 @@ public class ApiUserAcceptanceTest extends AcceptanceTest {
     @Before
     public void setUp() throws Exception {
         signUpDTO = SignUpDTO.builder()
-                .email("unnies3@naver.com")
+                .email("testapi@naver.com")
                 .password("haha123!")
                 .confirmPassword("haha123!")
                 .name("강석윤")
                 .phoneNumber("010-1111-2222")
                 .address("서울특별시 배민동 배민아파트")
+                .addressDetail("상세동 상세호")
                 .build();
 
         loginDTO = LoginDTO.builder()

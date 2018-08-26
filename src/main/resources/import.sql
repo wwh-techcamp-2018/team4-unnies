@@ -1,11 +1,11 @@
 -- password origin : 123456a!
 --insert into user(id, email, password, name, phone_number, address, about_me) values(1, 'unnies@naver.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '강석윤', '010-1111-2222', '서울특별시 배민동 배민아파트',null);
 
-insert into user(id, email, password, name, phone_number, address, about_me, created_at) values(1, 'tech_syk@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '강석윤', '010-1234-2222', '경기도 용인시 수지구 죽전동 내대지마을', '나대는 사람', now());
-insert into user(id, email, password, name, phone_number, address, about_me, created_at) values(2, 'tech_lhj@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '이혁진', '010-3555-2342', '광주광역시 서구 화정동','퍽하는 사람', now());
-insert into user(id, email, password, name, phone_number, address, about_me, created_at) values(3, 'tech_rms@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '유민성', '010-1351-8221', '서울특별시 송파구 잠실동','클랜 장인 사람', now());
-insert into user(id, email, password, name, phone_number, address, about_me, created_at) values(4, 'tech_lsy@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '임성열', '010-6148-3421', '경기도 일산시 곱창동','진정한 식애인', now());
-insert into user(id, email, password, name, phone_number, address, about_me, created_at) values(5, 'tech_jiwoo@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '홍지우', '010-3175-8754', '경기도 광교신도시','애묘인', now());
+insert into user(id, email, password, name, phone_number, address, address_detail, about_me, created_at) values(1, 'tech_syk@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '강석윤', '010-1234-2222', '경기도 용인시 수지구 죽전동 내대지마을', '힐스테이트 1603동 701호', '나대는 사람', now());
+insert into user(id, email, password, name, phone_number, address, address_detail, about_me, created_at) values(2, 'tech_lhj@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '이혁진', '010-3555-2342', '광주광역시 서구 화정동', '된장찌개동 1603동 701호', '퍽하는 사람', now());
+insert into user(id, email, password, name, phone_number, address, address_detail, about_me, created_at) values(3, 'tech_rms@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '유민성', '010-1351-8221', '서울특별시 송파구 잠실동', '감자튀김동 1603동 701호', '클랜 장인 사람', now());
+insert into user(id, email, password, name, phone_number, address, address_detail, about_me, created_at) values(4, 'tech_lsy@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '임성열', '010-6148-3421', '경기도 일산시 곱창동', '곱창동 1603동 701호', '진정한 식애인', now());
+insert into user(id, email, password, name, phone_number, address, address_detail, about_me, created_at) values(5, 'tech_jiwoo@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '홍지우', '010-3175-8754', '경기도 광교신도시', '수제초콜릿동 1603동 701호', '애묘인', now());
 
 insert into category(id, name, created_at) values (1,'밑반찬', now());
 insert into category(id, name, created_at) values (2,'국·찌개', now());

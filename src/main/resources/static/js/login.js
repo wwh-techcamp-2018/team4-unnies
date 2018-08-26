@@ -8,8 +8,8 @@ const registerFlag = {
 function loginHandler(event){
     event.preventDefault();
 
-    const email = $('#email').value;
-    const password = $('#password').value;
+    const email = $('input[name=email]').value;
+    const password = $('input[name=password]').value;
 
     fetch('/api/users/login',{
         method:'post',
@@ -23,7 +23,6 @@ function loginHandler(event){
     .then(response=>{
         if(response.status >= 400 && response.status <= 404){
             validateError(response);
-            return location.reload();
         }else if(response.status === 200){
             location.href = '/';
         }
@@ -34,19 +33,11 @@ function loginHandler(event){
 }
 
 function validateError(response){
-    response.json().then(({errors})=>{
+    response.json().then(({ errors })=>{
         errors.forEach((error)=>{
-            switch(error.field){
-                case 'email' :
-                    $('#invalid-email').style.visibility='visible';
-                    $('#invalid-email').innerText=error.message;
-                    registerFlag['email'] = false;
-                    break;
-                case 'password' :
-                    $('#invalid-password').style.visibility='visible';
-                    $('#invalid-password').innerText=error.message;
-                    registerFlag['password'] = false;
-                    break;
+            $(`strong[name=invalid-${error.field}`).style.visibility='visible';
+            $(`strong[name=invalid-${error.field}`).innerText=error.message;
+            registerFlag[`${error.field}`] = false;
             }
         });
     })
@@ -54,11 +45,7 @@ function validateError(response){
 
 
 function validateCheck(){
-    if(monitorRegisterButton()){
-        $('#button').disabled=false;
-    }else{
-        $('#button').disabled=true;
-    }
+    $('#button').disabled = !monitorRegisterButton();
 }
 
 function monitorRegisterButton(){
@@ -73,13 +60,13 @@ function monitorRegisterButton(){
 function validateEmail(){
 
     const regex_email = /^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\w+\.)+\w+$/i;// 이메일이 적합한지 검사할 정규식
-    const email = $('#email').value;
+    const email = $('input[name=email]').value;
 
     if(!email.match(regex_email)){
-        $('#invalid-email').style.visibility='visible';
+        $('strong[name=invalid-email]').style.visibility='visible';
         registerFlag['email'] = false;
     }else{
-        $('#invalid-email').style.visibility='hidden';
+        $('strong[name=invalid-email]').style.visibility='hidden';
         registerFlag['email'] = true;
         validateCheck();
     }
@@ -88,20 +75,18 @@ function validateEmail(){
 function validatePassword(){
 
     const regex_password = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$/; // 아이디와 패스워드가 적합한지 검사할 정규식
-    const password = $('#password').value;
+    const password = $('input[name=password]').value;
     if(!password.match(regex_password)){
-        $('#invalid-password').style.visibility='visible';
+        $('strong[name=invalid-password]').style.visibility='visible';
         registerFlag['password'] = false;
     }else{
-        $('#invalid-password').style.visibility='hidden';
+        $('strong[name=invalid-password]').style.visibility='hidden';
         registerFlag['password'] = true;
         validateCheck();
     }
 
 }
-document.addEventListener('DOMContentLoaded', () => {
-    $('#button').addEventListener('click',loginHandler);
 
-    $('#email').onchange = validateEmail;
-    $('#password').onchange = validatePassword;
-});
+$('#button').addEventListener('click',loginHandler);
+$('input[name=email]').onchange = validateEmail;
+$('input[name=password]').onchange = validatePassword;

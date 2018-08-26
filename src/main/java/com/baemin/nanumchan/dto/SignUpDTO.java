@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -18,27 +19,30 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class SignUpDTO {
 
-    @NotNull
+    @NotEmpty
     @Pattern(regexp = ValidateRegex.EMAIL)
     private String email;
 
-    @NotNull
+    @NotEmpty
     @Pattern(regexp = ValidateRegex.USERNAME)
     private String name;
 
-    @NotNull
+    @NotEmpty
     @Pattern(regexp = ValidateRegex.PASSWORD)
     private String password;
 
-    @NotNull
+    @NotEmpty
     private String confirmPassword;
 
-    @NotNull
+    @NotEmpty
     @Pattern(regexp = ValidateRegex.PHONE)
     private String phoneNumber;
 
-    @NotNull
+    @NotEmpty
     private String address;
+
+    @NotEmpty
+    private String addressDetail;
 
     private boolean matchPassword() {
         return password.equals(confirmPassword);
@@ -55,6 +59,7 @@ public class SignUpDTO {
                 .email(email)
                 .phoneNumber(phoneNumber)
                 .address(address)
+                .addressDetail(addressDetail)
                 .build();
     }
 }

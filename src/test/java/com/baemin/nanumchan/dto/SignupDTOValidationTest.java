@@ -1,6 +1,5 @@
-package com.baemin.nanumchan.domain;
+package com.baemin.nanumchan.dto;
 
-import com.baemin.nanumchan.dto.SignUpDTO;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,7 +13,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-public class UserValidationTest {
+public class SignupDTOValidationTest {
 
     private SignUpDTO user;
 
@@ -29,6 +28,7 @@ public class UserValidationTest {
                 .name("강석윤")
                 .phoneNumber("010-1111-2222")
                 .address("서울특별시 배민동 배민아파트")
+                .addressDetail("상세주소 동 상세호")
                 .build();
     }
 
@@ -179,6 +179,13 @@ public class UserValidationTest {
     @Test
     public void address_NULL() {
         user.setAddress(null);
+        Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
+        assertThat(constraintViolations.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void addressDetail_NULL() {
+        user.setAddressDetail(null);
         Set<ConstraintViolation<SignUpDTO>> constraintViolations = validator.validate(user);
         assertThat(constraintViolations.size()).isEqualTo(1);
     }
