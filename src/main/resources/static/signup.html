@@ -14,64 +14,63 @@
 <body>
 <div style="width: 1000px; background: #fff; margin: 0 auto; padding: 20px;">
     <div class="main-login main-center">
-        <form class="" method="post" id="signupForm"action="#">
+        <form method="post" id="signupForm" action="#">
             <div class="form-group">
-                <label for="email" class="control-label">이메일</label>
+                <label class="control-label">이메일</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="email" id="email"
+                    <input type="text" class="form-control" name="email"
                            placeholder="이메일을 입력하세요" required/>
                 </div>
-                <strong id="invalid-email" style="color:red; visibility:hidden;">유효하지 않은 이메일입니다.</strong>
+                <strong name="invalid-email" style="color:red; visibility:hidden;">유효하지 않은 이메일입니다.</strong>
             </div>
 
             <div class="form-group">
-                <label for="name" class="control-label">이름</label>
+                <label class="control-label">이름</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="name" id="name" placeholder="이름을 입력하세요" required/>
+                    <input type="text" class="form-control" name="name" placeholder="이름을 입력하세요" required/>
                 </div>
-                <strong id="invalid-name" style="color:red; visibility:hidden;">유효하지 않은 이름입니다.</strong>
+                <strong name="invalid-name" style="color:red; visibility:hidden;">유효하지 않은 이름입니다.</strong>
             </div>
 
             <div class="form-group">
-                <label for="password" class="control-label">비밀번호</label>
+                <label class="control-label">비밀번호</label>
                 <div class="input-group">
-                    <input type="password" class="form-control" name="password" id="password"
+                    <input type="password" class="form-control" name="password"
                            placeholder="비밀번호를 입력하세요(영어 소문자, 숫자, 특수문자 포함 8~16자)" required/>
                 </div>
-                <strong id="invalid-password" style="color:red; visibility:hidden;">유효하지 않은 비밀번호입니다.</strong>
+                <strong name="invalid-password" style="color:red; visibility:hidden;">유효하지 않은 비밀번호입니다.</strong>
             </div>
 
             <div class="form-group">
-                <label for="confirm" class="control-label">비밀번호 확인</label>
+                <label class="control-label">비밀번호 확인</label>
                 <div class="input-group">
-                    <input type="password" class="form-control" name="confirm" id="confirm"
+                    <input type="password" class="form-control" name="confirm"
                            placeholder="비밀번호를 한번 더 입력하세요" required/>
                 </div>
-                <strong id="invalid-confirmPassword" style="color:red; visibility:hidden;">비밀번호와 동일하지
+                <strong name="invalid-confirmPassword" style="color:red; visibility:hidden;">비밀번호와 동일하지
                     않습니다.</strong>
             </div>
 
             <div class="form-group">
-                <label for="phone" class="control-label">이동전화</label>
+                <label class="control-label">이동전화</label>
                 <div class="input-group">
-                    <input type="text" class="form-control" name="phone" id="phone"
+                    <input type="text" class="form-control" name="phoneNumber"
                            placeholder="전화번호 입력 형식(010-0000-0000)" required/>
                 </div>
-                <strong id="invalid-phone" style="color:red; visibility:hidden;">유효하지 않은 전화번호입니다.</strong>
+                <strong name="invalid-phoneNumber" style="color:red; visibility:hidden;">유효하지 않은 전화번호입니다.</strong>
             </div>
 
             <div class="form-group">
-                <label for="address" class="control-label">주소</label>
+                <label class="control-label">주소</label>
                 <div>
                     <div style="display:inline-block;">
-                        <input type="text" id="postcode" placeholder="우편번호"  style="width:80px;" readonly required>
-                        <input type="button" id="find-postcode"class="btn btn-primary btn-sm"
+                        <input type="button" name="find-postcode" class="btn btn-primary btn-sm"
                                value="우편번호 찾기"/><br>
                     </div>
                 </div>
                 <div>
-                    <input type="text" id="address" class="form-control" placeholder="주소를 입력하세요" readonly>
-                    <input type="text" id="address-detail" class="form-control" placeholder="상세 주소를 입력하세요" required>
+                    <input type="text" name="address" class="form-control" placeholder="주소를 입력하세요" readonly>
+                    <input type="text" name="address-detail" class="form-control" placeholder="상세 주소를 입력하세요" required>
                 </div>
 
                 <div id="layer"
@@ -81,7 +80,7 @@
                          style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1"
                          alt="닫기 버튼">
                 </div>
-                <strong id="invalid-address" style="color:red; visibility:hidden;">주소를 입력하세요.</strong>
+                <strong name="invalid-address" style="color:red; visibility:hidden;">주소를 입력하세요.</strong>
             </div>
 
             <div class="form-group ">
