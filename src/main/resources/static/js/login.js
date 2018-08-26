@@ -23,7 +23,6 @@ function loginHandler(event){
     .then(response=>{
         if(response.status >= 400 && response.status <= 404){
             validateError(response);
-            return location.reload();
         }else if(response.status === 200){
             location.href = '/';
         }
@@ -34,8 +33,9 @@ function loginHandler(event){
 }
 
 function validateError(response){
-    response.json().then(({errors})=>{
+    response.json().then(({ errors })=>{
         errors.forEach((error)=>{
+            console.log(error);
             switch(error.field){
                 case 'email' :
                     $('#invalid-email').style.visibility='visible';

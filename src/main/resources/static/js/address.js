@@ -1,13 +1,8 @@
-// 우편번호 찾기 화면을 넣을 element
-const element_layer = document.querySelector('#layer');
-
-function closeDaumPostcode() {
-    // iframe을 넣은 element를 안보이게 한다.
-    element_layer.style.display = 'none';
+export function closeDaumPostcode() {
+    document.querySelector('#layer').style.display = 'none';
 }
 
-function test_execDaumPostcode() {
-    console.log(element_layer);
+export function execDaumPostcode() {
     daum.postcode.load(function(){
         new daum.Postcode({
             oncomplete: function(data) {
@@ -38,7 +33,7 @@ function test_execDaumPostcode() {
 
                 // iframe을 넣은 element를 안보이게 한다.
                 // (autoClose:false 기능을 이용한다면, 아래 코드를 제거해야 화면에서 사라지지 않는다.)
-                element_layer.style.display = 'none';
+                document.querySelector('#layer').style.display = 'none';
             },
             width : '100%',
             height : '100%',
@@ -46,7 +41,7 @@ function test_execDaumPostcode() {
         }).open();
 
         // iframe을 넣은 element를 보이게 한다.
-        element_layer.style.display = 'block';
+        document.querySelector('#layer').style.display = 'block';
 
         // iframe을 넣은 element의 위치를 화면의 가운데로 이동시킨다.
         initLayerPosition();
@@ -57,6 +52,7 @@ function test_execDaumPostcode() {
 // resize이벤트나, orientationchange이벤트를 이용하여 값이 변경될때마다 아래 함수를 실행 시켜 주시거나,
 // 직접 element_layer의 top,left값을 수정해 주시면 됩니다.
 function initLayerPosition(){
+    const element_layer = document.querySelector('#layer');
     const width = 400; //우편번호서비스가 들어갈 element의 width
     const height = 500; //우편번호서비스가 들어갈 element의 height
     const borderWidth = 1; //샘플에서 사용하는 border의 두께

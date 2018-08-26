@@ -1,24 +1,30 @@
 import { $ } from './lib/utils.js';
-
+import { closeDaumPostcode, execDaumPostcode } from './address.js';
 const registerFlag = {
     'email':false,
     'name':false,
     'password':false,
     'confirmPassword':false,
     'phone':false,
+    'addressDetail':false
 };
 
 function signupHandler(event){
     event.preventDefault();
+
+    validateConfirmPassword();
+    if(!validateAddress()){
+        return;
+    }
 
     const email = $('#email').value;
     const name = $('#name').value;
     const password = $('#password').value;
     const confirmPassword = $('#confirm').value;
     const phoneNumber= $('#phone').value;
-    const address=`${$('#address').value} ${$('#address_detail').value}`;
 
-    validateConfirmPassword();
+    const address= $('#address').value;
+    const addressDetail = $('#address-detail').value;
 
     fetch('/api/users',{
         method:'post',
@@ -30,13 +36,13 @@ function signupHandler(event){
             password,
             confirmPassword,
             phoneNumber,
-            address
+            address,
+            addressDetail
         })
     })
     .then(response => {
-        if(response.status >= 400 && response.status <= 404){
+        if(response.status >= 400 && response.status <= 405){
             validateError(response);
-            return location.reload();
         }else if(response.status === 201){
             location.href = '/';
         }
@@ -87,11 +93,7 @@ function validateError(response){
 
 
 function validateCheck(){
-    if(monitorRegisterButton()){
-        $('#button').disabled = false;
-    }else{
-        $('#button').disabled = true;
-    }
+    $('#button').disabled = monitorRegisterButton() ? false : true ;
 }
 
 function monitorRegisterButton(){
@@ -172,12 +174,41 @@ function validatePhone(){
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    $('#button').addEventListener('click',signupHandler);
+function validateAddress(){
+    const address = $('#address').value;
+    const postcode = $('#postcode').value;
+    if(address && postcode){
+        $('#invalid-address').style.visibility='hidden';
+        validateCheck();
+        return true;
+    }else{
+        $('#invalid-address').style.visibility='visible';
+        $('#invalid-address').innerText='주소를 입력하세요';
+        return false;
+    }
+}
 
+function validateAddressDetail(){
+    const addressDetail = $('#address-detail').value;
+    if(!addressDetail){
+        $('#invalid-address').style.visibility='visible';
+        $('#invalid-address').innerText='상세주소를 입력해주세요';
+        registerFlag['addressDetail'] = false;
+    }else{
+        $('#invalid-address').style.visibility='hidden';
+        registerFlag['addressDetail'] = true;
+        validateCheck();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    $('#signupForm').addEventListener('submit',signupHandler);
+    $('#find-postcode').addEventListener('click',execDaumPostcode);
+    $('#btnCloseLayer').addEventListener('click',closeDaumPostcode);
     $('#email').onchange = validateEmail;
     $('#name').onchange = validateName;
     $('#password').onchange = validatePassword;
     $('#confirm').onchange = validateConfirmPassword;
     $('#phone').onchange = validatePhone;
+    $('#address-detail').onchange = validateAddressDetail;
 });

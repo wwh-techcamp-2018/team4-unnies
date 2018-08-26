@@ -1,5 +1,5 @@
 import { $ } from '../lib/utils.js';
-import {reviewTemplate} from '../template/DetailTemplate.js';
+import { reviewTemplate } from '../template/DetailTemplate.js';
 
 class ReviewList {
     load(productId,page) {
