@@ -16,8 +16,7 @@
     <link href="/css/tui/tui-editor-contents.min.css" rel="stylesheet">
 
     <link href="/css/upload.css" rel="stylesheet">
-
-    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=60b17dbcebe7c345e753fc50e2e245d3&libraries=services"></script>
+    <link href="/css/image-viewer.css" rel="stylesheet">
 
     <script src="/js/lib/jquery-3.3.1.slim.min.js" defer></script>
     <script src="/js/lib/bootstrap.min.js" defer></script>
@@ -39,32 +38,22 @@
 <div class="this-is-temporary" style="width: 1000px; background: #fff; margin: 0 auto; padding: 20px;">
     <form class="form-horizontal" id="upload-form" enctype="multipart/form-data">
         <h1 class="form-upload-heading mt-3 mb-5">업로드 페이지</h1>
-        <div class="form-group">
-            <label for="image-input">이미지 등록</label>
+        <div class="form-group upload">
+            <label>이미지 등록</label>
             <div class="fluid-box">
-                <div class="left-group">
-                    <div class="main mb-1">
-                        <span class="img-thumb border"></span>
-                    </div>
-                    <div class="sub">
-                        <span class="img-thumb border"></span>
-                        <span class="img-thumb border"></span>
-                        <span class="img-thumb border"></span>
-                        <span class="img-thumb border"></span>
-                        <span class="img-thumb border"></span>
-                    </div>
+                <div id="image-viewer" class="left-group">
+
                 </div>
                 <div class="left-group">
                     <ul>
                         <li>상품 이미지를 끌어와 등록할 수 있습니다.</li>
-                        <li>상품 이미지는 400*400에 최적화 되어있습니다.</li>
-                        <li>이미지는 상품 등록시 정사각형으로 짤려서 등록됩니다.</li>
-                        <li>확대하기를 누를 경우 원본이미지를 확인할 수 있습니다.</li>
+                        <!--<li>상품 이미지는 400*400에 최적화 되어있습니다.</li>-->
+                        <!--<li>이미지는 상품 등록시 정사각형으로 짤려서 등록됩니다.</li>-->
+                        <!--<li>확대하기를 누를 경우 원본이미지를 확인할 수 있습니다.</li>-->
                         <li>사진을 클릭 후 이동하여 등록순서를 변경할 수 있습니다.</li>
                         <li>최대 10M까지 업로드할 수 있습니다.</li>
-                        <li>이미지를 첨부하지 않을 경우 카테고리에 해당하는 아이콘이 기본으로 등록됩니다.</li>
+                        <!--<li>이미지를 첨부하지 않을 경우 카테고리에 해당하는 아이콘이 기본으로 등록됩니다.</li>-->
                     </ul>
-                    <input multiple accept="image/png, image/jpeg" type="file" name="files" id="image-input" style="display: none">
                     <br>
                     <button class="btn btn-primary upload ml-4">이미지 선택</button>
                     <span class="feedback ml-4"></span>
@@ -106,6 +95,7 @@
 
         <hr class="m-5">
 
+        <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=60b17dbcebe7c345e753fc50e2e245d3&libraries=services"></script>
         <div class="form-group location">
             <label class="control-label">나눔 장소</label>
             <div class="input-group mb-3">

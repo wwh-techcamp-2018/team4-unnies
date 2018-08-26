@@ -1,0 +1,16 @@
+#image-viewer img {
+    height: 100%;
+    width: 100%;
+}
+
+.image-viewer-main, .image-viewer-thumbnail {
+    border: 1px solid #dee2e6;
+}
+
+.image-viewer-thumbnails {
+    overflow: auto;
+}
+
+.image-viewer-thumbnail {
+    float: left;
+}

@@ -1,28 +1,49 @@
-import { $ } from './lib/utils.js';
-import ImageUploader from './lib/ImageUploader.js';
+import { $, $all } from './lib/utils.js';
+import ImageUploader from './class/ImageUploader.js';
+import ImageViewer from './class/ImageViewer.js';
 import Category from './lib/Category.js';
 import Product from './lib/Product.js';
 import DaumMap from './lib/DaumMap.js';
+import { uploadInput, mainView, thumbnailView, imageView } from './template/UploadTemplate.js';
 
 new Category().load($('#category-section > .wrapper'));
 
-const imageUploader = new ImageUploader({
-    input: $('input[name=files]'),
-    preview: $('.fluid-box'),
-    dropzone: $('form')
-})
-    .delegate($('.btn.upload'))
-    .draggable();
+const imageViewer = new ImageViewer();
+imageViewer.setViewTemplate(mainView);
+imageViewer.setImageViewTemplate(imageView);
+imageViewer.setThumbnailViewTemplate(thumbnailView);
 
+imageViewer.setView($('#image-viewer'));
+imageViewer.setMainWidth('320px');
+imageViewer.setMainHeight('320px');
+
+imageViewer.setThumbnailsCount(5);
+imageViewer.enableThumbnailMouseOver();
+imageViewer.enableDrag();
+
+const imageUploader = new ImageUploader();
+imageUploader.setForm($('.form-group.upload'));
+imageUploader.setInputTemplate(uploadInput);
+imageUploader.setInputName('files');
+imageUploader.setDropZone($('.form-group.upload'));
+imageUploader.setDelegate($('button.upload'));
+
+imageUploader.addAfterFileInputListener((event => {
+    const fileInputs = $all('input[name=files]');
+    imageViewer.renderImages([...fileInputs].reduce((files, input) => [...files, ...input.files], []));
+}));
+
+const ENTER_KEY = 13;
+$('#upload-form').addEventListener('keydown', event => {
+    if (event.keyCode === ENTER_KEY) {
+        event.preventDefault();
+    }
+});
 
 $('#upload-form').addEventListener('submit', e => {
     e.preventDefault();
     const formData = new FormData($('#upload-form'));
-
-    // console.log(formData.getAll('files'), imageUploader.files);
-    // formData.set('files', imageUploader.files);
     new Product().upload(formData);
-    // new Product().upload($('#upload-form'));
 });
 
 function setDateTime() {
