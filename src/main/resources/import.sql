@@ -1,5 +1,4 @@
 -- password origin : 123456a!
-
 INSERT INTO user (id, email, password, name, phone_number, address, address_detail, about_me)
 VALUES
 (1, 'tech_syk@woowahan.com', '$2a$10$VWzPAYMsYevYEppl.gXvgewcl4fVPpIuBVrtPENSg1I4bu5.Nfzxu', '강석윤', '010-1234-2222', '경기도 용인시 수지구 죽전동 내대지마을', '힐스테이트 1603동 701호', '나대는 사람'),

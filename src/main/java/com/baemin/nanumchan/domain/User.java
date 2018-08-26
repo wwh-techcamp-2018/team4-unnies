@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -67,12 +68,14 @@ public class User extends AbstractEntity {
         return false;
     }
 
+    public boolean isSameUser(User maybeUser) {
+        return this.equals(maybeUser);
+    }
+
     private static class GuestUser extends User {
         @Override
         public boolean isGuestUser() {
             return true;
         }
     }
-
-
 }

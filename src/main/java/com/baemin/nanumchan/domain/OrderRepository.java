@@ -14,4 +14,6 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     int countByParticipantId(Long participantId);
 
     Page<Order> findAllByParticipantIdOrderByIdDesc(Long participantId, Pageable pageable);
+
+    boolean existsByParticipantAndProduct(User user, Product product);
 }
