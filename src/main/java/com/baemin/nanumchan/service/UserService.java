@@ -1,20 +1,28 @@
 package com.baemin.nanumchan.service;
 
 import com.baemin.nanumchan.domain.*;
-import com.baemin.nanumchan.dto.LoginDTO;
-import com.baemin.nanumchan.dto.SignUpDTO;
-import com.baemin.nanumchan.dto.UserDetailDTO;
+import com.baemin.nanumchan.domain.cloud.S3Uploader;
+import com.baemin.nanumchan.dto.*;
 import com.baemin.nanumchan.exception.UnAuthenticationException;
+import com.baemin.nanumchan.utils.SessionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service("userService")
 public class UserService {
+
+    private static final Double ZERO = 0.0;
 
     @Autowired
     private UserRepository userRepository;
@@ -48,8 +56,13 @@ public class UserService {
         return maybeUser;
     }
 
-    public UserDetailDTO getUserInfo(Long id) {
+    public UserDetailDTO getUserInfo(User loginUser, Long id) {
         User user = userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        boolean isMine = true;
+
+        if (loginUser == null || !user.equals(loginUser))
+            isMine = false;
 
         return UserDetailDTO.builder()
                 .email(user.getEmail())
@@ -60,6 +73,8 @@ public class UserService {
                 .orderFromCount(productRepository.countByOwnerId(id))
                 .reviewToCount(reviewRepository.countByWriterId(id))
                 .reviewFromCount(reviewRepository.countByChefId(id))
+                .avgRating(reviewRepository.getAvgRatingByWriterId(id).orElse(ZERO))
+                .isMine(isMine)
                 .build();
     }
 
@@ -67,7 +82,41 @@ public class UserService {
         return reviewRepository.findAllByWriterIdOrderByIdDesc(writerId, pageable);
     }
 
-    public Page<Product> getMyProducts(Long ownerId, Pageable pageable) {
-        return productRepository.findAllByOwnerIdOrderByIdDesc(ownerId, pageable);
+    public Page<ProductDetailDTO> getMyProducts(Long ownerId, Pageable pageable) {
+        Page<Product> products = productRepository.findAllByOwnerIdOrderByIdDesc(ownerId, pageable);
+        List<ProductDetailDTO> productDetailDTOS = products.stream().map(product -> {
+            Integer orderCount = (int) (long) orderRepository.countByProduct(product);
+            Double ownerRating = reviewRepository.getAvgRatingByWriterId(product.getOwner().getId()).orElse(ZERO);
+            return ProductDetailDTO.builder()
+                    .product(product)
+                    .orderCount(orderCount)
+                    .status(product.calculateStatus(orderCount))
+                    .ownerRating(ownerRating)
+                    .build();
+        }).collect(Collectors.toList());
+
+        return new PageImpl<>(productDetailDTOS);
+    }
+
+    public UserModifyDTO modifyUserInfo(User loginUser, UserModifyDTO userModifyDTO, HttpSession session) {
+        User user = userRepository.findById(userModifyDTO.getId()).orElseThrow(EntityNotFoundException::new);
+        if (!user.equals(loginUser)) throw UnAuthenticationException.invalidUser();
+
+        if (!userModifyDTO.getAboutMe().equals("")) {
+            user.setAboutMe(userModifyDTO.getAboutMe());
+        }
+
+        if (userModifyDTO.getFile() != null) {
+            user.setImageUrl(s3Uploader.upload(userModifyDTO.getFile()));
+        }
+
+        User modifiedUser = userRepository.save(user);
+        SessionUtils.setUserInSession(session, modifiedUser);
+
+        return UserModifyDTO.builder()
+                .id(modifiedUser.getId())
+                .aboutMe(modifiedUser.getAboutMe())
+                .imageUrl(modifiedUser.getImageUrl())
+                .build();
     }
 }

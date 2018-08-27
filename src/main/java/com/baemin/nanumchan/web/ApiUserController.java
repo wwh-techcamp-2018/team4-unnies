@@ -3,11 +3,14 @@ package com.baemin.nanumchan.web;
 import com.baemin.nanumchan.domain.User;
 import com.baemin.nanumchan.dto.LoginDTO;
 import com.baemin.nanumchan.dto.SignUpDTO;
+import com.baemin.nanumchan.dto.UserModifyDTO;
 import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.UserService;
 import com.baemin.nanumchan.utils.RestResponse;
 import com.baemin.nanumchan.utils.SessionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/users")
+@Slf4j
 public class ApiUserController {
 
     @Resource(name = "userService")
@@ -36,9 +40,14 @@ public class ApiUserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/mypage")
-    public ResponseEntity<RestResponse> getInfo(@PathVariable Long id) {
-        return ResponseEntity.ok(RestResponse.success(userService.getUserInfo(id)));
+    @GetMapping("/{id}")
+    public ResponseEntity<RestResponse> getInfo(@LoginUser(required = false) User user, @PathVariable Long id) {
+        return ResponseEntity.ok(RestResponse.success(userService.getUserInfo(user, id)));
+    }
+
+    @PostMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<RestResponse> modify(@LoginUser User user, @Valid UserModifyDTO userModifyDTO, HttpSession session) {
+        return ResponseEntity.ok(RestResponse.success(userService.modifyUserInfo(user, userModifyDTO, session)));
     }
 
     @GetMapping("/{id}/reviews")
