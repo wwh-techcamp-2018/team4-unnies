@@ -16,6 +16,9 @@ public class UserDetailDTO {
     private int reviewToCount;//내가한 리뷰
     private int reviewFromCount;
 
-    private int orderToCount;//내가한 주문
-    private int orderFromCount;
+    private Long orderToCount;//내가한 주문
+    private Long orderFromCount;
+
+    private Double avgRating;
+    private boolean isMine;
 }
