@@ -32,16 +32,16 @@ function loginHandler(event){
     });
 }
 
-function validateError(response){
-    response.json().then(({ errors })=>{
-        errors.forEach((error)=>{
-            $(`strong[name=invalid-${error.field}`).style.visibility='visible';
-            $(`strong[name=invalid-${error.field}`).innerText=error.message;
+function validateError(response) {
+    response.json().then(({errors}) => {
+        errors.forEach((error) => {
+            $(`strong[name=invalid-${error.field}`).style.visibility = 'visible';
+            $(`strong[name=invalid-${error.field}`).innerText = error.message;
             registerFlag[`${error.field}`] = false;
-            }
-        });
-    })
+        })
+    });
 }
+
 
 
 function validateCheck(){
