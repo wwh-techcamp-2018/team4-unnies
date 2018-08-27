@@ -13,12 +13,17 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+<<<<<<< HEAD
 @Entity
+=======
+@Setter
+>>>>>>> refactor : setter, equals, hashcode User 도메인에 추가
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class User extends AbstractEntity {
 
     public static final GuestUser GUEST_USER = new GuestUser();
@@ -71,4 +76,6 @@ public class User extends AbstractEntity {
             return true;
         }
     }
+
+
 }
