@@ -10,17 +10,21 @@ import java.time.LocalDateTime;
 @Builder
 public class NearProductsDTO {
 
+    private Long productId;
+
     private String productTitle;
 
     private String productImgUrl;
 
-    private Double distanceMeter;
+    private double distanceMeter;
 
-    private String userName;
+    private String ownerName;
 
-    private String userImgUrl;
+    private String ownerImgUrl;
 
-    private int orderCnt;
+    private double ownerRating;
+
+    private long orderCnt;
 
     private int maxParticipant;
 

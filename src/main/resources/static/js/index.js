@@ -1,5 +1,6 @@
-import { $ } from "./lib/utils.js";
-import DaumMapSearch from "./lib/DaumMapSearch.js";
+import { $, $all } from './lib/utils.js';
+import DaumMapSearch from './lib/DaumMapSearch.js';
+import { productTemplate } from './template/ProductTemplate.js';
 
 
 const LOADING_TEXT = '(loading...)';
@@ -15,6 +16,28 @@ $('.location .current').addEventListener('click', getCurrentLocation);
 $('.location .modification').addEventListener('click', modifyLocation);
 $('.map_wrap .input-group button.search').addEventListener('click', searchAddress);
 
+
+function loadNearProducts() {
+    // TODO: spinner
+
+    const latitude = $('input[name=latitude]').value;
+    const longitude = $('input[name=longitude]').value;
+    const offset = 0; // TODO: page.offset for infinite scrolling
+
+    fetch(`/api/products?latitude=${latitude}&longitude=${longitude}&offset=${offset}`, {
+        method: 'get'
+    }).then(response => {
+        if (!response.ok) {
+            console.error('failed to load near products');
+        }
+        return response.json();
+    }).then(({ data }) => {
+        console.log(data);
+        onLoadProducts(data);
+    }).catch(error => {
+       console.log(error);
+    });
+}
 
 function onSetAddress() {
     hideMap();
@@ -40,6 +63,7 @@ function setGIS(latitude, longitude) {
     $('input[name=latitude]').value = latitude;
     $('input[name=longitude]').value = longitude;
     daumMap.setPosition(latitude, longitude);
+    loadNearProducts();
 }
 
 function getCurrentLocation() {
@@ -94,51 +118,20 @@ function searchAddress(event) {
     daumMap.searchPlaces();
 }
 
-
-
-function onDOMContentLoaded() {
-    $(".card-columns").insertAdjacentHTML('afterbegin', templateCard());
+function onLoadProducts(data) {
+    const cardContainer = $(".card-columns");
+    cardContainer.innerHTML = '';
+    cardContainer.insertAdjacentHTML('afterbegin', templateCards(data));
+    $all('.card').forEach(card => attachCardEventListener(card));
 }
 
-function templateCard() {
-    return `
-    <!-- product template -->
-    <div class="card">
-        <img class="card-img-top" src="https://cdn.bmf.kr/_data/product/I21A3/b3b7ce9d8cf1ee91166fe97785d51d8a.jpg" alt="연잎수육">
-        <div class="card-body">
-            <h5 class="card-title font-weight-bold">진리의 탕수육</h5>
-            <!-- chef -->
-            <div class="container-fluid mt-2">
-                <div class="row">
-                    <div class="chef-img" style="width:80px;height:80px;border:dotted 1px lightgray;border-radius:3px;"></div>
-                    <div class="col text-right">
-                        <p class="card-text">강석윤</p>
-                        <span class="badge badge-danger">나대는 사람</span>
-                    </div>
-                </div>
-                <dl class="rating-app text-right">
-                    <dt></dt>
-                    <dd class="rating">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                    </dd>
-                </dl>
-            </div>
-            <dl class="row">
-                <dt class="col">모집인원</dt>
-                <dd class="col">3 / 4</dd>
-            </dl>
-            <dl class="row">
-                <dt class="col">모집기간</dt>
-                <dd class="col">2018.08.24 17:22:20 <span class="text-muted">까지</span></dd>
-            </dl>
-            <h4 class="card-subtitle text-right font-weight-bold">7000 <span class="text-muted">원</span></h4>
-        </div>
-        <a href="/detail.html" class="btn btn-primary">나눔신청</a>
-    </div>`;
+function templateCards(data) {
+    return `${data && data.map(productTemplate).join('')}`;
 }
 
-document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
+function attachCardEventListener(card) {
+    const productId = $('input[name=product-id]').value;
+    card && card.addEventListener('click', () => {
+        location.href = `/products/${productId}`;
+    });
+}
