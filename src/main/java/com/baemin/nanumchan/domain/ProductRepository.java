@@ -20,10 +20,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                         "WHERE location.id = product.location_id) AS distance_meter " +
                     "FROM product " +
                     "WHERE NOW() < product.expire_date_time) AS p " +
-            "WHERE p.distance_meter < 1000 " +
+            "WHERE p.distance_meter < :radiusMeter " +
             "ORDER BY p.distance_meter ASC limit :offset, :limit",
             nativeQuery = true)
-    List<Product> findNearProducts(@Param("longitude") Double longitude, @Param("latitude") Double latitude, @Param("offset") int offset, @Param("limit") int limit);
+    List<Product> findNearProducts(@Param("radiusMeter") int radiusMeter, @Param("longitude") Double longitude, @Param("latitude") Double latitude, @Param("offset") int offset, @Param("limit") int limit);
 
     @Query(value = "SELECT p.id, p.created_at, p.updated_at, p.description, p.title, p.price, p.max_participant, p.expire_date_time, p.is_bowl_needed, p.name, p.share_date_time, p.category_id, p.location_id, p.owner_id " +
             "FROM (SELECT * " +
@@ -32,9 +32,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                 "WHERE location.id = product.location_id) AS distance_meter " +
                 "FROM product " +
                 "WHERE NOW() < product.expire_date_time) AS p " +
-            "WHERE p.distance_meter < 1000 " +
+            "WHERE p.distance_meter < :radiusMeter " +
             "AND p.category_id = :categoryId " +
             "ORDER BY p.distance_meter ASC limit :offset, :limit",
             nativeQuery = true)
-    List<Product> findNearProductsByCategoryId(@Param("categoryId") Long categoryId, @Param("longitude") Double longitude, @Param("latitude") Double latitude, @Param("offset") int offset, @Param("limit") int limit);
+    List<Product> findNearProductsByCategoryId(@Param("categoryId") Long categoryId, @Param("radiusMeter") int radiusMeter, @Param("longitude") Double longitude, @Param("latitude") Double latitude, @Param("offset") int offset, @Param("limit") int limit);
 }

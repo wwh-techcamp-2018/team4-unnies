@@ -107,12 +107,12 @@ public class ProductService {
     }
 
     public List<NearProductsDTO> getNearProducts(Double longitude, Double latitude, int offset, int limit) {
-        List<Product> products = productRepository.findNearProducts(longitude, latitude, offset, limit);
+        List<Product> products = productRepository.findNearProducts(NearProductsDTO.DEFAULT_RADIUS_METER, longitude, latitude, offset, limit);
         return getNearProductDTO(products, longitude, latitude);
     }
 
     public List<NearProductsDTO> getNearProductsByCategory(Long categoryId, Double longitude, Double latitude, int offset, int limit) {
-        List<Product> products = productRepository.findNearProductsByCategoryId(categoryId, longitude, latitude, offset, limit);
+        List<Product> products = productRepository.findNearProductsByCategoryId(categoryId, NearProductsDTO.DEFAULT_RADIUS_METER, longitude, latitude, offset, limit);
         return getNearProductDTO(products, longitude, latitude);
     }
 
