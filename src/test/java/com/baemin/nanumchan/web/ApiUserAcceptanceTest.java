@@ -1,14 +1,20 @@
 package com.baemin.nanumchan.web;
 
+import com.baemin.nanumchan.domain.User;
 import com.baemin.nanumchan.dto.LoginDTO;
 import com.baemin.nanumchan.dto.SignUpDTO;
+import com.baemin.nanumchan.dto.UserModifyDTO;
 import com.baemin.nanumchan.utils.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import support.AcceptanceTest;
+import support.builder.HtmlFormDataBuilder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -95,8 +101,8 @@ public class ApiUserAcceptanceTest extends AcceptanceTest {
 
     @Test
     public void get_마이페이지_유저활동정보() {
-        ResponseEntity<RestResponse> response = template.getForEntity("/api/users/1/mypage", RestResponse.class);
-        log.info("response : {}", response.getBody());
+        ResponseEntity<RestResponse> response = template.getForEntity("/api/users/1", RestResponse.class);
+        log.info("response : {}", response.getBody().getData());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
@@ -110,5 +116,21 @@ public class ApiUserAcceptanceTest extends AcceptanceTest {
     public void get_마이페이지_유저_내가한나눔() {
         ResponseEntity<RestResponse> response = template.getForEntity("/api/users/1/products", RestResponse.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+
+    @Test
+    public void modify_마이페이지_유저_프로필수정() {
+        HttpEntity<MultiValueMap<String, Object>> request = HtmlFormDataBuilder
+                .multipartFormData()
+                .addParameter("id", 1L)
+                .addParameter("file", new ClassPathResource("static/images/sample.png"))
+                .addParameter("aboutMe", "굿바이")
+                .addParameter("imageUrl", "https://333.com")
+                .build();
+
+        ResponseEntity<RestResponse> response = basicAuthTemplate().postForEntity("/api/users/1", request, RestResponse.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody().getData()).isNotNull();
+
     }
 }
