@@ -41,10 +41,15 @@ public class ApiProductController {
         return ResponseEntity.ok(RestResponse.success(productService.getProductDetailDTO(id)));
     }
 
+    @GetMapping("/{id}/orders/check")
+    public ResponseEntity<RestResponse> isOrderPossible(@LoginUser User user, @PathVariable Long id) {
+        return ResponseEntity.ok(RestResponse.success(productService.getProduct(user, id)));
+    }
+
     @PostMapping("/{id}/orders")
-    public ResponseEntity<Void> order(@LoginUser User user, @Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
+    public ResponseEntity<RestResponse> createOrder(@LoginUser User user, @Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
         Order order = productService.createOrder(id, orderDTO, user);
-        return ResponseEntity.created(URI.create("/orders/" + order.getId())).build();
+        return ResponseEntity.created(URI.create("/products/" + id + "/order/" + order.getId())).body(RestResponse.success(productService.getProductDetailDTO(id)));
     }
 
     @GetMapping("/{id}/reviews")
@@ -52,10 +57,26 @@ public class ApiProductController {
         return ResponseEntity.ok(RestResponse.success(productService.getReviews(id, pageable)));
     }
 
-    @PostMapping("/{id}/reviews")
-    public ResponseEntity<Void> uploadReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
-        Review review = productService.createReview(user, id, reviewDTO);
-        return ResponseEntity.created(URI.create("/reviews/" + review.getId())).build();
+    @GetMapping("/{id}/reviews/check")
+    public ResponseEntity<RestResponse> isReviewPossible(@LoginUser User user, @PathVariable Long id) {
+        return ResponseEntity.ok(RestResponse.success(productService.enableReview(user, id)));
     }
 
+    @PostMapping("/{id}/reviews")
+    public ResponseEntity<RestResponse> uploadReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO, Pageable pageable) {
+        Review review = productService.createReview(user, id, reviewDTO);
+        return ResponseEntity.created(URI.create("/products/" + id + "/review/" + review.getId()))
+                .body(RestResponse.success(productService.getReviews(id, pageable)));
+    }
+
+    @GetMapping("/{id}/orders/user")
+    public ResponseEntity<RestResponse> getOrders(@LoginUser User user, @PathVariable Long id) {
+        return ResponseEntity.ok(RestResponse.success(productService.getOrders(user, id)));
+    }
+
+    @PostMapping("{id}/orders/user")
+    public ResponseEntity<RestResponse> changeOrderStatus(@LoginUser User user, @PathVariable Long id, @RequestBody Long orderId) {
+        Order order = productService.changeOrderStatus(user, id, orderId);
+        return ResponseEntity.ok(RestResponse.success(productService.getOrders(user, id)));
+    }
 }
