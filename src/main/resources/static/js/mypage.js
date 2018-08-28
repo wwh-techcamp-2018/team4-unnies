@@ -1,51 +1,53 @@
 import {$, $all} from './lib/utils.js';
 import UserActivity from "./class/UserActivity.js";
+import ImageUploader from "./class/ImageUploader.js";
+import {uploadInput, mainView, thumbnailView, imageView} from './template/UploadTemplate.js';
+import ImageViewer from "./class/ImageViewer.js";
 
-const userActivity = new UserActivity();;
-let userID = '1';   //임시 테스트
-//userId = location.pathname.split("/").pop();  //todo 변경필요
+const userActivity = new UserActivity();
+let userId;
 
-
-function initEvent(){
+function initEvent() {
     $('#mypage-modify').addEventListener('click', toggleUpdateMode);
     $('.nav.nav-tabs.nav-fill').addEventListener('click', moveToSelectedBar);
     $('#mypage-modify .info-change').addEventListener('click', changeProfile);
     $('#mypage-modify .info-cancel').addEventListener('click', restoreProfile);
 
-    getMypageData(location.pathname);
+    userId = location.pathname.split("/").pop();
+
+    getMypageData(userId);
 }
 
-function getMypageData(pathName){
-    const path = pathName.split("/").pop();
-
-    userActivity.load(userID);
-    showContents(1);
+function getMypageData(userId) {
+    userActivity.load(userId, function () {
+        showContents(1);
+    });
 }
 
-function showContents(index){
+function showContents(index) {
     $('.nav.nav-tabs.nav-fill .nav-item.nav-link.active').classList.remove('active');
     $(`.nav.nav-tabs.nav-fill .nav-item.nav-link:nth-child(${index})`).classList.add('active');
-
     $('.tab-content.py-3.px-3.px-sm-0 .tab-pane.fade.show').classList.remove('show');
     $(`.tab-content.py-3.px-3.px-sm-0 .tab-pane.fade:nth-child(${index})`).classList.add('show');
 
+    console.log("index : ", index);
+
     switch (index) {
         case 1:
-            userActivity.loadGivedProducts(userID, 0);
+            userActivity.loadCreatedProducts(userId, 0);
             break;
         case 2:
-            userActivity.loadReceivedProducts(userID, 0);
+            userActivity.loadReceivedProducts(userId, 0);
             break;
         case 3:
-            userActivity.loadGiveReviews(userID,0);
+            userActivity.loadCreatedReviews(userId, 0);
             break;
         case 4:
-            userActivity.loadReceivedReviews(userID,0);
+            userActivity.loadReceivedReviews(userId, 0);
             break;
         default:
             break;
     }
-
 }
 
 function moveToSelectedBar(event) {
@@ -58,7 +60,7 @@ function changeProfile(event) {
     event.preventDefault();
 
     const formData = new FormData($('#mypage-form'));
-    userActivity.save(formData, userID);
+    userActivity.save(formData, userId);
 }
 
 function restoreProfile(event) {
@@ -67,13 +69,13 @@ function restoreProfile(event) {
     userActivity.restore();
 }
 
-function toggleUpdateMode(event){
+function toggleUpdateMode(event) {
     event.preventDefault();
 
     const buttonManager = event.target.parentNode;
-    const imageInfoText = $('#mypage-image').firstElementChild;
+    const imageButton = $('#mypage-image').firstElementChild;
 
-    imageInfoText.hidden ? imageInfoText.hidden = false : imageInfoText.hidden = true;
+    imageButton.hidden ? imageButton.hidden = false : imageButton.hidden = true;
     [...buttonManager.children].forEach(child => {
         child.hidden ? child.hidden = false : child.hidden = true;
     });
@@ -81,7 +83,7 @@ function toggleUpdateMode(event){
     const toggleMode = $all('.toggle-mode');
 
     toggleMode.forEach(element => {
-        if(element.classList.contains('off')) {
+        if (element.classList.contains('off')) {
             element.classList.remove('off');
             element.value = "";
             element.readOnly = false;
@@ -92,8 +94,26 @@ function toggleUpdateMode(event){
     });
 }
 
-function getElementParentIndex(element){
+function getElementParentIndex(element) {
     return [...element.parentElement.children].indexOf(element) + 1;
 }
 
-document.addEventListener('DOMContentLoaded', initEvent)
+document.addEventListener('DOMContentLoaded', initEvent);
+
+const imageUploader = new ImageUploader();
+imageUploader.setForm($('div.preview-pic'));
+imageUploader.setMultiple(false);
+imageUploader.setInputTemplate(() => '<input type="file" name="file" accept="image/jpeg,image/png" style="display: none;">');
+imageUploader.setInputName('file');
+imageUploader.setDelegate($('#mypage-upload-image'));
+
+imageUploader.addAfterFileInputListener(() => {
+    const fileInput = $('input[name=file]');
+    const fileReader = new FileReader();
+
+    fileReader.addEventListener('load', ({target: {result}}) => {
+        $('div.preview-pic .img-thumb img').src = result;
+    });
+
+    fileReader.readAsDataURL(fileInput.files.item(0));
+});

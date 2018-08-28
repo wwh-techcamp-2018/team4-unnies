@@ -41,6 +41,18 @@ li {
     transform: translate(-50%, -50%);
 }
 
+.feedback {
+    visibility: hidden;
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+.feedback.on {
+    visibility: visible;
+}
+
 /*
 하단
 */
