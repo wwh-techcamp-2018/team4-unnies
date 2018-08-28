@@ -39,6 +39,9 @@ public class UserService {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @Autowired
+    private S3Uploader s3Uploader;
+
     public User signUp(SignUpDTO signUpDTO) {
         if (userRepository.findByEmail(signUpDTO.getEmail()).isPresent()) {
             throw UnAuthenticationException.existEmail();
@@ -85,7 +88,7 @@ public class UserService {
     public Page<ProductDetailDTO> createdProducts(Long ownerId, Pageable pageable) {
         Page<Product> products = productRepository.findAllByOwnerIdOrderByIdDesc(ownerId, pageable);
         List<ProductDetailDTO> productDetailDTOS = products.stream().map(product -> {
-            Integer orderCount = (int) (long) orderRepository.countByProduct(product);
+            int orderCount = orderRepository.countByProductId(product.getId());
             Double ownerRating = reviewRepository.getAvgRatingByWriterId(product.getOwner().getId()).orElse(ZERO);
             return ProductDetailDTO.builder()
                     .product(product)
@@ -102,9 +105,7 @@ public class UserService {
         User user = userRepository.findById(userModifyDTO.getId()).orElseThrow(EntityNotFoundException::new);
         if (!user.equals(loginUser)) throw UnAuthenticationException.invalidUser();
 
-//        if (!userModifyDTO.getAboutMe().equals("")) {
-            user.setAboutMe(userModifyDTO.getAboutMe());
-//        }
+        user.setAboutMe(userModifyDTO.getAboutMe());
 
         if (userModifyDTO.getFile() != null) {
             user.setImageUrl(s3Uploader.upload(userModifyDTO.getFile()));
