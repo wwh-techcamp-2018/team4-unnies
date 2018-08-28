@@ -56,6 +56,8 @@
 
 .card-header {
     padding: 0px;
+    height: 270px;
+    background-color: #eee;
 }
 
 .card-header img {

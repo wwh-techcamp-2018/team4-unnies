@@ -1,11 +1,13 @@
+import { translateDateTime } from '../lib/Translator.js';
 import { ratingTemplate } from "./DetailTemplate.js";
 
-export function productTemplate({ productId, productTitle, productImgUrl, distanceMeter, ownerName, ownerImgUrl, ownerRating, orderCnt, maxParticipant, expireDateTime, price }) {
+export function productTemplate({ distanceMeter, productId, productTitle, productImgUrl, ownerName, ownerImgUrl, ownerRating, orderCnt, maxParticipant, expireDateTime, price }) {
+    const formattedExpireDateTime = translateDateTime(expireDateTime);
     return `
     <div class="card">
         <input type="hidden" name="product-id" value="${productId}">
         <div class="card-header">
-            <img src="${productImgUrl}" alt="${productTitle}">
+            <img src="${ productImgUrl ? `${productImgUrl}` : `#` }" alt="${productTitle}">
             <span class="badge badge-info">${distanceMeter} m</span>
         </div>
         <div class="card-body">
@@ -13,7 +15,7 @@ export function productTemplate({ productId, productTitle, productImgUrl, distan
             <div class="container-fluid mt-2 chef">
                 <div class="row">
                     <div class="chef-img-container">
-                        ${ ownerImgUrl ? `<img src="${ownerImgUrl} alt=${ownerName}">` : `` }
+                        <img src="${ ownerImgUrl ? `${ownerImgUrl}` : `/images/blank-profile.png` }" alt=${ownerName}>
                     </div>
                     <div class="col text-right">
                         <p class="card-text">${ownerName}</p>
@@ -32,7 +34,7 @@ export function productTemplate({ productId, productTitle, productImgUrl, distan
             </dl>
             <dl class="row">
                 <dt>모집기간</dt>
-                <dd>${expireDateTime} <span class="text-muted">까지</span></dd>
+                <dd>${formattedExpireDateTime} <span class="text-muted">까지</span></dd>
             </dl>
             <h4 class="card-subtitle text-right font-weight-bold price">${price} <span class="text-muted">원</span></h4>
         </div>
