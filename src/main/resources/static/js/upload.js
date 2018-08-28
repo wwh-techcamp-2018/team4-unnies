@@ -57,7 +57,7 @@ function setDateTime() {
 
     shareDate.value = expireDate.value;
     shareDate.min = expireDate.min;
-    shareDate.max = expireDate.max
+    shareDate.max = expireDate.max;
 
     expireDate.addEventListener('change', validateShareDateTime);
     shareDate.addEventListener('change', validateShareDateTime);

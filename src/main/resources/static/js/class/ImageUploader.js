@@ -23,6 +23,10 @@ class ImageUploader {
         this.name = name;
     }
 
+    setMultiple(boolean) {
+        this.multiple = boolean;
+    }
+
     setDropZone(element) {
         this.dropzone = element;
         this.dropzone.addEventListener('dragover', this._defaultDragOverHandler.bind(this));
@@ -62,9 +66,16 @@ class ImageUploader {
 
     _defaultUploadHandler(event) {
         event.preventDefault();
+        let input = this.form.querySelector(`input[name=${this.name}]`);
+        if (input && !this.multiple) {
+            return input.click();
+        }
+
         this.form.insertAdjacentHTML('beforeend', this.inputTemplate(this.name));
-        const input = this.form.querySelector(`input[name=${this.name}]:last-child`)
+        input = this.form.querySelector(`input[name=${this.name}]:last-child`);
         input.addEventListener('input', event => {
+            event.preventDefault();
+            event.stopPropagation();
             const { files } = event.target;
             if (this.FILE_LIMIT < this.filesLength + files.length) {
                 input.remove();
