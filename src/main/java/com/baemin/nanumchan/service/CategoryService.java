@@ -30,10 +30,6 @@ public class CategoryService {
 
     public List<NearProductsDTO> getNearProducts(Long categoryId, Double longitude, Double latitude, int offset, int limit) {
         List<Product> products = productRepository.findNearProductsByCategoryId(categoryId, NearProductsDTO.DEFAULT_RADIUS_METER, longitude, latitude, offset, limit);
-        return getNearProductDTO(products, longitude, latitude);
-    }
-
-    private List<NearProductsDTO> getNearProductDTO(List<Product> products, Double longitude, Double latitude) {
         return products.stream()
                 .map(p -> NearProductsDTO.builder()
                         .productId(p.getId())
