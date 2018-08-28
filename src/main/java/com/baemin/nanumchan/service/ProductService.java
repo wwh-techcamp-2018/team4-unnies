@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,11 +64,11 @@ public class ProductService {
 
     public ProductDetailDTO getProductDetailDTO(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
 
         int orderCount = orderRepository.countByProductId(productId);
 
-        Double ownerRating = reviewRepository.getAvgRatingByWriterId(product.getOwner().getId()).orElse(ZERO);
+        Double ownerRating = reviewRepository.getAvgRatingByChefId(product.getOwner().getId()).orElse(ZERO);
 
         return ProductDetailDTO.builder()
                 .product(product)
@@ -77,44 +78,31 @@ public class ProductService {
                 .build();
     }
 
+
+    public Product getProduct(User user, Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
+
+        Integer orderCount = orderRepository.countByProductId(product.getId());
+        product.validateOrder(user, orderRepository.existsByParticipantAndProduct(user, product), orderCount);
+        return product;
+    }
+
     public Order createOrder(Long productId, OrderDTO orderDTO, User user) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
 
-        int orderCount = orderRepository.countByProductId(productId);
-
-        Status status = product.calculateStatus(orderCount);
-
-        if (!status.canOrder()) {
-            throw new RestException(status.getMessage());
-        }
+        Integer orderCount = orderRepository.countByProductId(product.getId()); // int
+        product.validateOrder(user, orderRepository.existsByParticipantAndProduct(user, product), orderCount);
 
         return orderRepository.save(
                 Order.builder()
                         .deliveryType(orderDTO.getDeliveryType())
                         .product(product)
                         .participant(user)
-                        .status(status)
+//                        .status(Status.ON_SHARING)
                         .build()
         );
-    }
-
-    public Review createReview(User user, Long productId, ReviewDTO reviewDTO) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        Order order = orderRepository.findByParticipantIdAndProductId(user.getId(), productId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        if (reviewRepository.existsByWriterAndProduct(user, product)) {
-            throw new RestException("이미 리뷰를 등록하였습니다");
-        }
-
-        if (!order.isCompleteSharing()) {
-            throw new RestException("나눔완료가 되지 않았습니다");
-        }
-        Review review = reviewDTO.toEntity(product, user, reviewDTO);
-        return reviewRepository.save(review);
     }
 
     public Page<Review> getReviews(Long productId, Pageable pageable) {
@@ -123,4 +111,42 @@ public class ProductService {
         return reviewRepository.findAllByChefOrderByIdDesc(product.getOwner(), pageable);
     }
 
+    public Product enableReview(User user, Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
+
+        Order order = orderRepository.findByParticipantIdAndProductId(user.getId(), productId)
+                .orElseThrow(() -> new EntityNotFoundException("나눔신청 내역이 존재하지 않습니다"));
+
+        if (!order.isCompleteSharing()) {
+            throw new RestException("나눔완료가 되지 않았습니다");
+        }
+
+        if (reviewRepository.existsByWriterAndProduct(user, product)) {
+            throw new RestException("이미 리뷰를 등록하였습니다");
+        }
+        return product;
+    }
+
+    public Review createReview(User user, Long productId, ReviewDTO reviewDTO) {
+        return reviewRepository.save(reviewDTO.toEntity(enableReview(user, productId), user, reviewDTO));
+    }
+
+    public List<Order> getOrders(User user, Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        if (!user.isSameUser(product.getOwner())) {
+            throw new RestException("요리사 본인이 아닙니다");
+        }
+
+        return orderRepository.findAllByProduct(product);
+    }
+
+    public Order changeOrderStatus(User user, Long productId, Long orderId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        return orderRepository.save(product.getOrder(user, orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new)));
+    }
 }
