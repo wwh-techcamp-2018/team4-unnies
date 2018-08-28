@@ -5,55 +5,59 @@ import com.baemin.nanumchan.utils.ValidateRegex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+@Entity
 @Getter
 @Builder
-@Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class User extends AbstractEntity {
 
     public static final GuestUser GUEST_USER = new GuestUser();
 
-    @NotEmpty
+    @NotNull
     @Pattern(regexp = ValidateRegex.EMAIL)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String email;
 
-    @NotEmpty
+    @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
-    @NotEmpty
+    @NotNull
     @Pattern(regexp = ValidateRegex.USERNAME)
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String name;
 
-    @NotEmpty
+    @NotNull
     @Pattern(regexp = ValidateRegex.PHONE)
     @Column(nullable = false)
     private String phoneNumber;
 
-    @NotEmpty
+    @NotNull
+    @Length(min = 1, max = 50)
     @Column(nullable = false, length = 50)
     private String address;
 
-    @NotEmpty
+    @NotNull
+    @Length(min = 1, max = 50)
     @Column(nullable = false, length = 50)
     private String addressDetail;
 
-    @Lob
+    @Nullable
+    @Length(min = 1)
     private String aboutMe;
 
+    @Nullable
     private String imageUrl;
 
     @JsonIgnore

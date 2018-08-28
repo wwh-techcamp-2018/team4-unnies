@@ -28,7 +28,7 @@ public class ApiProductController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> upload(@LoginUser User user, @Valid ProductDTO productDTO) {
-        return ResponseEntity.created(URI.create("/api/products/" + productService.create(user, productDTO).getId())).build();
+        return ResponseEntity.created(URI.create("/products/" + productService.create(user, productDTO).getId())).build();
     }
 
     @PostMapping(path = "/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -43,8 +43,8 @@ public class ApiProductController {
 
     @PostMapping("/{id}/orders")
     public ResponseEntity<Void> order(@LoginUser User user, @Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
-        Order order = productService.order(id, orderDTO, user);
-        return ResponseEntity.created(URI.create("/api/products/" + id + "/order/" + order.getId())).build();
+        Order order = productService.createOrder(id, orderDTO, user);
+        return ResponseEntity.created(URI.create("/orders/" + order.getId())).build();
     }
 
     @GetMapping("/{id}/reviews")
@@ -54,8 +54,8 @@ public class ApiProductController {
 
     @PostMapping("/{id}/reviews")
     public ResponseEntity<Void> uploadReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
-        Review review = productService.uploadReview(user, id, reviewDTO);
-        return ResponseEntity.created(URI.create("/api/products/" + id + "/review/" + review.getId())).build();
+        Review review = productService.createReview(user, id, reviewDTO);
+        return ResponseEntity.created(URI.create("/reviews/" + review.getId())).build();
     }
 
 }

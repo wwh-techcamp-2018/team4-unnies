@@ -24,9 +24,9 @@ public class ApiUserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<RestResponse> create(@Valid @RequestBody SignUpDTO signUpDTO){
-         User user = userService.save(signUpDTO);
-         return ResponseEntity.created(URI.create("/users/" + user.getId())).build();
+    public ResponseEntity<RestResponse> create(@Valid @RequestBody SignUpDTO signUpDTO) {
+        User user = userService.signUp(signUpDTO);
+        return ResponseEntity.created(URI.create("/users/" + user.getId())).build();
     }
 
     @PostMapping("/login")
@@ -52,7 +52,7 @@ public class ApiUserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<Void> logout(@LoginUser User user, HttpSession session){
+    public ResponseEntity<Void> logout(@LoginUser User user, HttpSession session) {
         SessionUtils.removeUserInSession(session);
         return ResponseEntity.ok().build();
     }

@@ -19,8 +19,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             nativeQuery = true)
     Optional<Double> getAvgRatingByWriterId(Long writerId);
 
-    Long countByWriterId(Long writerId);
+    int countByWriterId(Long writerId);
 
-    Long countByChefId(Long chefId);
+    int countByChefId(Long chefId);
 
 }

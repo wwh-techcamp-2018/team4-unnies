@@ -16,7 +16,7 @@ public class OrderTest {
                 .status(Status.COMPLETE_SHARING)
                 .build();
 
-        assertThat(order.isCompleteSharing()).isTrue();
+        assertThat(order.getStatus().isSharingCompleted()).isTrue();
     }
 
     @Test
@@ -24,6 +24,6 @@ public class OrderTest {
         order = Order.builder()
                 .status(Status.ON_SHARING)
                 .build();
-        assertThat(order.isCompleteSharing()).isFalse();
+        assertThat(order.getStatus().isSharingCompleted()).isFalse();
     }
 }

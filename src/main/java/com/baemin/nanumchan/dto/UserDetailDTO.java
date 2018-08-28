@@ -13,9 +13,9 @@ public class UserDetailDTO {
     private String aboutMe;
     private String imageUrl;
 
-    private Long reviewToCount;//내가한 리뷰
-    private Long reviewFromCount;
+    private int reviewToCount;//내가한 리뷰
+    private int reviewFromCount;
 
-    private Long orderToCount;//내가한 주문
-    private Long orderFromCount;
+    private int orderToCount;//내가한 주문
+    private int orderFromCount;
 }
