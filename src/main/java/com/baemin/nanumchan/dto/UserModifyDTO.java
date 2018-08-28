@@ -1,6 +1,8 @@
 package com.baemin.nanumchan.dto;
 
+import com.baemin.nanumchan.validate.Image;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,7 +13,6 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class UserModifyDTO {
 
     private Long id;
@@ -21,6 +22,7 @@ public class UserModifyDTO {
     private String aboutMe;
 
     @Nullable
+    @Image
     private MultipartFile file;
 
     @Nullable
