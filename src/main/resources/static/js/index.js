@@ -5,6 +5,15 @@ import Product from './lib/Product.js';
 import { productTemplate } from './template/ProductTemplate.js';
 
 
+const PAGE_MIN_OFFSET = 0;
+const PAGE_SIZE = 6;
+let pageOffset = PAGE_MIN_OFFSET;
+
+const RATIO_SCROLL_DETECTION = 0.4;
+const WAIT_TIME_MS = 50;
+window.addEventListener('scroll', throttle(loadMoreNearProducts, WAIT_TIME_MS));
+window.addEventListener('resize', throttle(loadMoreNearProducts, WAIT_TIME_MS));
+
 const LOADING_TEXT = '(loading...)';
 
 const category = new Category();
@@ -64,7 +73,7 @@ function setGIS(latitude, longitude) {
     setLocation(LOADING_TEXT);
     daumMap.getAddress(address => onGetAddress(address));
 
-    loadNearProducts(longitude, latitude);
+    loadNearProducts(latitude, longitude, PAGE_MIN_OFFSET, PAGE_SIZE);
 }
 
 function getCurrentLocation() {
@@ -114,27 +123,32 @@ function searchAddress() {
     daumMap.searchPlaces();
 }
 
-function loadNearProducts(longitude, latitude) {
+function loadNearProducts(latitude, longitude, offset, limit) {
     const categoryId = window.location.pathname.split('/').pop();
-    if(categoryId) {
-        category.loadNearProducts(categoryId, longitude, latitude, onLoadNearProducts, onLoadFailNearProducts);
+    if (categoryId) {
+        category.loadNearProducts(categoryId, latitude, longitude, offset, limit, onLoadNearProducts, onLoadFailNearProducts);
     } else {
-        product.loadNearAll(longitude, latitude, onLoadNearProducts, onLoadFailNearProducts);
+        product.loadNearAll(latitude, longitude, offset, limit, onLoadNearProducts, onLoadFailNearProducts);
     }
 }
 
 function onLoadNearProducts(data) {
     const cardContainer = $(".card-columns");
-    cardContainer.innerHTML = '';
 
-    if(!data.length) {
+    if(!pageOffset)
+        cardContainer.innerHTML = '';
+
+    if (!data.length && !$('.container.card-columns').children.length) {
         showNotFoundNearProducts();
         return;
     }
 
     hideNotFoundNearProducts();
-    cardContainer.insertAdjacentHTML('afterbegin', templateCards(data));
+    cardContainer.insertAdjacentHTML('beforeend', templateCards(data));
     $all('.card').forEach(card => attachCardEventListener(card));
+
+    pageOffset += data.length;
+    console.log(pageOffset);
 }
 
 function templateCards(data) {
@@ -158,4 +172,41 @@ function showNotFoundNearProducts() {
 
 function hideNotFoundNearProducts() {
     $('.container.not-found').style.display = 'none';
+}
+
+function throttle(callback, wait) {
+    let time = Date.now();
+    return function() {
+        if ((time + wait) < Date.now()) {
+            callback();
+            time = Date.now();
+        }
+    }
+}
+
+function isOverScrollThreshold() {
+    const documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+    const scrollY = document.documentElement.scrollTop + (windowHeight / 2);
+    const documentYHalf = documentHeight * RATIO_SCROLL_DETECTION;
+
+    if (scrollY < documentYHalf)
+        return false;
+    else
+        return true;
+}
+
+function loadMoreNearProducts() {
+    if(!isOverScrollThreshold()) {
+        return;
+    }
+
+    if (pageOffset % PAGE_SIZE != 0) {
+        return;
+    }
+
+    const longitude = sessionStorage.getItem('longitude');
+    const latitude = sessionStorage.getItem('latitude');
+    loadNearProducts(latitude, longitude, pageOffset, PAGE_SIZE);
 }

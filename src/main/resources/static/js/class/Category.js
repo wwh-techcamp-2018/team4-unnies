@@ -17,8 +17,8 @@ class Category {
         });
     }
 
-    loadNearProducts(id, longitude, latitude, success, fail) {
-        fetch(`/api/categories/${id}/products?latitude=${latitude}&longitude=${longitude}`, {
+    loadNearProducts(id, latitude, longitude, offset, limit, success, fail) {
+        fetch(`/api/categories/${id}/products?latitude=${latitude}&longitude=${longitude}&offset=${offset}&limit=${limit}`, {
             method: 'get'
         }).then(response => {
             if (!response.ok) {
