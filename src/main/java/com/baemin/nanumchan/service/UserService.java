@@ -5,7 +5,6 @@ import com.baemin.nanumchan.domain.cloud.S3Uploader;
 import com.baemin.nanumchan.dto.*;
 import com.baemin.nanumchan.exception.UnAuthenticationException;
 import com.baemin.nanumchan.utils.SessionUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service("userService")
 public class UserService {
 

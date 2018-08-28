@@ -8,7 +8,6 @@ import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.UserService;
 import com.baemin.nanumchan.utils.RestResponse;
 import com.baemin.nanumchan.utils.SessionUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,6 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/users")
-@Slf4j
 public class ApiUserController {
 
     @Resource(name = "userService")
