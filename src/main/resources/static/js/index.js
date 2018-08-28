@@ -134,10 +134,10 @@ function loadNearProducts(latitude, longitude, offset, limit) {
 }
 
 function onLoadNearProducts(data) {
-    const cardContainer = $(".card-columns");
+    const productsContainer = $(".card-columns");
 
     if(!pageOffset)
-        cardContainer.innerHTML = '';
+        productsContainer.innerHTML = '';
 
     if (!data.length && !$('.container.card-columns').children.length) {
         showNotFoundNearProducts();
@@ -145,14 +145,13 @@ function onLoadNearProducts(data) {
     }
 
     hideNotFoundNearProducts();
-    cardContainer.insertAdjacentHTML('beforeend', templateCards(data));
+    productsContainer.insertAdjacentHTML('beforeend', templateProducts(data));
     $all('.card').forEach(card => attachCardEventListener(card));
 
     pageOffset += data.length;
-    console.log(pageOffset);
 }
 
-function templateCards(data) {
+function templateProducts(data) {
     return `${data && data.map(productTemplate).join('')}`;
 }
 
