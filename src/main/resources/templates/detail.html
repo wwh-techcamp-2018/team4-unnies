@@ -31,14 +31,10 @@
 </head>
 <body>
 <div class="container">
-
     <div class="card">
         <div class="container-fliud">
             <div class="wrapper row">
                 <div class="col-6">
-                    {{# productId }}
-                    <input type="hidden" value="{{ productId }}" id="productId"/>
-                    {{/ productId }}
                     <div class="preview-pic tab-content">
                         <div class="tab-pane active" id="pic-1"><img
                                 src="https://cdn.bmf.kr/_data/product/I21A3/b3b7ce9d8cf1ee91166fe97785d51d8a.jpg"/>
@@ -85,26 +81,15 @@
                     <h4 class="give-place"><strong>나눔장소 : </strong><span id="give-place"></span></h4>
                     <h4 class="give-plate"><strong>나눔용기 : </strong><span id="give-plate"></span>
                     </h4>
-                    <!--<hr>-->
-                    <div class="line-top" style="margin-top:12px; margin-bottom:12px;"></div>
-                    <div class="form-check">
-                        <label class="form-check-label" for="radio-riders">
-                            <input type="radio" class="form-check-input with-gap" id="radio-riders"
-                                   name="groupOfRadioGap">
-                            배민라이더스</label>
-                        <label class="form-check-label" for="radio-self">
-                            <input type="radio" class="form-check-input with-gap" id="radio-self"
-                                   name="groupOfRadioGap">
-                            직접방문</label>
-                    </div>
-
                     <h2 class="price"><strong>나눔금액 : </strong><span id="price"></span><span>원</span>
-                    </h2>
-
-                    <div class="action">
-                        <button class="add-to-cart btn btn-default" type="button" id="register-share"
+                        <!--<hr>-->
+                        <div class="line-top" style="margin-top:12px; margin-bottom:12px;">
+                        </div>
+                        <!--<div class="action">-->
+                        <button class="add-to-cart btn btn-default" type="button" id="register-button"
                                 disabled="true"></button>
-                    </div>
+                        <!--</div>-->
+                        <strong name="invalid-register" style="color:red; visibility:hidden;"></strong>
                 </div>
             </div>
         </div>
@@ -162,6 +147,7 @@
                             <div id="reviews-count">
                             </div>
                             <div id="review-register">
+                                <strong name="invalid-review" style="color:red; visibility:hidden;"></strong>
                                 <a href="#" id="open-modal">리뷰 등록</a>
                             </div>
                         </div>
@@ -170,6 +156,19 @@
                         <ul id="product-comments-list">
                         </ul>
                     </section>
+
+                    <!--{{# loginedUser}}-->
+                    <section id="product-order">
+                        <div id="orders-count">
+                        </div>
+                        <!--<input type="hidden" value="{{id}}" id="login-user-id">-->
+                        <ul id="product-order-list">
+
+                        </ul>
+                    </section>
+                    <!--{{/ loginedUser}}-->
+
+
 
                     <div class="overlay is-hidden" id="overlay">
                         <div class="modal-content">
@@ -210,6 +209,37 @@
                             </button>
                         </div>
 
+                    </div>
+
+
+                    <div class="overlay is-hidden" id="register-overlay">
+                        <div class="modal-content">
+                            <span class="button-close" id="close-register">&times;</span>
+                            <form action="post" id="register-share">
+                                <div class="form-check">
+                                    <label class="form-check-label" for="radio-riders">
+                                        <input type="radio" class="form-check-input with-gap" id="radio-riders"
+                                               name="groupOfRadioGap" required>
+                                        배민라이더스</label>
+                                    <label class="form-check-label" for="radio-self">
+                                        <input type="radio" class="form-check-input with-gap" id="radio-self"
+                                               name="groupOfRadioGap">
+                                        직접방문</label>
+                                </div>
+
+                                <div id="register-data">
+
+                                </div>
+
+                                <div class="action">
+                                    <button class="add-to-cart btn btn-default" type="button" id="modal-register-button"
+                                            disabled="true"></button>
+                                </div>
+                                <button type="submit" id="register-order" class="btn btn-info" style="float:right;">
+                                    나눔신청
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
                 </div>

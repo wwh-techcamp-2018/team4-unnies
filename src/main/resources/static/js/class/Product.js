@@ -35,12 +35,14 @@ class Product {
                 if (response.ok) {
                     return response.json();
                 }
-
-            }).then(({data}) => {
-            this.loadProductDetail(data);
-        })
+                this.loadProductError();
+                return;
+            })
+            .then(({data}) => {
+                this.loadProductDetail(data);
+            })
             .catch(error => {
-                console.log(error);
+                // TODOs : error handling...
             });
     }
 
@@ -55,7 +57,7 @@ class Product {
         $('#participate-date').innerText = product.expireDateTime;
         $('#give-time').innerText = product.shareDateTime;
         $('#give-place').innerText = owner.address;
-        product.isBowlNeeded === true ? $('#give-plate').innerText = '개인 용기 지참' : $('#give-plate').innerText = '나눔 용기 제공';
+        $('#give-plate').innerText = product.isBowlNeeded === true ? '개인 용기 지참' : '나눔 용기 제공';
         $('#price').innerText = product.price;
         $('#nickname').innerText = owner.name;
         $('#region-name').innerText = owner.address;
@@ -74,13 +76,10 @@ class Product {
         this.loadStatus(status);
         const userRating = Math.round(data.ownerRating)
         $('#user-rating').innerHTML = userRating > 0 ? ratingTemplate(userRating) : '';
-    }
 
-    loadStatus(status) {
-        // status type : EXPIRED, FULL_PARTICIPANTS, ON_PARTICIPATING
         const currentStatus = $('.status');
-        const registerShareBtn = $('#register-share');
-        if (status === 'ON_PARTICIPATING') {
+        const registerShareBtn = $('#register-button');
+        if(status === 'ON_PARTICIPATING') {
             currentStatus.innerText = '모집중';
             currentStatus.classList.add('on');
             registerShareBtn.innerText = '나눔신청';
@@ -101,6 +100,26 @@ class Product {
         }
     }
 
+    loadProductError(){
+            $('.product-name').innerText = '존재 하지 않은 데이터 입니다';
+            $('#product-name').innerText = '존재 하지 않은 데이터 입니다';
+            $('#product-title').innerText = '존재 하지 않은 데이터 입니다';
+            $('#cook').innerText = '존재 하지 않은 데이터 입니다';
+            $('#participate-number').innerText = '존재 하지 않은 데이터 입니다';
+            $('#participate-date').innerText = '존재 하지 않은 데이터 입니다';
+            $('#give-time').innerText = '존재 하지 않은 데이터 입니다';
+            $('#give-place').innerText = '존재 하지 않은 데이터 입니다';
+            $('#give-plate').innerText = '존재 하지 않은 데이터 입니다';
+            $('#price').innerText = '존재 하지 않은 데이터 입니다';
+            $('#nickname').innerText = '존재 하지 않은 데이터 입니다';
+            $('#region-name').innerText = '존재 하지 않은 데이터 입니다';
+            $('#product-name').innerText = '존재 하지 않은 데이터 입니다';
+            $('#product-category').innerText = '존재 하지 않은 데이터 입니다';
+            $('#product-create-time').innerText = '존재 하지 않은 데이터 입니다';
+            $('#product-price').innerText = '존재 하지 않은 데이터 입니다';
+
+            const userRating = '존재 하지 않은 데이터 입니다';
+        }
 }
 
 export default Product;
