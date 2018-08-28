@@ -1,7 +1,6 @@
 package com.baemin.nanumchan.service;
 
 import com.baemin.nanumchan.domain.*;
-import com.baemin.nanumchan.domain.cloud.S3Uploader;
 import com.baemin.nanumchan.dto.*;
 import com.baemin.nanumchan.exception.UnAuthenticationException;
 import com.baemin.nanumchan.utils.SessionUtils;
@@ -38,7 +37,7 @@ public class UserService {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private S3Uploader s3Uploader;
+    private ImageStorage imageStorage;
 
     public User signUp(SignUpDTO signUpDTO) {
         if (userRepository.findByEmail(signUpDTO.getEmail()).isPresent()) {
@@ -106,7 +105,7 @@ public class UserService {
         user.setAboutMe(userModifyDTO.getAboutMe());
 
         if (userModifyDTO.getFile() != null) {
-            user.setImageUrl(s3Uploader.upload(userModifyDTO.getFile()));
+            user.setImageUrl(imageStorage.upload(userModifyDTO.getFile()));
         }
 
         User modifiedUser = userRepository.save(user);
