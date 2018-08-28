@@ -1,7 +1,8 @@
 import {$, $all} from '../lib/utils.js';
 import {reviewTemplate} from '../template/DetailTemplate.js';
 import {cardTemplate} from '../template/CardTemplate.js';
-import {tabsTemplate} from '../template/MypageNavTemplate.js';
+import {contentsTemplate, tabsTemplate} from '../template/MyPageTemplate.js';
+import {errorPageTemplate} from '../template/ErrorPageTemplate.js';
 
 //todo : 에러처리
 class UserActivity {
@@ -19,10 +20,14 @@ class UserActivity {
                 if (response.ok) {
                     return response.json();
                 }
+                if (response.status === 404) {
+                    this.setErrorPageTemplate();
+                }
             })
             .then(({data}) => {
                 this.originData = data;
-                this.setUserInfo();
+                this.setMypageTemplate();
+                this.setEditMode();
                 this.showUserActivity();
                 callback();
             })
@@ -31,17 +36,24 @@ class UserActivity {
             });
     }
 
+    setErrorPageTemplate() {
+        $('.mypage-contents').insertAdjacentHTML('afterbegin', errorPageTemplate());
+    }
+
+    setMypageTemplate() {
+        $('.mypage-contents').insertAdjacentHTML('afterbegin', contentsTemplate());
+    }
+
     restore() {
         this.showUserActivity();
     }
 
-    setUserInfo() {
+    setEditMode() {
         $('.nav.nav-tabs.nav-fill').insertAdjacentHTML('afterbegin', tabsTemplate(this.originData.mine));
         $('#mypage-modify').hidden = !this.originData.mine;
     }
 
     showUserActivity() {
-
         $('#mypage-name').innerText = this.originData.name + ' (' + this.originData.email + ')';
         $('#mypage-activity .col:nth-child(1) .fa').innerText = '나눔수 ' + this.originData.createdProductsCount;
         $('#mypage-activity .col:nth-child(2) .fa').innerText = '받음수 ' + this.originData.receivedProductsCount;
@@ -51,7 +63,7 @@ class UserActivity {
 
         $('#mypage-aboutme').firstElementChild.value = this.originData.aboutMe;
         $('#mypage-aboutme').firstElementChild.placeholder = '자기소개를 입력해보아요.';
-        $('div.preview-pic .img-thumb img').src = this.originData.imageUrl;
+        $('div.preview-pic .img-thumb img').src = this.originData.imageUrl ? this.originData.imageUrl : "/images/blank-profile.png";
     }
 
     save(formData, userId) {
