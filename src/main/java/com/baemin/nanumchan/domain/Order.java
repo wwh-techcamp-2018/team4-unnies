@@ -39,4 +39,8 @@ public class Order extends AbstractEntity {
     public boolean isCompleteSharing() {
         return status.equals(Status.COMPLETE_SHARING);
     }
+
+    public void changeStatusToCompleted() {
+        status = Status.COMPLETE_SHARING;
+    }
 }
