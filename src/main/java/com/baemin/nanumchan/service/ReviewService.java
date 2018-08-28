@@ -13,7 +13,7 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public Page<Review> getOtherReviews(Long chefId, Pageable pageable) {
+    public Page<Review> receivedReviews(Long chefId, Pageable pageable) {
         return reviewRepository.findAllByChefIdOrderByIdDesc(chefId, pageable);
     }
 

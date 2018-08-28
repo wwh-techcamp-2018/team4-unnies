@@ -13,11 +13,11 @@ public class UserDetailDTO {
     private String aboutMe;
     private String imageUrl;
 
-    private int reviewToCount;//내가한 리뷰
-    private int reviewFromCount;
+    private Long createdReviewsCount;//내가한 리뷰
+    private Long receivedReviewsCount;
 
-    private Long orderToCount;//내가한 주문
-    private Long orderFromCount;
+    private Long createdProductsCount;//내가한 나눔
+    private Long receivedProductsCount;
 
     private Double avgRating;
     private boolean isMine;

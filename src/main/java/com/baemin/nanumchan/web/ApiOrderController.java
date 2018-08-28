@@ -20,6 +20,6 @@ public class ApiOrderController {
 
     @GetMapping("/users/{id}")
     public ResponseEntity<RestResponse> getReceivedProducts(@PathVariable Long id, Pageable pageable) {
-        return ResponseEntity.ok(RestResponse.success(orderService.getReceivedProducts(id, pageable)));
+        return ResponseEntity.ok(RestResponse.success(orderService.receivedProducts(id, pageable)));
     }
 }

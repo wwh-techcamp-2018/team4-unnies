@@ -19,7 +19,7 @@ public class ApiReviewController {
     private ReviewService reviewService;
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<RestResponse> getOtherReviews(@PathVariable Long id, Pageable pageable) {
-        return ResponseEntity.ok(RestResponse.success(reviewService.getOtherReviews(id, pageable)));
+    public ResponseEntity<RestResponse> receivedReviews(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(RestResponse.success(reviewService.receivedReviews(id, pageable)));
     }
 }

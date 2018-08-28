@@ -51,13 +51,13 @@ public class ApiUserController {
     }
 
     @GetMapping("/{id}/reviews")
-    public ResponseEntity<RestResponse> getMyReviews(@PathVariable Long id, Pageable pageable) {
-        return ResponseEntity.ok(RestResponse.success(userService.getMyReviews(id, pageable)));
+    public ResponseEntity<RestResponse> createdReviews(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(RestResponse.success(userService.createdReviews(id, pageable)));
     }
 
     @GetMapping("/{id}/products")
-    public ResponseEntity<RestResponse> getMyProducts(@PathVariable Long id, Pageable pageable) {
-        return ResponseEntity.ok(RestResponse.success(userService.getMyProducts(id, pageable)));
+    public ResponseEntity<RestResponse> createdProducts(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(RestResponse.success(userService.createdProducts(id, pageable)));
     }
 
     @GetMapping("/logout")
