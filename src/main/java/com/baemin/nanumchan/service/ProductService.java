@@ -110,10 +110,10 @@ public class ProductService {
         List<Product> products = productRepository.findNearProducts(NearProductsDTO.DEFAULT_RADIUS_METER, longitude, latitude, offset, limit);
         return products.stream()
                 .map(p -> NearProductsDTO.builder()
+                        .distanceMeter(Math.floor(DistanceUtils.distanceInMeter(p.getLatitude(), p.getLongitude(), latitude, longitude)))
                         .productId(p.getId())
                         .productTitle(p.getTitle())
                         .productImgUrl(p.getProductImages().stream().findFirst().isPresent() ? p.getProductImages().get(0).getUrl() : null)
-                        .distanceMeter(Math.floor(DistanceUtils.distanceInMeter(p.getLatitude(), p.getLongitude(), latitude, longitude)))
                         .ownerName(p.getOwner().getName())
                         .ownerImgUrl(p.getOwner().getImageUrl())
                         .ownerRating(reviewRepository.getAvgRatingByChefId(p.getOwner().getId()).orElse(ZERO))
