@@ -69,26 +69,26 @@
 
         <div class="form-group">
             <label class="control-label">음식명</label>
-            <input type="text" class="form-control" name="name" id="product-name" placeholder="음식명을 입력하세요." required>
+            <input type="text" class="form-control" name="name" id="product-name" placeholder="음식명을 입력하세요." minlength="1" maxlength="32" required>
             <span class="feedback"></span>
         </div>
 
         <div class="form-group">
             <label class="control-label">제목</label>
-            <input type="text" class="form-control" name="title" id="product-title" placeholder="제목을 입력하세요. (최대 40자)" required>
+            <input type="text" class="form-control" name="title" id="product-title" placeholder="제목을 입력하세요. (최대 40자)" minlength="1" maxlength="40" required>
             <span class="feedback"></span>
         </div>
 
         <div class="form-group">
             <label class="control-label">가격</label>
-            <input type="number" class="form-control" name="price" id="product-price" placeholder="가격을 입력하세요. (숫자로만 입력 / 1000원 단위)" step="1000" min="0" required>
+            <input type="number" class="form-control" name="price" id="product-price" placeholder="가격을 입력하세요. (숫자로만 입력 / 1000원 단위)" step="1000" min="0" max="1000000" required>
             <input type="checkbox" id="price-free"> 무료
             <span class="feedback"></span>
         </div>
 
         <div class="form-group">
             <label class="control-label">내용</label>
-            <input type="hidden" name="description">
+            <input type="hidden" name="description" minlength="1" maxlength="100000">
             <div id="editSection"></div>
             <span class="feedback"></span>
         </div>
@@ -103,8 +103,8 @@
                     <button class="btn btn-primary current" type="button"><i class="fa fa-location-arrow"></i></button>
                     <button class="btn btn-secondary home" type="button"><i class="fa fa-home"></i></button>
                 </div>
-                <input type="text" class="form-control" name="address" id="product-address" placeholder="나눔장소를 입력하세요." required>
-                <input type="text" class="form-control" name="addressDetail" id="product-address-detail" placeholder="상세 주소 입력" required>
+                <input type="text" class="form-control" name="address" id="product-address" placeholder="나눔장소를 입력하세요." minlength="1" maxlength="50" required>
+                <input type="text" class="form-control" name="addressDetail" id="product-address-detail" placeholder="상세 주소 입력" minlength="1" maxlength="50" required>
                 <input type="hidden" name="latitude">
                 <input type="hidden" name="longitude">
             </div>
@@ -128,14 +128,14 @@
         <div class="form-group">
             <label class="control-label">모집기간</label>
             <input type="datetime-local" class="form-control" id="product-expire" step="600"
-                   name="expireDateTime" value="2018-06-12T19:30" min="2018-06-07T00:00" max=""/>
+                   name="expireDateTime">
             <span class="feedback"></span>
         </div>
 
         <div class="form-group">
             <label class="control-label">나눔시간</label>
             <input type="datetime-local" class="form-control" id="product-share" step="600"
-                   name="shareDateTime" value="2018-06-12T19:30" min="2018-06-07T00:00" max=""/>
+                   name="shareDateTime">
             <span class="feedback"></span>
         </div>
 

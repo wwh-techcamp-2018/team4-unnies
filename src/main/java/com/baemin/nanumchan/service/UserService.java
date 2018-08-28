@@ -31,7 +31,7 @@ public class UserService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    public User save(SignUpDTO signUpDTO) {
+    public User signUp(SignUpDTO signUpDTO) {
         if (userRepository.findByEmail(signUpDTO.getEmail()).isPresent()) {
             throw UnAuthenticationException.existEmail();
         }

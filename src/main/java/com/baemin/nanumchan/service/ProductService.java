@@ -6,15 +6,15 @@ import com.baemin.nanumchan.dto.OrderDTO;
 import com.baemin.nanumchan.dto.ProductDTO;
 import com.baemin.nanumchan.dto.ProductDetailDTO;
 import com.baemin.nanumchan.dto.ReviewDTO;
-import com.baemin.nanumchan.exception.UnAuthenticationException;
+import com.baemin.nanumchan.exception.RestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,9 +32,6 @@ public class ProductService {
     private ProductImageRepository productImageRepository;
 
     @Autowired
-    private LocationRepository locationRepository;
-
-    @Autowired
     private OrderRepository orderRepository;
 
     @Autowired
@@ -43,23 +40,23 @@ public class ProductService {
     @Autowired
     private S3Uploader s3Uploader;
 
+    @Transactional
     public Product create(User user, ProductDTO productDTO) {
-        Category category = categoryRepository.findById(productDTO.getCategoryId())
-                .orElseThrow(EntityNotFoundException::new);
+        Product productBeforeSave = productDTO.toEntity();
+        productBeforeSave.setOwner(user);
+        productBeforeSave.setCategory(categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(EntityNotFoundException::new));
 
-        List<ProductImage> productImages = productImageRepository.saveAll(
+        Product product = productRepository.save(productBeforeSave);
+
+        productImageRepository.saveAll(
                 productDTO.getFiles()
                         .stream()
                         .map(s3Uploader::upload)
-                        .map(ProductImage::new)
+                        .map(url -> new ProductImage(url))
                         .collect(Collectors.toList())
         );
 
-        Location location = locationRepository.save(productDTO.getLocation());
-
-        Product product = productDTO.toEntity(category, productImages, location, user);
-
-        return productRepository.save(product);
+        return product;
     }
 
     public String uploadImage(MultipartFile file) {
@@ -70,7 +67,7 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        Integer orderCount = (int) (long) orderRepository.countByProduct(product);
+        int orderCount = orderRepository.countByProductId(productId);
 
         Double ownerRating = reviewRepository.getAvgRatingByWriterId(product.getOwner().getId()).orElse(ZERO);
 
@@ -82,38 +79,45 @@ public class ProductService {
                 .build();
     }
 
-    public Order order(Long productId, OrderDTO orderDTO, User user) {
+    public Order createOrder(Long productId, OrderDTO orderDTO, User user) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        Integer orderCount = (int) (long) orderRepository.countByProduct(product);
+        int orderCount = orderRepository.countByProductId(productId);
 
         Status status = product.calculateStatus(orderCount);
 
-        if (status.equals(Status.ON_PARTICIPATING)) {
-            return orderRepository.save(
-                    Order.builder()
-                            .deliveryType(orderDTO.getDeliveryType())
-                            .product(product)
-                            .participant(user)
-                            .build()
-            );
+        if (!status.canOrder()) {
+            throw new RestException(status.getMessage());
         }
-        throw new UnAuthenticationException("You can't order because of " + status.name());
+
+        return orderRepository.save(
+                Order.builder()
+                        .deliveryType(orderDTO.getDeliveryType())
+                        .product(product)
+                        .participant(user)
+                        .status(status)
+                        .build()
+        );
     }
 
-    public Review uploadReview(User user, Long productId, ReviewDTO reviewDTO) {
+    public Review createReview(User user, Long productId, ReviewDTO reviewDTO) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(EntityNotFoundException::new);
 
         Order order = orderRepository.findByParticipantIdAndProductId(user.getId(), productId)
                 .orElseThrow(EntityNotFoundException::new);
 
-        if (order.isCompleteSharing()) {
-            Review review = reviewDTO.toEntity(product, user, reviewDTO);
-            return reviewRepository.save(review);
+        int orderCount = orderRepository.countByProductId(productId);
+
+        Status status = product.calculateStatus(orderCount);
+
+        if (!status.isSharingCompleted()) {
+            throw new RestException(status.getMessage());
         }
-        throw new UnAuthenticationException("권한이 없습니다.");
+
+        Review review = reviewDTO.toEntity(product, user, reviewDTO);
+        return reviewRepository.save(review);
     }
 
     public Page<Review> getReviews(Long productId, Pageable pageable) {

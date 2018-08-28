@@ -47,16 +47,21 @@ handlebars:
 spring:
   profiles: development
   datasource:
-    data: classpath:import.sql # 시작할 때 실행할 script
+    data: classpath:import.sql
     url: jdbc:mysql://localhost:3306/baemin-nanumchan?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
     username: unnies
     password: unnies
+  flyway:
+    enabled: false
 
   jpa:
     show-sql: true
+    generate-ddl: true
     hibernate:
       ddl-auto: create-drop
       format_sql: true
+    properties.hibernate:
+      hbm2ddl.import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
 
 logging:
   level:
@@ -67,7 +72,7 @@ logging:
 ---
 
 spring.profiles: test
-spring.profiles.include: development # development가 활성화되면 test도 포함
+spring.profiles.include: development
 
 ---
 
@@ -78,7 +83,7 @@ spring:
     username: ${db.username}
     password: ${db.password}
   flyway:
-    enabled: false
+    enabled: true
 
 jpa:
   show-sql: false

@@ -1,15 +1,15 @@
 package com.baemin.nanumchan.domain;
 
 import com.baemin.nanumchan.support.domain.AbstractEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Builder
@@ -18,11 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 public class Category extends AbstractEntity {
 
-    @Column(nullable = false)
+    @NotNull
+    @Length(min = 1, max = 16)
+    @Column(nullable = false, length = 16)
     private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Builder.Default
-    private List<Product> products = new ArrayList<>();
 }
