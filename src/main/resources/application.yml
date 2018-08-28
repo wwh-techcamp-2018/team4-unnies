@@ -42,6 +42,8 @@ handlebars:
   suffix: .html
   expose-session-attributes: true
 
+local.storage.path: /tmp
+
 ---
 
 spring:

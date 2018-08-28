@@ -18,13 +18,4 @@ public class RestException extends RuntimeException {
         this.field = field;
     }
 
-    public static RestException UploadFailed() {
-        return new RestException("files", "이미지 업로드에 실패했습니다");
-    }
-
-    public static RestException FileConvertFailed() {
-        return new RestException("files", "이미지 변환에 실패했습니다");
-    }
-
-
 }
