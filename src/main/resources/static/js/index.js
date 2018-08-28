@@ -73,7 +73,8 @@ function setGIS(latitude, longitude) {
     setLocation(LOADING_TEXT);
     daumMap.getAddress(address => onGetAddress(address));
 
-    loadNearProducts(latitude, longitude, PAGE_MIN_OFFSET, PAGE_SIZE);
+    pageOffset = PAGE_MIN_OFFSET;
+    loadNearProducts(latitude, longitude, pageOffset, PAGE_SIZE);
 }
 
 function getCurrentLocation() {
