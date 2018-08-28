@@ -28,7 +28,7 @@ public class ReviewTest {
                 .chef(User.builder().build())
                 .writer(User.builder().build())
                 .product(Product.builder().build())
-                .comment("안녕하세요")
+                .comment("안녕하세요안녕하세요")
                 .rating(5.0)
                 .build();
         Set<ConstraintViolation<Review>> constraintViolations = validator.validate(review);
@@ -55,7 +55,7 @@ public class ReviewTest {
                 .writer(null)
                 .product(null)
                 .comment("")
-                .rating(-0.1)
+                .rating(-1.3)
                 .build();
         Set<ConstraintViolation<Review>> constraintViolations = validator.validate(review);
         assertThat(constraintViolations.size()).isEqualTo(5);

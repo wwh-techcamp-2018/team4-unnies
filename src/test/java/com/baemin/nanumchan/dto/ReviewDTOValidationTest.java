@@ -25,7 +25,7 @@ public class ReviewDTOValidationTest {
     @Test
     public void reviewDTO_올바른형식() {
         reviewDTO = ReviewDTO.builder()
-                .comment("안녕하세요")
+                .comment("안녕하세요안녕하세요")
                 .rating(5.0)
                 .build();
         Set<ConstraintViolation<ReviewDTO>> constraintViolations = validator.validate(reviewDTO);
@@ -49,6 +49,6 @@ public class ReviewDTOValidationTest {
                 .rating(6.0)
                 .build();
         Set<ConstraintViolation<ReviewDTO>> constraintViolations = validator.validate(reviewDTO);
-        assertThat(constraintViolations.size()).isEqualTo(01);
+        assertThat(constraintViolations.size()).isEqualTo(2);
     }
 }
