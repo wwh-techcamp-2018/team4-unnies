@@ -1,4 +1,4 @@
-import {translateDateTime} from '../lib/StatusTranslator.js';
+import {translateDateTime} from '../lib/Translator.js';
 
 export function reviewTemplate({writer, product, rating}) {
     const writerId = writer.id;

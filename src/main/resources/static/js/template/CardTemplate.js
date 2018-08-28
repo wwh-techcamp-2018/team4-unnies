@@ -1,4 +1,4 @@
-import {translateStatus, translateDateTime} from '../lib/StatusTranslator.js';
+import {translateStatus, translateDateTime} from '../lib/Translator.js';
 import {ratingTemplate} from "../template/DetailTemplate.js";
 
 export function cardTemplate({product, orderCount, status, ownerRating}) {
