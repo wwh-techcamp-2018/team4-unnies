@@ -12,7 +12,7 @@ export function productTemplate({ productId, productTitle, productImgUrl, distan
             <h5 class="card-title font-weight-bold">${productTitle}</h5>
             <div class="container-fluid mt-2 chef">
                 <div class="row">
-                    <div class="chef-img">
+                    <div class="chef-img-container">
                         ${ ownerImgUrl ? `<img src="${ownerImgUrl} alt=${ownerName}">` : `` }
                     </div>
                     <div class="col text-right">

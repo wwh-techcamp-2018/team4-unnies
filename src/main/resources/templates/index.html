@@ -5,13 +5,11 @@
 {{/partial}}
 
 {{#partial "contents"}}
-<!-- upload -->
 <div class="container">
-    <a class="btn btn-primary font-weight-bold btn-upload" href="/upload" role="button">나눔하기</a>
+    <a class="btn btn-primary font-weight-bold upload" href="/upload" role="button">나눔하기</a>
 </div>
 
-<!-- search bar -->
-<div class="container justify-content-center pl-5 pr-5 pb-3">
+<div class="container search pl-5 pr-5 pb-3">
     <div class="m-2 location">
         <div class="current">
             <button class="btn btn-primary">
@@ -28,13 +26,11 @@
         <div class="settings">
             <i class="fa fa-map-marker" aria-hidden="true"></i>
             <span class="ml-1 address"></span>
-            <input type="hidden" name="latitude">
-            <input type="hidden" name="longitude">
         </div>
     </div>
     <!-- reference : http://apis.map.daum.net/web/sample/keywordList/ -->
     <div class="map_wrap">
-        <div id="map" style="width:960px;height:600px;"></div>
+        <div id="map"></div>
         <div id="menu_wrap">
             <div class="input-group mb-2">
                 <input type="text" id="keyword" class="form-control" placeholder="주소를 입력해주세요.">
@@ -52,8 +48,14 @@
     </div>
 </div>
 
-<!-- products -->
-<div class="container card-columns">
+<div class="container products card-columns">
+</div>
+
+<div class="container not-found">
+    <span>
+        <i class="fa fa-commenting-o mr-1" aria-hidden="true"></i>
+        검색 결과를 찾을 수 없습니다.
+    </span>
 </div>
 {{/partial}}
 
