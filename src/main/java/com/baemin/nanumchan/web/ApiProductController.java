@@ -12,13 +12,17 @@ import com.baemin.nanumchan.utils.RestResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import java.net.URI;
 
+@Validated
 @RestController
 @RequestMapping("/api/products")
 public class ApiProductController {
@@ -61,7 +65,8 @@ public class ApiProductController {
 
     @GetMapping
     public ResponseEntity<RestResponse> getNearProducts(
-            @RequestParam(defaultValue = "0") Double longitude, @RequestParam(defaultValue = "0") Double latitude
+            @RequestParam(defaultValue = "0") @DecimalMin("-180.00000") @DecimalMax("180.00000") Double longitude
+            , @RequestParam(defaultValue = "0") @DecimalMin("-90.00000") @DecimalMax("90.00000") Double latitude
             , @RequestParam(defaultValue = "0") int offset, @RequestParam(defaultValue = "10") int limit) {
         return ResponseEntity.ok(RestResponse.success(productService.getNearProducts(longitude, latitude, offset, limit)));
     }

@@ -6,6 +6,7 @@ import com.baemin.nanumchan.exception.UnAuthenticationException;
 import com.baemin.nanumchan.utils.RestResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,6 +78,22 @@ public class ExceptionControllerAdvice {
             errorResponseBuilder.appendError(fieldError.getField(), getErrorMessage(fieldError));
         }
         return errorResponseBuilder.build();
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public RestResponse constraintViolationException(ConstraintViolationException exception) {
+        RestResponse.ErrorResponseBuilder errorResponseBuilder = RestResponse.error();
+        for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
+            errorResponseBuilder.appendError(violation.getPropertyPath().toString(), violation.getMessage());
+        }
+        return errorResponseBuilder.build();
+    }
+
+    @ExceptionHandler(InvalidDataAccessResourceUsageException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public RestResponse invalidDataAccessResourceUsageException(InvalidDataAccessResourceUsageException exception) {
+        return RestResponse.error(exception.getClass().getName()).build();
     }
 
     private String getErrorMessage(FieldError fieldError) {
