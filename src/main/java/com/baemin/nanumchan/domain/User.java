@@ -13,12 +13,9 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-<<<<<<< HEAD
 @Entity
-=======
-@Setter
->>>>>>> refactor : setter, equals, hashcode User 도메인에 추가
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -59,7 +56,7 @@ public class User extends AbstractEntity {
     private String addressDetail;
 
     @Nullable
-    @Length(min = 1)
+    @Length(max = 255)
     private String aboutMe;
 
     @Nullable
