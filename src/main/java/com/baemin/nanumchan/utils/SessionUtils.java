@@ -22,10 +22,8 @@ public class SessionUtils {
         session.removeAttribute(USER_SESSION_KEY);
     }
 
-
     public static boolean isLoginUser(NativeWebRequest webRequest) {
-        Object loginedUser = webRequest.getAttribute(USER_SESSION_KEY, WebRequest.SCOPE_SESSION);
-        return loginedUser != null;
+        return webRequest.getAttribute(USER_SESSION_KEY, WebRequest.SCOPE_SESSION) != null;
     }
 
     public static User getUserFromSession(NativeWebRequest webRequest) {

@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>배민나눔찬</title>
-
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/font-awesome.min.css" rel="stylesheet">
-
+{{#partial "header"}}
     <link href="/css/tui/codemirror.css" rel="stylesheet">
     <link href="/css/tui/github.css" rel="stylesheet">
     <link href="/css/tui/tui-editor.min.css" rel="stylesheet">
@@ -18,8 +7,6 @@
     <link href="/css/upload.css" rel="stylesheet">
     <link href="/css/image-viewer.css" rel="stylesheet">
 
-    <script src="/js/lib/jquery-3.3.1.slim.min.js" defer></script>
-    <script src="/js/lib/bootstrap.min.js" defer></script>
     <script src="/js/lib/moment.js" defer></script>
     <script src="/js/lib/moment-round.min.js" defer></script>
 
@@ -32,10 +19,10 @@
     <script src="/js/lib/tui/tui-editor-Editor.min.js" defer></script>
 
     <script src="/js/upload.js" type="module" defer></script>
+{{/partial}}
 
-</head>
-<body class="this-is-temporary" style=" background: #ccc; padding: 20px;">
-<div class="this-is-temporary" style="width: 1000px; background: #fff; margin: 0 auto; padding: 20px;">
+{{#partial "contents"}}
+<div>
     <form class="form-horizontal" id="upload-form" enctype="multipart/form-data">
         <h1 class="form-upload-heading mt-3 mb-5">업로드 페이지</h1>
         <div class="form-group upload">
@@ -150,5 +137,6 @@
 
     </form>
 </div>
-</body>
-</html>
+{{/partial}}
+
+{{> base }}

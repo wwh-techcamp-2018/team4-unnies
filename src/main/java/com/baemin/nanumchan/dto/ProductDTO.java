@@ -13,10 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -49,8 +46,8 @@ public class ProductDTO implements DateTimeExpirable {
     @KoreanWon(max = 1000000, unit = KoreanWon.Unit.HUNDRED)
     private Integer price;
 
-    @NotNull
-    @Length(min = 1, max = 100000)
+    @NotEmpty
+    @Length(max = 100000)
     private String description;
 
     @NotNull
@@ -73,7 +70,7 @@ public class ProductDTO implements DateTimeExpirable {
 
     @NotNull
     @Range(min = 1, max = 6)
-    private int maxParticipant;
+    private Integer maxParticipant;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")

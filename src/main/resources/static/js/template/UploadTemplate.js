@@ -1,7 +1,3 @@
-export function uploadInput(name) {
-    return `<input multiple accept="image/png, image/jpeg" type="file" name="${name}" style="display: none;">`;
-}
-
 export function mainView() {
     return `<div class="image-viewer-main"></div>
             <div class="image-viewer-thumbnails" style="display: none;"></div>`;

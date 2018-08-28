@@ -10,10 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -59,8 +56,8 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
     @Column(nullable = false)
     private Integer price;
 
-    @NotNull
-    @Length(min = 1, max = 100000)
+    @NotEmpty
+    @Length(max = 100000)
     @Lob
     @Column(nullable = false, length = 100000)
     private String description;

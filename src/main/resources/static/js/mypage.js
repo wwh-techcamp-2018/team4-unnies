@@ -19,8 +19,8 @@ function initEvents() {
     const imageUploader = new ImageUploader();
     imageUploader.setForm($('div.preview-pic'));
     imageUploader.setMultiple(false);
-    imageUploader.setInputTemplate(() => '<input type="file" name="file" accept="image/jpeg,image/png" style="display: none;">');
-    imageUploader.setInputName('file');
+    imageUploader.setAccept('image/jpeg,image/png');
+    imageUploader.setName('file');
     imageUploader.setDelegate($('#mypage-upload-image'));
 
     imageUploader.addAfterFileInputListener(() => {
