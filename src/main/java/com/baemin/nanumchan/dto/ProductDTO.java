@@ -1,12 +1,12 @@
 package com.baemin.nanumchan.dto;
 
+
 import com.baemin.nanumchan.domain.DateTimeExpirable;
 import com.baemin.nanumchan.domain.Product;
 import com.baemin.nanumchan.validate.Expirable;
 import com.baemin.nanumchan.validate.Image;
 import com.baemin.nanumchan.validate.KoreanWon;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,7 +17,6 @@ import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
 @Builder
 @Getter
 @Setter
