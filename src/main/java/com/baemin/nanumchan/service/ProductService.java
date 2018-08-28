@@ -1,7 +1,6 @@
 package com.baemin.nanumchan.service;
 
 import com.baemin.nanumchan.domain.*;
-import com.baemin.nanumchan.domain.cloud.S3Uploader;
 import com.baemin.nanumchan.dto.OrderDTO;
 import com.baemin.nanumchan.dto.ProductDTO;
 import com.baemin.nanumchan.dto.ProductDetailDTO;
@@ -38,7 +37,7 @@ public class ProductService {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private S3Uploader s3Uploader;
+    private ImageStorage imageStorage;
 
     @Transactional
     public Product create(User user, ProductDTO productDTO) {
@@ -51,8 +50,8 @@ public class ProductService {
         productImageRepository.saveAll(
                 productDTO.getFiles()
                         .stream()
-                        .map(s3Uploader::upload)
-                        .map(url -> new ProductImage(url))
+                        .map(imageStorage::upload)
+                        .map(ProductImage::new)
                         .collect(Collectors.toList())
         );
 
@@ -60,7 +59,7 @@ public class ProductService {
     }
 
     public String uploadImage(MultipartFile file) {
-        return s3Uploader.upload(file);
+        return imageStorage.upload(file);
     }
 
     public ProductDetailDTO getProductDetailDTO(Long productId) {
