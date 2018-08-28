@@ -60,14 +60,9 @@ public class ApiProductController {
     }
 
     @GetMapping
-    public ResponseEntity<RestResponse> getNearProducts(@RequestParam Double longitude, @RequestParam Double latitude
+    public ResponseEntity<RestResponse> getNearProducts(
+            @RequestParam(defaultValue = "0") Double longitude, @RequestParam(defaultValue = "0") Double latitude
             , @RequestParam(defaultValue = "0") int offset, @RequestParam(defaultValue = "10") int limit) {
         return ResponseEntity.ok(RestResponse.success(productService.getNearProducts(longitude, latitude, offset, limit)));
-    }
-
-    @GetMapping("/categories/{categoryId}")
-    public ResponseEntity<RestResponse> getNearProductsByCategory(@PathVariable Long categoryId, @RequestParam Double longitude, @RequestParam Double latitude
-            , @RequestParam(defaultValue = "0") int offset, @RequestParam(defaultValue = "10") int limit) {
-        return ResponseEntity.ok(RestResponse.success(productService.getNearProductsByCategory(categoryId, longitude, latitude, offset, limit)));
     }
 }
