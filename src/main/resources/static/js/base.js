@@ -43,7 +43,7 @@ function templateCategory({ id, name }) {
 }
 
 function templateCategoryError(error) {
-    return `<span class="category-error text-muted">카테고리를 가져오는데 실패했습니다.(${error})</span>`;
+    return `<span class="category-error text-muted">카테고리를 가져오는데 실패했습니다.</span>`;
 }
 
 function setActiveCategory(index) {
