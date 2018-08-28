@@ -1,5 +1,6 @@
 package com.baemin.nanumchan.domain;
 
+import com.baemin.nanumchan.exception.UnAuthenticationException;
 import com.baemin.nanumchan.support.domain.AbstractEntity;
 import com.baemin.nanumchan.validate.Expirable;
 import com.baemin.nanumchan.validate.KoreanWon;
@@ -111,6 +112,10 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
         return maxParticipant == orderCount;
     }
 
+    public boolean isSharedDateTime() {
+        return shareDateTime.isBefore(LocalDateTime.now());
+    }
+
     public Status calculateStatus(int orderCount) {
         if (isExpiredDateTime()) {
             return Status.EXPIRED;
@@ -131,4 +136,35 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
         return shareDateTime;
     }
 
+    public void validateOrder(User user, boolean existsOrder, int orderCount) {
+        if (owner.isSameUser(user)) {
+            throw new UnAuthenticationException("user", "본인은 나눔신청이 안됩니다");
+        }
+        if (existsOrder) {
+            throw new UnAuthenticationException("user", "이미 신청한 사람은 나눔신청이 안됩니다");
+        }
+
+        Status status = calculateStatus(orderCount);
+
+        if (!status.equals(Status.ON_PARTICIPATING)) {
+            throw new UnAuthenticationException("status", status.name());
+        }
+    }
+
+    public Order getOrder(User user, Order order) {
+
+        validateChangeOrderStatus(user);
+        order.changeStatusToCompleted();
+
+        return order;
+    }
+
+    private void validateChangeOrderStatus(User user) {
+        if (!owner.isSameUser(user)) {
+            throw new UnAuthenticationException("user", "요리사 본인이 아닙니다");
+        }
+        if (!isSharedDateTime()) {
+            throw new UnAuthenticationException("shareTime", "나눔시간 전에는 나눔완료를 할 수 없습니다");
+        }
+    }
 }
