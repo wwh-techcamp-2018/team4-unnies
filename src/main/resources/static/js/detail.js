@@ -1,13 +1,13 @@
 import {$, $all} from './lib/utils.js';
-import ProductDetail from './class/ProductDetail.js';
-import ReviewList from './class/ReviewList.js';
+import Product from './class/Product.js';
+import Review from './class/Review.js';
 import {closeModal, openModal} from './modal.js'
 
 // for Test!
 const productId = 1;
 let reviewPage = 0;
-new ProductDetail().load(productId);
-new ReviewList().load(productId, reviewPage);
+new Product().load(productId);
+new Review().load(productId, reviewPage);
 
 function moveToSelectedImage(event) {
     event.preventDefault();
@@ -66,7 +66,7 @@ function registerReview(event){
         }).then(response => {
             closeModal();
             if(response.status === 201){
-                new ReviewList().load(productId, 0);
+                new Review().load(productId, 0);
             }
             if(response.status >= 400 && response.status <= 404){
                 alert('권한이 없습니다.')
@@ -89,13 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#show-review-prev').addEventListener('click', (event) => {
         event.preventDefault();
         reviewPage -= 1;
-        new ReviewList().load(productId, reviewPage);
+        new Review().load(productId, reviewPage);
     });
 
     $('#show-review-next').addEventListener('click', (event) => {
         event.preventDefault();
         reviewPage += 1;
-        new ReviewList().load(productId, reviewPage);
+        new Review().load(productId, reviewPage);
     });
 
 });

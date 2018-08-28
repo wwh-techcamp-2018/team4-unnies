@@ -1,5 +1,5 @@
-import {$} from './utils.js';
-import './underscore.min.js';
+import {$} from '../lib/utils.js';
+import '../lib/underscore.min.js';
 
 class DaumMap {
 
@@ -10,13 +10,13 @@ class DaumMap {
         const mapOption = {
             center: this.DEFAULT_LATLNG,
             level: 3,
-            mapTypeId : daum.maps.MapTypeId.ROADMAP
+            mapTypeId: daum.maps.MapTypeId.ROADMAP
         };
 
         this.map = new daum.maps.Map(mapContainer, mapOption);
         this.marker = new daum.maps.Marker({
             position: this.DEFAULT_LATLNG,
-            draggable : true,
+            draggable: true,
             map: this.map
         });
         this.geocoder = new daum.maps.services.Geocoder();

@@ -18,6 +18,7 @@ class Category {
             const feedback = element.closest('.form-group').querySelector('.feedback');
             feedback.innerHTML = error;
             feedback.classList.add('on');
+            feedback.focus();
         });
     }
 
