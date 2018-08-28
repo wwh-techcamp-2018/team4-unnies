@@ -15,10 +15,12 @@ import javax.validation.constraints.Pattern;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class User extends AbstractEntity {
 
     public static final GuestUser GUEST_USER = new GuestUser();
@@ -54,7 +56,7 @@ public class User extends AbstractEntity {
     private String addressDetail;
 
     @Nullable
-    @Length(min = 1)
+    @Length(max = 255)
     private String aboutMe;
 
     @Nullable
@@ -71,4 +73,6 @@ public class User extends AbstractEntity {
             return true;
         }
     }
+
+
 }

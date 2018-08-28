@@ -3,11 +3,13 @@ package com.baemin.nanumchan.web;
 import com.baemin.nanumchan.domain.User;
 import com.baemin.nanumchan.dto.LoginDTO;
 import com.baemin.nanumchan.dto.SignUpDTO;
+import com.baemin.nanumchan.dto.UserModifyDTO;
 import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.UserService;
 import com.baemin.nanumchan.utils.RestResponse;
 import com.baemin.nanumchan.utils.SessionUtils;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,19 +38,24 @@ public class ApiUserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/mypage")
-    public ResponseEntity<RestResponse> getInfo(@PathVariable Long id) {
-        return ResponseEntity.ok(RestResponse.success(userService.getUserInfo(id)));
+    @GetMapping("/{id}")
+    public ResponseEntity<RestResponse> getInfo(@LoginUser(required = false) User user, @PathVariable Long id) {
+        return ResponseEntity.ok(RestResponse.success(userService.getUserInfo(user, id)));
+    }
+
+    @PostMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<RestResponse> modify(@LoginUser User user, @Valid UserModifyDTO userModifyDTO, HttpSession session) {
+        return ResponseEntity.ok(RestResponse.success(userService.modifyUserInfo(user, userModifyDTO, session)));
     }
 
     @GetMapping("/{id}/reviews")
-    public ResponseEntity<RestResponse> getMyReviews(@PathVariable Long id, Pageable pageable) {
-        return ResponseEntity.ok(RestResponse.success(userService.getMyReviews(id, pageable)));
+    public ResponseEntity<RestResponse> createdReviews(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(RestResponse.success(userService.createdReviews(id, pageable)));
     }
 
     @GetMapping("/{id}/products")
-    public ResponseEntity<RestResponse> getMyProducts(@PathVariable Long id, Pageable pageable) {
-        return ResponseEntity.ok(RestResponse.success(userService.getMyProducts(id, pageable)));
+    public ResponseEntity<RestResponse> createdProducts(@PathVariable Long id, Pageable pageable) {
+        return ResponseEntity.ok(RestResponse.success(userService.createdProducts(id, pageable)));
     }
 
     @GetMapping("/logout")

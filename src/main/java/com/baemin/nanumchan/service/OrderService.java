@@ -14,7 +14,7 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Page<Order> getReceivedProducts(Long participantId, Pageable pageable) {
+    public Page<Order> receivedProducts(Long participantId, Pageable pageable) {
         return orderRepository.findAllByParticipantIdOrderByIdDesc(participantId, pageable);
     }
 }

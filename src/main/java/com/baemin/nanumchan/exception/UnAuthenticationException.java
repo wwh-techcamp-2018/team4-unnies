@@ -21,4 +21,8 @@ public class UnAuthenticationException extends RestException {
     public static UnAuthenticationException existEmail() {
         return new UnAuthenticationException("email", "이미 존재하는 이메일입니다");
     }
+
+    public static UnAuthenticationException invalidUser() {
+        return new UnAuthenticationException("user", "유저가 다릅니다");
+    }
 }

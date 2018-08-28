@@ -8,9 +8,30 @@ textarea {
     resize: none;
 }
 
+li {
+    list-style: none;
+}
+
 #mypage-image {
     width: 250px;
     height: 250px;
+}
+
+#mypage-image img {
+    width: 250px;
+    height: 250px;
+}
+
+.card img {
+    width: 250px;
+    height: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#mypage-card {
+    width: 255px;
 }
 
 .centered {
@@ -18,6 +39,18 @@ textarea {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.feedback {
+    visibility: hidden;
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+.feedback.on {
+    visibility: visible;
 }
 
 /*
@@ -62,3 +95,6 @@ section .section-title {
    display: block;
 }
 
+.checked {
+    color:orange;
+}
