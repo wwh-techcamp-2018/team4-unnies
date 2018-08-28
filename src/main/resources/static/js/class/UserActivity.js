@@ -1,15 +1,19 @@
 import {$, $all} from '../lib/utils.js';
 import {reviewTemplate} from '../template/DetailTemplate.js';
-import {cardTemplate} from "../template/CardTemplate.js";
+import {cardTemplate} from '../template/CardTemplate.js';
+import {tabsTemplate} from '../template/MypageNavTemplate.js';
 
 //todo : 에러처리
 class UserActivity {
 
     constructor() {
+        this.userId;
         this.originData = {};
     }
 
-    load(userId) {
+    load(userId, callback) {
+        this.userId = userId;
+
         fetch(`/api/users/${userId}`)
             .then(response => {
                 if (response.ok) {
@@ -18,8 +22,9 @@ class UserActivity {
             })
             .then(({data}) => {
                 this.originData = data;
-                // this.hideUserInfo();
+                this.setUserInfo();
                 this.showUserActivity();
+                callback();
             })
             .catch(error => {
                 console.log(error);
@@ -30,28 +35,23 @@ class UserActivity {
         this.showUserActivity();
     }
 
-    hideUserInfo() {
-        console.log("this.originData.isMine : ", this.originData.mine);
-        if (this.originData.mine === false) {
-            [...$all('.hide-private-info')].forEach(element => {
-                console.log("element : ", element);
-                element.hidden = true;
-            });
-        }
+    setUserInfo() {
+        $('.nav.nav-tabs.nav-fill').insertAdjacentHTML('afterbegin', tabsTemplate(this.originData.mine));
+        $('#mypage-modify').hidden = !this.originData.mine;
     }
 
     showUserActivity() {
 
         $('#mypage-name').innerText = this.originData.name + ' (' + this.originData.email + ')';
-        $('#mypage-activity .col:nth-child(1) .fa').innerText = '나눔수 ' + this.originData.orderFromCount;
-        $('#mypage-activity .col:nth-child(2) .fa').innerText = '받음수 ' + this.originData.orderToCount;
-        $('#mypage-activity .col:nth-child(3) .fa').innerText = '남긴리뷰수 ' + this.originData.reviewToCount;
-        $('#mypage-activity .col:nth-child(4) .fa').innerText = '받은리뷰수 ' + this.originData.reviewFromCount;
+        $('#mypage-activity .col:nth-child(1) .fa').innerText = '나눔수 ' + this.originData.createdProductsCount;
+        $('#mypage-activity .col:nth-child(2) .fa').innerText = '받음수 ' + this.originData.receivedProductsCount;
+        $('#mypage-activity .col:nth-child(3) .fa').innerText = '남긴리뷰수 ' + this.originData.createdReviewsCount;
+        $('#mypage-activity .col:nth-child(4) .fa').innerText = '받은리뷰수 ' + this.originData.receivedReviewsCount;
         $('#mypage-activity .col:nth-child(5) .fa').innerText = '평균평점 ' + this.originData.avgRating;
 
         $('#mypage-aboutme').firstElementChild.value = this.originData.aboutMe;
         $('#mypage-aboutme').firstElementChild.placeholder = '자기소개를 입력해보아요.';
-        $('#mypage-image > .user-image').src = this.originData.imageUrl;
+        $('div.preview-pic .img-thumb img').src = this.originData.imageUrl;
     }
 
     save(formData, userId) {
@@ -60,37 +60,44 @@ class UserActivity {
             credentials: 'same-origin',
             body: formData
         }).then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-        }).then(data => {
+            return response.json();
+        }).then(({data, errors}) => {
             if (data) {
+                $all('.form-group .feedback').forEach(feedback => feedback.classList.remove('on'));
                 return this.modifyInfo(data);
             }
-            throw errors;
-        }).catch(({errors}) => {
-            // console.log("errors : ", errors);
-            //
-            // errors.forEach(({field, message}) => {
-            //     alert(message);
-            //     //const feedback = $(`*[name=${field}]`).closest('.form-group').querySelector('.feedback');
-            //     //feedback.innerText = message;
-            //     //feedback.classList.add('on');
-            // });
+            errors.forEach(({field, message}) => {
+                const feedback = $(`*[name=${field}]`).closest('.form-group').querySelector('.feedback');
+                feedback.innerText = message;
+                feedback.classList.add('on');
+            });
+
+            this.restore();
+        }).catch(error => {
+            // todo error 처리
             this.restore();
         });
     }
 
     modifyInfo(data) {
-        this.originData.name = data.name;
         this.originData.aboutMe = data.aboutMe;
         this.originData.imageUrl = data.imageUrl;
 
         this.showUserActivity();
+        this.refreshTab();
+    }
+
+    refreshTab() {
+        $('.nav.nav-tabs.nav-fill .nav-item.nav-link.active').classList.remove('active');
+        $(`.nav.nav-tabs.nav-fill .nav-item.nav-link:first-child`).classList.add('active');
+        $('.tab-content.py-3.px-3.px-sm-0 .tab-pane.fade.show').classList.remove('show');
+        $(`.tab-content.py-3.px-3.px-sm-0 .tab-pane.fade:first-child`).classList.add('show');
+
+        this.loadCreatedProducts(this.userId, 0);
     }
 
     loadReceivedReviews(userId, page) {
-        fetch(`/api/users/${userId}/reviews?page=${page}&size=5`)
+        fetch(`/api/reviews/users/${userId}?page=${page}&size=5`)
             .then(response => {
                 if (!response.ok) {
                     console.log('error 발생');
@@ -99,15 +106,12 @@ class UserActivity {
             })
             .then(({data}) => {
                 const {content, first, last, totalElements} = data;
-                console.log("data : ", data.content);
 
                 $('#show-received-review-prev').style.visibility = first ? 'hidden' : 'visible';
                 $('#show-received-review-next').style.visibility = last ? 'hidden' : 'visible';
 
                 $('#received-reviews-count').innerHTML = '리뷰 ' + totalElements;
                 $('#received-comments-list').innerHTML = content.map(reviewTemplate).join('');
-
-                console.log("@@@content : ", content);
 
                 content.map(({comment}, index) => {
                     tui.Editor.factory({
@@ -124,8 +128,8 @@ class UserActivity {
             });
     }
 
-    loadGiveReviews(userId, page) {
-        fetch(`/api/reviews/users/${userId}?page=${page}&size=5`)
+    loadCreatedReviews(userId, page) {
+        fetch(`/api/users/${userId}/reviews?page=${page}&size=5`)
             .then(response => {
                 if (!response.ok) {
                     console.log('error 발생');
@@ -178,7 +182,7 @@ class UserActivity {
             });
     }
 
-    loadGivedProducts(userId, page) {
+    loadCreatedProducts(userId, page) {
         fetch(`/api/users/${userId}/products?page=${page}&size=5`)
             .then(response => {
                 if (!response.ok) {
@@ -191,8 +195,6 @@ class UserActivity {
 
                 $('#show-gived-product-prev').style.visibility = first ? 'hidden' : 'visible';
                 $('#show-gived-product-next').style.visibility = last ? 'hidden' : 'visible';
-
-
                 $('#gived-products').innerHTML = content.map(cardTemplate).join('');
             })
             .catch(error => {
