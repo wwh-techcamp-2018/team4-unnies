@@ -57,9 +57,9 @@ spring:
   jpa:
     show-sql: true
     generate-ddl: true
-    properties.hibernate.format_sql: true
     hibernate:
       ddl-auto: create-drop
+      format_sql: true
     properties.hibernate:
       hbm2ddl.import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
 

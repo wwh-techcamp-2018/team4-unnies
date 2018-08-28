@@ -13,14 +13,16 @@ public class ExpirableValidator implements ConstraintValidator<Expirable, DateTi
 
     private static final int HOUR_THRESHOLD = 2;
 
+    private static final int MIN_STEP = 10;
+
     private LocalDateTime now;
 
     @Override
     public void initialize(Expirable constraintAnnotation) {
         now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         int minute = now.getMinute();
-        if (minute % 10 != 0) {
-            now = now.withMinute(((minute / 10) + 1) * 10 % 60);
+        if (minute % MIN_STEP != 0) {
+            now = now.withMinute(((minute / MIN_STEP) + 1) * MIN_STEP % 60);
         }
     }
 
@@ -34,15 +36,15 @@ public class ExpirableValidator implements ConstraintValidator<Expirable, DateTi
         }
 
         int startMin = start.getMinute();
-        if (startMin % 10 != 0) {
-            context.buildConstraintViolationWithTemplate("모집 기간은 10분 단위로만 입력 가능합니다")
+        if (startMin % MIN_STEP != 0) {
+            context.buildConstraintViolationWithTemplate(String.format("모집 기간은 %d분 단위로만 입력 가능합니다", MIN_STEP))
                     .addPropertyNode("expireDateTime")
                     .addConstraintViolation();
             return false;
         }
 
         if (start.isBefore(now.plusHours(HOUR_THRESHOLD))) {
-            context.buildConstraintViolationWithTemplate("모집 기간은 최소 2시간 이후부터 설정 가능합니다")
+            context.buildConstraintViolationWithTemplate(String.format("모집 기간은 최소 %d시간 이후부터 설정 가능합니다", HOUR_THRESHOLD))
                     .addPropertyNode("expireDateTime")
                     .addConstraintViolation();
             return false;
@@ -54,8 +56,8 @@ public class ExpirableValidator implements ConstraintValidator<Expirable, DateTi
         }
 
         int endMin = end.getMinute();
-        if (endMin % 10 != 0) {
-            context.buildConstraintViolationWithTemplate("나눔 시간은 10분 단위로만 입력 가능합니다")
+        if (endMin % MIN_STEP != 0) {
+            context.buildConstraintViolationWithTemplate(String.format("나눔 시간은 %d분 단위로만 입력 가능합니다", MIN_STEP))
                     .addPropertyNode("shareDateTime")
                     .addConstraintViolation();
             return false;

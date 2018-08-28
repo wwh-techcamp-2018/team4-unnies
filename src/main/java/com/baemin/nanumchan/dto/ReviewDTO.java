@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Builder
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewDTO {
