@@ -23,13 +23,7 @@ public class ReviewDTO {
     @Range(min = 0, max = 5)
     private Double rating;
 
-    public Review toEntity(Product product, User user, ReviewDTO reviewDTO) {
-        return Review.builder()
-                .chef(product.getOwner())
-                .product(product)
-                .writer(user)
-                .comment(reviewDTO.getComment())
-                .rating(reviewDTO.getRating())
-                .build();
+    public Review toEntity(User user, Product product) {
+        return new Review(user, product, comment, rating);
     }
 }

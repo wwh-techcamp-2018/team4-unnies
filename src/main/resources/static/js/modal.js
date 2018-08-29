@@ -1,11 +1,11 @@
 import { $ , $all } from './lib/utils.js'
+import { registerTemplate } from './template/DetailTemplate.js'
 
-export function openModal(event){
-    event.preventDefault();
+export function openReviewModal(){
     $('#overlay').classList.remove("is-hidden");
 }
 
-export function closeModal(){
+export function closeReviewModal(){
     $('#overlay').classList.add("is-hidden");
     $('#comment').value = '';
 
@@ -17,3 +17,17 @@ export function closeModal(){
         }
     }
 }
+
+export function openOrderModal(data){
+    $('#register-overlay').classList.remove("is-hidden");
+    $('#register-data').innerHTML = registerTemplate(data);
+}
+
+export function closeOrderModal(){
+    $('#register-overlay').classList.add("is-hidden");
+    const radioList = $all('input[name=groupOfRadioGap]');
+    radioList.forEach(radio => {
+        radio.checked = false;
+    })
+}
+

@@ -42,9 +42,9 @@ public class ApiProductController {
     }
 
     @PostMapping("/{id}/orders")
-    public ResponseEntity<Void> order(@LoginUser User user, @Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
+    public ResponseEntity<RestResponse> createOrder(@LoginUser User user, @Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
         Order order = productService.createOrder(id, orderDTO, user);
-        return ResponseEntity.created(URI.create("/orders/" + order.getId())).build();
+        return ResponseEntity.created(URI.create("/products/" + id + "/order/" + order.getId())).body(RestResponse.success(productService.getProductDetailDTO(id)));
     }
 
     @GetMapping("/{id}/reviews")
@@ -53,9 +53,9 @@ public class ApiProductController {
     }
 
     @PostMapping("/{id}/reviews")
-    public ResponseEntity<Void> uploadReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO) {
+    public ResponseEntity<RestResponse> createReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO, Pageable pageable) {
         Review review = productService.createReview(user, id, reviewDTO);
-        return ResponseEntity.created(URI.create("/reviews/" + review.getId())).build();
+        return ResponseEntity.created(URI.create("/products/" + id + "/review/" + review.getId()))
+                .body(RestResponse.success(productService.getReviews(id, pageable)));
     }
-
 }

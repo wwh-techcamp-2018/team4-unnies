@@ -15,12 +15,13 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findAllByWriterIdOrderByIdDesc(Long writerId, Pageable pageable);
 
     @Query(
-            value = "Select avg(r.rating) From Review r where r.writer_id = ?",
+            value = "Select avg(r.rating) From Review r where r.chef_id = ?",
             nativeQuery = true)
-    Optional<Double> getAvgRatingByWriterId(Long writerId);
+    Optional<Double> getAvgRatingByChefId(Long chefId);
 
     int countByWriterId(Long writerId);
 
     int countByChefId(Long chefId);
 
+    boolean existsByWriterAndProduct(User writer, Product product);
 }

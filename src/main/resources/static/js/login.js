@@ -38,11 +38,9 @@ function validateError(response) {
             $(`strong[name=invalid-${error.field}`).style.visibility = 'visible';
             $(`strong[name=invalid-${error.field}`).innerText = error.message;
             registerFlag[`${error.field}`] = false;
-        })
-    });
+            })
+    })
 }
-
-
 
 function validateCheck(){
     $('#button').disabled = !monitorRegisterButton();

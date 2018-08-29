@@ -3,6 +3,7 @@ package com.baemin.nanumchan.domain;
 import com.baemin.nanumchan.support.domain.AbstractEntity;
 import com.baemin.nanumchan.validate.Expirable;
 import com.baemin.nanumchan.validate.KoreanWon;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
@@ -103,6 +104,25 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
     @Column(nullable = false)
     private Boolean isBowlNeeded;
 
+    @Size(max = 6)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Order> orders;
+
+    public int getOrdersSize() {
+        return orders.size();
+    }
+
+    public Status getStatus() {
+        if (isExpiredDateTime()) {
+            return Status.EXPIRED;
+        }
+        if (maxParticipant == getOrdersSize()) {
+            return Status.FULL_PARTICIPANTS;
+        }
+        return Status.ON_PARTICIPATING;
+    }
+
     public boolean isExpiredDateTime() {
         return expireDateTime.isBefore(LocalDateTime.now());
     }
@@ -111,14 +131,8 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
         return maxParticipant == orderCount;
     }
 
-    public Status calculateStatus(int orderCount) {
-        if (isExpiredDateTime()) {
-            return Status.EXPIRED;
-        }
-        if (compareMaxParticipants(orderCount)) {
-            return Status.FULL_PARTICIPANTS;
-        }
-        return Status.ON_PARTICIPATING;
+    public boolean isSharedDateTime() {
+        return shareDateTime.isBefore(LocalDateTime.now());
     }
 
     @Override
@@ -131,4 +145,15 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
         return shareDateTime;
     }
 
+    public boolean isOwner(User user) {
+        return owner.equals(user);
+    }
+
+    public boolean isStatus_ON_PARTICIPATING() {
+        return getStatus().equals(Status.ON_PARTICIPATING);
+    }
+
+    public Order getOrderByUser(User user) {
+        return orders.stream().filter(order -> order.getParticipant().equals(user)).findAny().orElse(null);
+    }
 }

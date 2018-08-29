@@ -1,5 +1,6 @@
 import {$, $all} from '../lib/utils.js';
 import {ratingTemplate} from "../template/DetailTemplate.js";
+import {errorPageTemplate} from '../template/ErrorPageTemplate.js';
 
 class Product {
 
@@ -29,33 +30,36 @@ class Product {
         });
     }
 
-    load(productId) {
+    load(productId, callback){
         fetch(`/api/products/${productId}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
                 }
-
-            }).then(({data}) => {
-            this.loadProductDetail(data);
-        })
+                this.loadProductError();
+                return;
+            })
+            .then(({ data }) => {
+                console.log(data);
+                callback(data);
+            })
             .catch(error => {
-                console.log(error);
+                // TODOs : error handling...
             });
     }
 
-    loadProductDetail(data) {
-        const {product, orderCount, status, ownerRating} = data;
-        const {owner} = product;
+    loadProduct(data) {
+        const {product, ownerRating} = data;
+        const {owner, status} = product;
         $('.product-name').innerText = product.name;
         $('#product-name').innerText = product.name;
         $('#product-title').innerText = product.title;
         $('#cook').innerText = owner.name;
-        $('#participate-number').innerText = orderCount + '/' + product.maxParticipant;
+        $('#participate-number').innerText = product.ordersSize + '/' + product.maxParticipant;
         $('#participate-date').innerText = product.expireDateTime;
         $('#give-time').innerText = product.shareDateTime;
         $('#give-place').innerText = owner.address;
-        product.isBowlNeeded === true ? $('#give-plate').innerText = '개인 용기 지참' : $('#give-plate').innerText = '나눔 용기 제공';
+        $('#give-plate').innerText = product.isBowlNeeded === true ? '개인 용기 지참' : '나눔 용기 제공';
         $('#price').innerText = product.price;
         $('#nickname').innerText = owner.name;
         $('#region-name').innerText = owner.address;
@@ -71,22 +75,18 @@ class Product {
             initialValue: product.description
         });
 
-        this.loadStatus(status);
-        const userRating = Math.round(data.ownerRating)
+        const userRating = Math.round(ownerRating)
         $('#user-rating').innerHTML = userRating > 0 ? ratingTemplate(userRating) : '';
-    }
 
-    loadStatus(status) {
-        // status type : EXPIRED, FULL_PARTICIPANTS, ON_PARTICIPATING
         const currentStatus = $('.status');
-        const registerShareBtn = $('#register-share');
-        if (status === 'ON_PARTICIPATING') {
+        const registerShareBtn = $('#register-button');
+        if(status === 'ON_PARTICIPATING') {
             currentStatus.innerText = '모집중';
             currentStatus.classList.add('on');
             registerShareBtn.innerText = '나눔신청';
             registerShareBtn.classList.add('on');
             registerShareBtn.disabled = false;
-        } else if (status === 'FULL_PARTICIPANTS') {
+        } else if(status === 'FULL_PARTICIPANTS') {
             currentStatus.innerText = '모집완료';
             currentStatus.classList.add('full');
             registerShareBtn.innerText = '모집완료';
@@ -99,8 +99,12 @@ class Product {
             registerShareBtn.classList.add('expired');
             registerShareBtn.disabled = true;
         }
+
     }
 
+    loadProductError(){
+        $('.container').insertAdjacentHTML('afterbegin', errorPageTemplate());
+    }
 }
 
 export default Product;

@@ -5,7 +5,7 @@ import com.baemin.nanumchan.dto.OrderDTO;
 import com.baemin.nanumchan.dto.ProductDTO;
 import com.baemin.nanumchan.dto.ProductDetailDTO;
 import com.baemin.nanumchan.dto.ReviewDTO;
-import com.baemin.nanumchan.exception.RestException;
+import com.baemin.nanumchan.exception.NotAllowedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,13 +45,13 @@ public class ProductService {
         product.setOwner(user);
         product.setCategory(categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(EntityNotFoundException::new));
         product.setProductImages(
-            productImageRepository.saveAll(
-                productDTO.getFiles()
-                    .stream()
-                    .map(imageStorage::upload)
-                    .map(ProductImage::new)
-                    .collect(Collectors.toList())
-            )
+                productImageRepository.saveAll(
+                        productDTO.getFiles()
+                                .stream()
+                                .map(imageStorage::upload)
+                                .map(ProductImage::new)
+                                .collect(Collectors.toList())
+                )
         );
 
         return productRepository.save(product);
@@ -63,59 +63,27 @@ public class ProductService {
 
     public ProductDetailDTO getProductDetailDTO(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
 
-        int orderCount = orderRepository.countByProductId(productId);
-
-        Double ownerRating = reviewRepository.getAvgRatingByWriterId(product.getOwner().getId()).orElse(ZERO);
+        Double ownerRating = reviewRepository.getAvgRatingByChefId(product.getOwner().getId()).orElse(ZERO);
 
         return ProductDetailDTO.builder()
                 .product(product)
-                .orderCount(orderCount)
-                .status(product.calculateStatus(orderCount))
                 .ownerRating(ownerRating)
                 .build();
     }
 
+    @Transactional
     public Order createOrder(Long productId, OrderDTO orderDTO, User user) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
 
-        int orderCount = orderRepository.countByProductId(productId);
+        Order order = orderRepository.save(orderDTO.toEntity(user, product));
 
-        Status status = product.calculateStatus(orderCount);
+        product.getOrders().add(order);
+        productRepository.save(product);
 
-        if (!status.canOrder()) {
-            throw new RestException(status.getMessage());
-        }
-
-        return orderRepository.save(
-                Order.builder()
-                        .deliveryType(orderDTO.getDeliveryType())
-                        .product(product)
-                        .participant(user)
-                        .status(status)
-                        .build()
-        );
-    }
-
-    public Review createReview(User user, Long productId, ReviewDTO reviewDTO) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        Order order = orderRepository.findByParticipantIdAndProductId(user.getId(), productId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        int orderCount = orderRepository.countByProductId(productId);
-
-        Status status = product.calculateStatus(orderCount);
-
-        if (!status.isSharingCompleted()) {
-            throw new RestException(status.getMessage());
-        }
-
-        Review review = reviewDTO.toEntity(product, user, reviewDTO);
-        return reviewRepository.save(review);
+        return order;
     }
 
     public Page<Review> getReviews(Long productId, Pageable pageable) {
@@ -124,4 +92,14 @@ public class ProductService {
         return reviewRepository.findAllByChefOrderByIdDesc(product.getOwner(), pageable);
     }
 
+    public Review createReview(User user, Long productId, ReviewDTO reviewDTO) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
+
+        if (reviewRepository.existsByWriterAndProduct(user, product)) {
+            throw new NotAllowedException("이미 리뷰를 등록하였습니다");
+        }
+
+        return reviewRepository.save(reviewDTO.toEntity(user, product));
+    }
 }

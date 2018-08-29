@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -73,6 +74,4 @@ public class User extends AbstractEntity {
             return true;
         }
     }
-
-
 }
