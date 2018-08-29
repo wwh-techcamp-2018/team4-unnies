@@ -1,5 +1,6 @@
 package com.baemin.nanumchan.security;
 
+import com.baemin.nanumchan.exception.NotAllowedException;
 import com.baemin.nanumchan.exception.RestException;
 import com.baemin.nanumchan.exception.UnAuthenticationException;
 import com.baemin.nanumchan.utils.RestResponse;
@@ -30,6 +31,12 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public RestResponse emptyResultData(EntityNotFoundException exception) {
         return RestResponse.error(exception.getMessage()).build();
+    }
+
+    @ExceptionHandler(NotAllowedException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    public RestResponse notAllowed(NotAllowedException exception) {
+        return RestResponse.error(exception.getField(), exception.getMessage()).build();
     }
 
     @ExceptionHandler(UnAuthenticationException.class)
