@@ -1,5 +1,6 @@
 package com.baemin.nanumchan.domain;
 
+import com.baemin.nanumchan.exception.NotAllowedException;
 import com.baemin.nanumchan.exception.UnAuthenticationException;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,7 +92,7 @@ public class ProductTest {
 
     }
 
-    @Test(expected = UnAuthenticationException.class)
+    @Test(expected = NotAllowedException.class)
     public void validateOrder_실패_본인() {
         user = User.builder()
                 .build();
@@ -103,7 +104,7 @@ public class ProductTest {
         product.validateOrder(user, false, 3);
     }
 
-    @Test(expected = UnAuthenticationException.class)
+    @Test(expected = NotAllowedException.class)
     public void validateOrder_실패_주문존재() {
         user = User.builder()
                 .build();
@@ -115,7 +116,7 @@ public class ProductTest {
         product.validateOrder(User.GUEST_USER, true, 3);
     }
 
-    @Test(expected = UnAuthenticationException.class)
+    @Test(expected = NotAllowedException.class)
     public void validateOrder_실패_모집꽉참() {
         user = User.builder()
                 .build();
