@@ -68,10 +68,6 @@ public class User extends AbstractEntity {
         return false;
     }
 
-    public boolean isSameUser(User maybeUser) {
-        return this.equals(maybeUser);
-    }
-
     private static class GuestUser extends User {
         @Override
         public boolean isGuestUser() {

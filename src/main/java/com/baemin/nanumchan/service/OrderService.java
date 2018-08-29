@@ -27,19 +27,19 @@ public class OrderService {
     public Order changeOrderStatus(User user, Long orderId, Status status) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException(("신청 내역이 존재하지 않습니다")));
 
-        if (!order.getProduct().getOwner().isSameUser(user)) {
+        if (!order.getProduct().getOwner().equals(user)) {
             throw new NotAllowedException("요리사 본인이 아닙니다");
         }
 
-        order.changeStatus(status);
+        order.changeShareStatus(status);
 
         return orderRepository.save(order);
     }
 
-    public List<Order> getOrders(User user, Long productId) {
+    public List<Order> getOrdersByChef(User user, Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException(("상품이 존재하지 않습니다")));
 
-        if (!user.isSameUser(product.getOwner())) {
+        if (!user.equals(product.getOwner())) {
             throw new NotAllowedException("요리사 본인이 아닙니다");
         }
 

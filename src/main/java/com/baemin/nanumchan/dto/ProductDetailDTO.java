@@ -20,13 +20,6 @@ public class ProductDetailDTO {
     private Product product;
 
     @NotNull
-    @DecimalMin("0")
-    private Integer orderCount;
-
-    @NotNull
-    private Status status;
-
-    @NotNull
     @Min(0)
     @Max(5)
     private Double ownerRating;

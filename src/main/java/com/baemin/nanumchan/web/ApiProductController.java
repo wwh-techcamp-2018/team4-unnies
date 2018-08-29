@@ -41,6 +41,12 @@ public class ApiProductController {
         return ResponseEntity.ok(RestResponse.success(productService.getProductDetailDTO(id)));
     }
 
+    @PostMapping("/{id}/orders")
+    public ResponseEntity<RestResponse> createOrder(@LoginUser User user, @Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
+        Order order = productService.createOrder(id, orderDTO, user);
+        return ResponseEntity.created(URI.create("/products/" + id + "/order/" + order.getId())).body(RestResponse.success(productService.getProductDetailDTO(id)));
+    }
+
     @GetMapping("/{id}/reviews")
     public ResponseEntity<RestResponse> getReviews(@PathVariable Long id, Pageable pageable) {
         return ResponseEntity.ok(RestResponse.success(productService.getReviews(id, pageable)));
@@ -51,11 +57,5 @@ public class ApiProductController {
         Review review = productService.createReview(user, id, reviewDTO);
         return ResponseEntity.created(URI.create("/products/" + id + "/review/" + review.getId()))
                 .body(RestResponse.success(productService.getReviews(id, pageable)));
-    }
-
-    @PostMapping("/{id}/orders")
-    public ResponseEntity<RestResponse> createOrder(@LoginUser User user, @Valid @RequestBody OrderDTO orderDTO, @PathVariable Long id) {
-        Order order = productService.createOrder(id, orderDTO, user);
-        return ResponseEntity.created(URI.create("/products/" + id + "/order/" + order.getId())).body(RestResponse.success(productService.getProductDetailDTO(id)));
     }
 }

@@ -45,13 +45,13 @@ public class ProductService {
         product.setOwner(user);
         product.setCategory(categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(EntityNotFoundException::new));
         product.setProductImages(
-            productImageRepository.saveAll(
-                productDTO.getFiles()
-                    .stream()
-                    .map(imageStorage::upload)
-                    .map(ProductImage::new)
-                    .collect(Collectors.toList())
-            )
+                productImageRepository.saveAll(
+                        productDTO.getFiles()
+                                .stream()
+                                .map(imageStorage::upload)
+                                .map(ProductImage::new)
+                                .collect(Collectors.toList())
+                )
         );
 
         return productRepository.save(product);
@@ -65,34 +65,25 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
 
-        int orderCount = orderRepository.countByProductId(productId);
-
         Double ownerRating = reviewRepository.getAvgRatingByChefId(product.getOwner().getId()).orElse(ZERO);
 
         return ProductDetailDTO.builder()
                 .product(product)
-                .orderCount(orderCount)
-                .status(product.calculateStatus(orderCount))
                 .ownerRating(ownerRating)
                 .build();
     }
 
+    @Transactional
     public Order createOrder(Long productId, OrderDTO orderDTO, User user) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
 
-        int orderCount = orderRepository.countByProductId(product.getId());
+        Order order = orderRepository.save(orderDTO.toEntity(user, product));
 
-        product.validateOrder(user, orderRepository.existsByParticipantAndProduct(user, product), orderCount);
+        product.getOrders().add(order);
+        productRepository.save(product);
 
-        return orderRepository.save(
-                Order.builder()
-                        .deliveryType(orderDTO.getDeliveryType())
-                        .product(product)
-                        .participant(user)
-//                        .status(product.getStatus())
-                        .build()
-        );
+        return order;
     }
 
     public Page<Review> getReviews(Long productId, Pageable pageable) {
@@ -105,17 +96,10 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
 
-        Order order = orderRepository.findByParticipantIdAndProductId(user.getId(), productId)
-                .orElseThrow(() -> new EntityNotFoundException("나눔신청 내역이 존재하지 않습니다"));
-
-        if (!order.isCompleteSharing()) {
-            throw new NotAllowedException("나눔완료가 되지 않았습니다");
-        }
-
         if (reviewRepository.existsByWriterAndProduct(user, product)) {
             throw new NotAllowedException("이미 리뷰를 등록하였습니다");
         }
 
-        return reviewRepository.save(reviewDTO.toEntity(product, user, reviewDTO));
+        return reviewRepository.save(reviewDTO.toEntity(user, product));
     }
 }

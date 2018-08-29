@@ -1,7 +1,6 @@
 package com.baemin.nanumchan.dto;
 
 import com.baemin.nanumchan.domain.Product;
-import com.baemin.nanumchan.domain.Status;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -29,8 +28,6 @@ public class ProductDetailDTOValidationTest {
         productDetailDTO = ProductDetailDTO.builder()
                 .product(Product.builder().build())
                 .ownerRating(1.0)
-                .status(Status.EXPIRED)
-                .orderCount(0)
                 .build();
         Set<ConstraintViolation<ProductDetailDTO>> constraintViolations = validator.validate(productDetailDTO);
         assertThat(constraintViolations.size()).isEqualTo(0);
@@ -41,11 +38,9 @@ public class ProductDetailDTOValidationTest {
         productDetailDTO = ProductDetailDTO.builder()
                 .product(null)
                 .ownerRating(null)
-                .status(null)
-                .orderCount(null)
                 .build();
         Set<ConstraintViolation<ProductDetailDTO>> constraintViolations = validator.validate(productDetailDTO);
-        assertThat(constraintViolations.size()).isEqualTo(4);
+        assertThat(constraintViolations.size()).isEqualTo(2);
     }
 
     @Test
@@ -53,10 +48,8 @@ public class ProductDetailDTOValidationTest {
         productDetailDTO = ProductDetailDTO.builder()
                 .product(null)
                 .ownerRating(-1.0)
-                .status(null)
-                .orderCount(-1)
                 .build();
         Set<ConstraintViolation<ProductDetailDTO>> constraintViolations = validator.validate(productDetailDTO);
-        assertThat(constraintViolations.size()).isEqualTo(4);
+        assertThat(constraintViolations.size()).isEqualTo(2);
     }
 }

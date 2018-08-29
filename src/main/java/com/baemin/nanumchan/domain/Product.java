@@ -1,9 +1,9 @@
 package com.baemin.nanumchan.domain;
 
-import com.baemin.nanumchan.exception.NotAllowedException;
 import com.baemin.nanumchan.support.domain.AbstractEntity;
 import com.baemin.nanumchan.validate.Expirable;
 import com.baemin.nanumchan.validate.KoreanWon;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
@@ -104,8 +104,24 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
     @Column(nullable = false)
     private Boolean isBowlNeeded;
 
-    // product 내부에서 status를 field로 갖고 있는 경우!
-//    private Status status;
+    @Size(max = 6)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Order> orders;
+
+    public int getOrdersSize() {
+        return orders.size();
+    }
+
+    public Status getStatus() {
+        if (isExpiredDateTime()) {
+            return Status.EXPIRED;
+        }
+        if (maxParticipant == getOrdersSize()) {
+            return Status.FULL_PARTICIPANTS;
+        }
+        return Status.ON_PARTICIPATING;
+    }
 
     public boolean isExpiredDateTime() {
         return expireDateTime.isBefore(LocalDateTime.now());
@@ -119,16 +135,6 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
         return shareDateTime.isBefore(LocalDateTime.now());
     }
 
-    public Status calculateStatus(int orderCount) {
-        if (isExpiredDateTime()) {
-            return Status.EXPIRED;
-        }
-        if (compareMaxParticipants(orderCount)) {
-            return Status.FULL_PARTICIPANTS;
-        }
-        return Status.ON_PARTICIPATING;
-    }
-
     @Override
     public LocalDateTime getStartDateTime() {
         return expireDateTime;
@@ -139,36 +145,15 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
         return shareDateTime;
     }
 
-    public void validateOrder(User user, boolean existsOrder, int orderCount) {
-        if (owner.isSameUser(user)) {
-            throw new NotAllowedException("본인은 나눔신청이 안됩니다");
-        }
-        if (existsOrder) {
-            throw new NotAllowedException("user", "이미 신청한 사람은 나눔신청이 안됩니다");
-        }
-
-        Status status = calculateStatus(orderCount);
-//      status = calculateStatus(orderCount); // status 를 product의 field로 갖고 있으면 이렇게 적용!
-
-        if (!status.equals(Status.ON_PARTICIPATING)) {
-            throw new NotAllowedException("status", status.name());
-        }
+    public boolean isOwner(User user) {
+        return owner.equals(user);
     }
 
-    public Order getOrder(User user, Order order) {
-
-        validateChangeOrderStatus(user);
-        order.changeStatusToCompleted();
-
-        return order;
+    public boolean isStatus_ON_PARTICIPATING() {
+        return getStatus().equals(Status.ON_PARTICIPATING);
     }
 
-    private void validateChangeOrderStatus(User user) {
-        if (!owner.isSameUser(user)) {
-            throw new NotAllowedException("user", "요리사 본인이 아닙니다");
-        }
-        if (!isSharedDateTime()) {
-            throw new NotAllowedException("shareTime", "나눔시간 전에는 나눔완료를 할 수 없습니다");
-        }
+    public Order getOrderByUser(User user) {
+        return orders.stream().filter(order -> order.getParticipant().equals(user)).findAny().orElse(null);
     }
 }

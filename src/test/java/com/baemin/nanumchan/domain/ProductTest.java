@@ -1,11 +1,10 @@
 package com.baemin.nanumchan.domain;
 
-import com.baemin.nanumchan.exception.NotAllowedException;
-import com.baemin.nanumchan.exception.UnAuthenticationException;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,79 +52,71 @@ public class ProductTest {
     }
 
     @Test
-    public void calculateStatus_기간만료() {
+    public void getStatus_기간만료() {
         product = Product.builder()
                 .expireDateTime(now.minusDays(1))
                 .maxParticipant(5)
                 .build();
-        assertThat(product.calculateStatus(5)).isEqualTo(Status.EXPIRED);
+        assertThat(product.getStatus()).isEqualTo(Status.EXPIRED);
     }
 
     @Test
-    public void calculateStatus_모집완료() {
+    public void getStatus_모집완료() {
         product = Product.builder()
+                .orders(Arrays.asList(new Order(), new Order(), new Order()))
                 .expireDateTime(now.plusDays(1))
-                .maxParticipant(5)
+                .maxParticipant(3)
                 .build();
-        assertThat(product.calculateStatus(5)).isEqualTo(Status.FULL_PARTICIPANTS);
+        assertThat(product.getStatus()).isEqualTo(Status.FULL_PARTICIPANTS);
     }
 
     @Test
-    public void calculateStatus_모집중() {
+    public void getStatus_모집중() {
         product = Product.builder()
+                .orders(Arrays.asList(new Order()))
                 .expireDateTime(now.plusDays(1))
-                .maxParticipant(5)
+                .maxParticipant(4)
                 .build();
-        assertThat(product.calculateStatus(4)).isEqualTo(Status.ON_PARTICIPATING);
+        assertThat(product.getStatus()).isEqualTo(Status.ON_PARTICIPATING);
     }
 
     @Test
-    public void validateOrder_성공() {
-        user = User.builder()
-                .name("석윤")
-                .build();
+    public void isStatus_ON_PARTICIPATING_성공() {
         product = Product.builder()
-                .owner(user)
+                .orders(Arrays.asList(new Order()))
                 .expireDateTime(now.plusDays(1))
                 .maxParticipant(4)
                 .build();
-        product.validateOrder(User.GUEST_USER, false, 5);
-
+        assertThat(product.isStatus_ON_PARTICIPATING()).isTrue();
     }
 
-    @Test(expected = NotAllowedException.class)
-    public void validateOrder_실패_본인() {
-        user = User.builder()
-                .build();
+    @Test
+    public void isStatus_ON_PARTICIPATING_실패() {
         product = Product.builder()
-                .owner(user)
+                .orders(Arrays.asList(new Order()))
                 .expireDateTime(now.plusDays(1))
-                .maxParticipant(4)
+                .maxParticipant(1)
                 .build();
-        product.validateOrder(user, false, 3);
+        assertThat(product.isStatus_ON_PARTICIPATING()).isFalse();
     }
 
-    @Test(expected = NotAllowedException.class)
-    public void validateOrder_실패_주문존재() {
+    @Test
+    public void isOwner_성공() {
         user = User.builder()
                 .build();
         product = Product.builder()
                 .owner(user)
-                .expireDateTime(now.plusDays(1))
-                .maxParticipant(4)
                 .build();
-        product.validateOrder(User.GUEST_USER, true, 3);
+        assertThat(product.isOwner(user)).isTrue();
     }
 
-    @Test(expected = NotAllowedException.class)
-    public void validateOrder_실패_모집꽉참() {
+    @Test
+    public void isOwner_실패() {
         user = User.builder()
                 .build();
         product = Product.builder()
                 .owner(user)
-                .expireDateTime(now.plusDays(1))
-                .maxParticipant(4)
                 .build();
-        product.validateOrder(User.GUEST_USER, true, 4);
+        assertThat(product.isOwner(User.GUEST_USER)).isTrue();
     }
 }

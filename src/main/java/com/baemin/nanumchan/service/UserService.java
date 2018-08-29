@@ -85,12 +85,9 @@ public class UserService {
     public Page<ProductDetailDTO> createdProducts(Long ownerId, Pageable pageable) {
         Page<Product> products = productRepository.findAllByOwnerIdOrderByIdDesc(ownerId, pageable);
         List<ProductDetailDTO> productDetailDTOS = products.stream().map(product -> {
-            int orderCount = orderRepository.countByProductId(product.getId());
             Double ownerRating = reviewRepository.getAvgRatingByChefId(product.getOwner().getId()).orElse(ZERO);
             return ProductDetailDTO.builder()
                     .product(product)
-                    .orderCount(orderCount)
-                    .status(product.calculateStatus(orderCount))
                     .ownerRating(ownerRating)
                     .build();
         }).collect(Collectors.toList());

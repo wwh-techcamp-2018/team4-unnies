@@ -1,7 +1,7 @@
 package com.baemin.nanumchan.web;
 
-import com.baemin.nanumchan.domain.Status;
 import com.baemin.nanumchan.domain.User;
+import com.baemin.nanumchan.dto.StatusDTO;
 import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.OrderService;
 import com.baemin.nanumchan.utils.RestResponse;
@@ -24,12 +24,12 @@ public class ApiOrderController {
     }
 
     @GetMapping("/products/{id}")
-    public ResponseEntity<RestResponse> getOrders(@LoginUser User user, @PathVariable Long id) {
-        return ResponseEntity.ok(RestResponse.success(orderService.getOrders(user, id)));
+    public ResponseEntity<RestResponse> getOrdersByChef(@LoginUser User user, @PathVariable Long id) {
+        return ResponseEntity.ok(RestResponse.success(orderService.getOrdersByChef(user, id)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RestResponse> changeOrderStatus(@LoginUser User user, @PathVariable Long id, @RequestBody Status status) {
-        return ResponseEntity.ok(RestResponse.success(orderService.changeOrderStatus(user, id, status)));
+    public ResponseEntity<RestResponse> changeOrderStatus(@LoginUser User user, @PathVariable Long id, @RequestBody StatusDTO status) {
+        return ResponseEntity.ok(RestResponse.success(orderService.changeOrderStatus(user, id, status.getStatus())));
     }
 }
