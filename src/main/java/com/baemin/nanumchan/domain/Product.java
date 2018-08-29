@@ -1,6 +1,6 @@
 package com.baemin.nanumchan.domain;
 
-import com.baemin.nanumchan.exception.UnAuthenticationException;
+import com.baemin.nanumchan.exception.NotAllowedException;
 import com.baemin.nanumchan.support.domain.AbstractEntity;
 import com.baemin.nanumchan.validate.Expirable;
 import com.baemin.nanumchan.validate.KoreanWon;
@@ -104,6 +104,9 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
     @Column(nullable = false)
     private Boolean isBowlNeeded;
 
+    // product 내부에서 status를 field로 갖고 있는 경우!
+//    private Status status;
+
     public boolean isExpiredDateTime() {
         return expireDateTime.isBefore(LocalDateTime.now());
     }
@@ -138,16 +141,17 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
 
     public void validateOrder(User user, boolean existsOrder, int orderCount) {
         if (owner.isSameUser(user)) {
-            throw new UnAuthenticationException("user", "본인은 나눔신청이 안됩니다");
+            throw new NotAllowedException("본인은 나눔신청이 안됩니다");
         }
         if (existsOrder) {
-            throw new UnAuthenticationException("user", "이미 신청한 사람은 나눔신청이 안됩니다");
+            throw new NotAllowedException("user", "이미 신청한 사람은 나눔신청이 안됩니다");
         }
 
         Status status = calculateStatus(orderCount);
+//      status = calculateStatus(orderCount); // status 를 product의 field로 갖고 있으면 이렇게 적용!
 
         if (!status.equals(Status.ON_PARTICIPATING)) {
-            throw new UnAuthenticationException("status", status.name());
+            throw new NotAllowedException("status", status.name());
         }
     }
 
@@ -161,10 +165,10 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
 
     private void validateChangeOrderStatus(User user) {
         if (!owner.isSameUser(user)) {
-            throw new UnAuthenticationException("user", "요리사 본인이 아닙니다");
+            throw new NotAllowedException("user", "요리사 본인이 아닙니다");
         }
         if (!isSharedDateTime()) {
-            throw new UnAuthenticationException("shareTime", "나눔시간 전에는 나눔완료를 할 수 없습니다");
+            throw new NotAllowedException("shareTime", "나눔시간 전에는 나눔완료를 할 수 없습니다");
         }
     }
 }
