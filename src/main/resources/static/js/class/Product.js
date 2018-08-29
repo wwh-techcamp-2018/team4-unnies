@@ -1,5 +1,6 @@
 import {$, $all} from '../lib/utils.js';
 import {ratingTemplate} from "../template/DetailTemplate.js";
+import {errorPageTemplate} from '../template/ErrorPageTemplate.js';
 
 class Product {
 
@@ -39,6 +40,7 @@ class Product {
                 return;
             })
             .then(({ data }) => {
+                console.log(data);
                 callback(data);
             })
             .catch(error => {
@@ -46,14 +48,14 @@ class Product {
             });
     }
 
-    loadProductDetail(data) {
-        const {product, orderCount, status, ownerRating} = data;
-        const {owner} = product;
+    loadProduct(data) {
+        const {product, ownerRating} = data;
+        const {owner, status} = product;
         $('.product-name').innerText = product.name;
         $('#product-name').innerText = product.name;
         $('#product-title').innerText = product.title;
         $('#cook').innerText = owner.name;
-        $('#participate-number').innerText = orderCount + '/' + product.maxParticipant;
+        $('#participate-number').innerText = product.ordersSize + '/' + product.maxParticipant;
         $('#participate-date').innerText = product.expireDateTime;
         $('#give-time').innerText = product.shareDateTime;
         $('#give-place').innerText = owner.address;
@@ -73,7 +75,7 @@ class Product {
             initialValue: product.description
         });
 
-        const userRating = Math.round(data.ownerRating)
+        const userRating = Math.round(ownerRating)
         $('#user-rating').innerHTML = userRating > 0 ? ratingTemplate(userRating) : '';
 
         const currentStatus = $('.status');
@@ -101,25 +103,8 @@ class Product {
     }
 
     loadProductError(){
-            $('.product-name').innerText = '존재 하지 않은 데이터 입니다';
-            $('#product-name').innerText = '존재 하지 않은 데이터 입니다';
-            $('#product-title').innerText = '존재 하지 않은 데이터 입니다';
-            $('#cook').innerText = '존재 하지 않은 데이터 입니다';
-            $('#participate-number').innerText = '존재 하지 않은 데이터 입니다';
-            $('#participate-date').innerText = '존재 하지 않은 데이터 입니다';
-            $('#give-time').innerText = '존재 하지 않은 데이터 입니다';
-            $('#give-place').innerText = '존재 하지 않은 데이터 입니다';
-            $('#give-plate').innerText = '존재 하지 않은 데이터 입니다';
-            $('#price').innerText = '존재 하지 않은 데이터 입니다';
-            $('#nickname').innerText = '존재 하지 않은 데이터 입니다';
-            $('#region-name').innerText = '존재 하지 않은 데이터 입니다';
-            $('#product-name').innerText = '존재 하지 않은 데이터 입니다';
-            $('#product-category').innerText = '존재 하지 않은 데이터 입니다';
-            $('#product-create-time').innerText = '존재 하지 않은 데이터 입니다';
-            $('#product-price').innerText = '존재 하지 않은 데이터 입니다';
-
-            const userRating = '존재 하지 않은 데이터 입니다';
-        }
+        $('.container').insertAdjacentHTML('afterbegin', errorPageTemplate());
+    }
 }
 
 export default Product;

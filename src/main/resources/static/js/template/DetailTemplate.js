@@ -45,7 +45,7 @@ export function ratingTemplate(rating) {
 
 
 
-export function registerTemplate({ product, orderCount }) {
+export function registerTemplate({ product }) {
     return `<h3></h3>
                     <div>
                         <span><strong>요리명 : ${product.name}</strong></span>
@@ -53,7 +53,7 @@ export function registerTemplate({ product, orderCount }) {
                     <h4><strong>요리사 : ${product.owner.name}</strong><span></span></h4>
                     </h4>
                     <h4><strong>모집기간 : ${product.expireDateTime}</strong><span></span>
-                    <h4><strong>모집현황 : ${orderCount}/${product.maxParticipant}</strong><span></span>
+                    <h4><strong>모집현황 : ${product.ordersSize}/${product.maxParticipant}</strong><span></span>
                     </h4>
                     <h4><strong>나눔시각 : ${product.shareDateTime}</strong><span
                             ><strong></strong></span></h4>
@@ -63,7 +63,7 @@ export function registerTemplate({ product, orderCount }) {
 }
 
 export function orderListTemplate(data){
-    const shareDateTime = data.product.shareDateTime.replace('T',' ');
+    const shareDateTime = data.shareDateTime.replace('T',' ');
     const isBeforeShareTime = Date.parse(shareDateTime) > Date.now();
     const deliveryType = data.deliveryType === 'BAEMIN_RIDER' ? '배민라이더스' : '직접수령';
 

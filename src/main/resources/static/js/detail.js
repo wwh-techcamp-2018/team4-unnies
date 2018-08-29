@@ -1,6 +1,6 @@
 import { $, $all } from './lib/utils.js';
-import ProductDetail from './class/ProductDetail.js';
-import ReviewList from './class/ReviewList.js';
+import Product from './class/Product.js';
+import Review from './class/Review.js';
 import OrderList from './class/OrderList.js';
 import { orderListTemplate } from './template/DetailTemplate.js';
 import { openReviewModal, closeReviewModal, openOrderModal, closeOrderModal } from './modal.js'
@@ -10,12 +10,12 @@ const productId = pathname.substring(pathname.lastIndexOf('/')+1);
 let reviewPage = 0;
 
 
-const productDetail = new ProductDetail()
-const reviewList = new ReviewList()
+const product = new Product();
+const review = new Review();
 const orderList = new OrderList();
 
-productDetail.load(productId, productDetail.loadProductDetail);
-reviewList.load(productId, reviewPage);
+product.load(productId, product.loadProduct);
+review.load(productId, reviewPage);
 orderList.load(productId, loadOrderList);
 
 function moveToSelectedImage(event) {
@@ -33,7 +33,7 @@ function getElementParentIndex(element){
 }
 
 function loadOrderList(data){
-    if(data.length == 0){
+    if(!data.length){
         return;
     }
 
@@ -68,9 +68,9 @@ function changeOrderStatus(event){
         method:'PUT',
         headers:{'content-type':'application/json'},
         credentials:'same-origin',
-        body: JSON.stringify(
+        body:JSON.stringify({
             status
-        )
+        })
     }).then(response => {
         return response.json();
     })
@@ -114,9 +114,9 @@ function createOrder(event){
         return response.json();
     })
     .then(({ data, errors }) => {
-        console.log(errors);
+        console.log(data);
         if(data){
-            productDetail.loadProductDetail(data);
+            product.loadProduct(data);
             $('strong[name=invalid-register]').style.visibility = 'hidden';
             return;
         }
@@ -138,6 +138,8 @@ function createReview(event){
     const comment = $('#comment').value;
     const rating = $all('.star.selected').length;
 
+    console.log(comment);
+
     fetch(`/api/products/${productId}/reviews?page=0&size=5`, {
             method:'post',
             headers:{'content-type':'application/json'},
@@ -147,13 +149,13 @@ function createReview(event){
                 rating
             })
         }).then(response => {
-            closeModal();
+            closeReviewModal();
             return response.json();
         })
         .then(({ data, errors }) => {
             if(data){
                 $('strong[name=invalid-review]').style.visibility = 'hidden';
-                reviewList.loadReviewList(data.data);
+                review.loadReviews(data);
                 return;
             }
             errors.forEach(({ message }) => {
@@ -167,7 +169,7 @@ function createReview(event){
 }
 
 function registerOrderModal(){
-    productDetail.load(productId, openOrderModal);
+    product.load(productId, openOrderModal);
 }
 
 $('.preview-thumbnail.nav.nav-tabs').addEventListener('click', moveToSelectedImage);

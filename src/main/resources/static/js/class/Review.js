@@ -23,7 +23,7 @@ class Review {
             });
     }
 
-    loadReviewList({ content, first, last, totalElements }){
+    loadReviews({ content, first, last, totalElements }){
         $('#show-review-prev').style.visibility = first ?  'hidden' :  'visible';
         $('#show-review-next').style.visibility = last ? 'hidden' : 'visible';
 

@@ -20,7 +20,7 @@ export function closeReviewModal(){
 
 export function openOrderModal(data){
     $('#register-overlay').classList.remove("is-hidden");
-    $('#register-data').innerHTML = orderTemplate(data);
+    $('#register-data').innerHTML = registerTemplate(data);
 }
 
 export function closeOrderModal(){
