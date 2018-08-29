@@ -5,7 +5,7 @@ import com.baemin.nanumchan.dto.OrderDTO;
 import com.baemin.nanumchan.dto.ProductDTO;
 import com.baemin.nanumchan.dto.ProductDetailDTO;
 import com.baemin.nanumchan.dto.ReviewDTO;
-import com.baemin.nanumchan.exception.RestException;
+import com.baemin.nanumchan.exception.NotAllowedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,21 +77,12 @@ public class ProductService {
                 .build();
     }
 
-
-    public Product getProduct(User user, Long productId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
-
-        Integer orderCount = orderRepository.countByProductId(product.getId());
-        product.validateOrder(user, orderRepository.existsByParticipantAndProduct(user, product), orderCount);
-        return product;
-    }
-
     public Order createOrder(Long productId, OrderDTO orderDTO, User user) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
 
-        Integer orderCount = orderRepository.countByProductId(product.getId()); // int
+        int orderCount = orderRepository.countByProductId(product.getId());
+
         product.validateOrder(user, orderRepository.existsByParticipantAndProduct(user, product), orderCount);
 
         return orderRepository.save(
@@ -100,7 +90,7 @@ public class ProductService {
                         .deliveryType(orderDTO.getDeliveryType())
                         .product(product)
                         .participant(user)
-//                        .status(Status.ON_SHARING)
+//                        .status(product.getStatus())
                         .build()
         );
     }
@@ -111,7 +101,7 @@ public class ProductService {
         return reviewRepository.findAllByChefOrderByIdDesc(product.getOwner(), pageable);
     }
 
-    public Product enableReview(User user, Long productId) {
+    public Review createReview(User user, Long productId, ReviewDTO reviewDTO) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
 
@@ -119,34 +109,13 @@ public class ProductService {
                 .orElseThrow(() -> new EntityNotFoundException("나눔신청 내역이 존재하지 않습니다"));
 
         if (!order.isCompleteSharing()) {
-            throw new RestException("나눔완료가 되지 않았습니다");
+            throw new NotAllowedException("나눔완료가 되지 않았습니다");
         }
 
         if (reviewRepository.existsByWriterAndProduct(user, product)) {
-            throw new RestException("이미 리뷰를 등록하였습니다");
-        }
-        return product;
-    }
-
-    public Review createReview(User user, Long productId, ReviewDTO reviewDTO) {
-        return reviewRepository.save(reviewDTO.toEntity(enableReview(user, productId), user, reviewDTO));
-    }
-
-    public List<Order> getOrders(User user, Long productId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        if (!user.isSameUser(product.getOwner())) {
-            throw new RestException("요리사 본인이 아닙니다");
+            throw new NotAllowedException("이미 리뷰를 등록하였습니다");
         }
 
-        return orderRepository.findAllByProduct(product);
-    }
-
-    public Order changeOrderStatus(User user, Long productId, Long orderId) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(EntityNotFoundException::new);
-
-        return orderRepository.save(product.getOrder(user, orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new)));
+        return reviewRepository.save(reviewDTO.toEntity(product, user, reviewDTO));
     }
 }
