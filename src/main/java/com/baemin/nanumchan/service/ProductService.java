@@ -41,21 +41,20 @@ public class ProductService {
 
     @Transactional
     public Product create(User user, ProductDTO productDTO) {
-        Product productBeforeSave = productDTO.toEntity();
-        productBeforeSave.setOwner(user);
-        productBeforeSave.setCategory(categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(EntityNotFoundException::new));
-
-        Product product = productRepository.save(productBeforeSave);
-
-        productImageRepository.saveAll(
+        Product product = productDTO.toEntity();
+        product.setOwner(user);
+        product.setCategory(categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(EntityNotFoundException::new));
+        product.setProductImages(
+            productImageRepository.saveAll(
                 productDTO.getFiles()
-                        .stream()
-                        .map(imageStorage::upload)
-                        .map(ProductImage::new)
-                        .collect(Collectors.toList())
+                    .stream()
+                    .map(imageStorage::upload)
+                    .map(ProductImage::new)
+                    .collect(Collectors.toList())
+            )
         );
 
-        return product;
+        return productRepository.save(product);
     }
 
     public String uploadImage(MultipartFile file) {

@@ -54,7 +54,11 @@ class ImageViewer {
         this.view.main.classList.add('mb-2');
         this.view.thumbnails = this.view.querySelector('.image-viewer-thumbnails');
         this.view.thumbnails.style.display = 'block';
-        this.view.thumbnails.insertAdjacentHTML('beforeend', this.template.thumbnailView({width, height, 'margin-right': marginRight}).repeat(count));
+        this.view.thumbnails.insertAdjacentHTML('beforeend', this.template.thumbnailView({
+            width,
+            height,
+            'margin-right': marginRight
+        }).repeat(count));
     }
 
     enableThumbnailMouseOver() {
@@ -65,11 +69,11 @@ class ImageViewer {
         event.preventDefault();
         event.stopPropagation();
 
-        const { target } = event;
+        const {target} = event;
         if (target.tagName !== 'IMG') {
             return;
         }
-        const { src, alt } = target;
+        const {src, alt} = target;
         this.setImage(src, alt);
     }
 
@@ -79,11 +83,11 @@ class ImageViewer {
         this.view.thumbnails.addEventListener('drop', this._defaultDropHandler.bind(this));
     }
 
-    _defaultDragStartHandler (event) {
+    _defaultDragStartHandler(event) {
         event.stopPropagation();
         event.dataTransfer.dropEffect = 'move';
 
-        const { target } = event;
+        const {target} = event;
         if (target.tagName !== 'IMG') {
             return;
         }
@@ -102,7 +106,7 @@ class ImageViewer {
         event.stopPropagation();
         event.dataTransfer.dropEffect = 'move';
 
-        const { target, dataTransfer } = event;
+        const {target, dataTransfer} = event;
         if (target.tagName !== 'IMG') {
             return;
         }
@@ -118,8 +122,8 @@ class ImageViewer {
 
     _swapThumbnail(dragIndex, dropIndex) {
         const thumbnails = this.view.thumbnails.querySelectorAll('img');
-        const { src: dragSrc, alt: dragAlt } = thumbnails[dragIndex];
-        const { src: dropSrc, alt: dropAlt } = thumbnails[dropIndex];
+        const {src: dragSrc, alt: dragAlt} = thumbnails[dragIndex];
+        const {src: dropSrc, alt: dropAlt} = thumbnails[dropIndex];
 
         thumbnails[dragIndex].src = dropSrc;
         thumbnails[dragIndex].alt = dropAlt;
@@ -136,8 +140,8 @@ class ImageViewer {
     _renderImageFile(file) {
         return new Promise(resolve => {
             const fileReader = new FileReader();
-            fileReader.addEventListener('load', ({ target: { result }}) => {
-                resolve({ src: result, alt: file.name });
+            fileReader.addEventListener('load', ({target: {result}}) => {
+                resolve({src: result, alt: file.name});
             });
             fileReader.readAsDataURL(file);
         });
@@ -145,7 +149,7 @@ class ImageViewer {
 
     _renderThumbnail(images) {
         Array(this.view.thumbnails.children.length).fill().map((_, index) => {
-            const { src, alt } = images[index] || {};
+            const {src, alt} = images[index] || {};
             this.setThumbnailImage(index, src, alt);
         });
         this.setImage(images[0].src, images[0].alt);

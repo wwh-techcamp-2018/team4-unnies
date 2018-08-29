@@ -5,8 +5,9 @@ class ImageUploader {
         this.filesLength = 0;
 
         args.form && this.setForm(args.form);
-        args.inputTemplate && this.setInputTemplate(args.inputTemplate);
-        args.inputName && this.setInputName(args.inputName);
+        args.name && this.setName(args.name);
+        args.accept && this.setAccept(args.accept);
+        args.multiple && this.setMultiple(args.multiple);
         args.dropzone && this.setDropZone(args.dropzone);
         args.delegate && this.setDelegate(args.delegate);
     }
@@ -15,12 +16,16 @@ class ImageUploader {
         this.form = element;
     }
 
-    setInputTemplate(template) {
-        this.inputTemplate = template;
+    setName(name) {
+        this.name = name;
     }
 
-    setInputName(name) {
-        this.name = name;
+    setAccept(accept) {
+        this.accept = accept;
+    }
+
+    setMultiple(boolean) {
+        this.multiple = boolean;
     }
 
     setMultiple(boolean) {
@@ -66,21 +71,26 @@ class ImageUploader {
 
     _defaultUploadHandler(event) {
         event.preventDefault();
+
         let input = this.form.querySelector(`input[name=${this.name}]`);
         if (input && !this.multiple) {
             return input.click();
         }
 
-        this.form.insertAdjacentHTML('beforeend', this.inputTemplate(this.name));
-        input = this.form.querySelector(`input[name=${this.name}]:last-child`);
+        input = document.createElement('input');
+        input.name = this.name;
+        input.accept = this.accept;
+        input.multiple = this.multiple;
+        input.type = 'file';
+        input.style.display = 'none';
         input.addEventListener('input', event => {
             event.preventDefault();
             event.stopPropagation();
             const { files } = event.target;
-            if (this.FILE_LIMIT < this.filesLength + files.length) {
-                input.remove();
+            if (!files.length || this.FILE_LIMIT < this.filesLength + files.length) {
                 return;
             }
+            this.form.appendChild(input);
             this.filesLength += files.length;
             this._afterFileInputHandler && this._afterFileInputHandler(event);
         });

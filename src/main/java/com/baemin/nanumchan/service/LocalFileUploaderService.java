@@ -4,14 +4,14 @@ import com.amazonaws.util.IOUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,21 +26,24 @@ public class LocalFileUploaderService implements ImageStorage {
     private String home;
 
     @Value("${local.storage.path}")
-    private String path;
+    private String relativePath;
+
+    private String absolutePath;
 
     @PostConstruct
     public void initPath() throws IOException {
-        Path absolutePath = Paths.get(home + path);
+        Path absolutePath = Paths.get(home + relativePath);
         log.debug("### {}",absolutePath);
         if (!Files.exists(absolutePath)) {
             Files.createDirectories(absolutePath);
         }
+        this.absolutePath = absolutePath.toString();
     }
 
     public String upload(MultipartFile multipartFile) {
         try {
             File file = convert(multipartFile);
-            return String.join("/", path, file.getName());
+            return asResource(file.getName()).getURI().toString();
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -65,7 +68,18 @@ public class LocalFileUploaderService implements ImageStorage {
     }
 
     private String getFilePath(String fileName) {
-        return String.join("/", home, path, LocalDateTime.now().toString() + fileName);
+        return String.join("/", home, relativePath, LocalDateTime.now().toString() + fileName);
+    }
+
+    public Resource asResource(String fileName) throws MalformedURLException, FileNotFoundException {
+        Path file = Paths.get(this.absolutePath).resolve(fileName);
+        Resource resource = new UrlResource(file.toUri());
+
+        if (!resource.exists()) {
+            throw new FileNotFoundException();
+        }
+
+        return resource;
     }
 
 }

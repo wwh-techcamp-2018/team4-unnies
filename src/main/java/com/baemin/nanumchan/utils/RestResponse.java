@@ -1,23 +1,21 @@
 package com.baemin.nanumchan.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RestResponse<T> {
 
     private T data;
-    private List<Error> errors;
     private String message;
-
-    public RestResponse() {
-    }
+    private List<Error> errors;
 
     private RestResponse(List<Error> errors) {
         this.errors = errors;
@@ -28,16 +26,12 @@ public class RestResponse<T> {
         this.message = message;
     }
 
+    public static <T> RestResponse<T> success(T data) {
+        return success(data, null);
+    }
+
     public static <T> RestResponse<T> success(T data, String message) {
         return new RestResponse<T>(data, message);
-    }
-
-    public static <T> RestResponse<T> success(T data) {
-        return new RestResponse<T>(data, "");
-    }
-
-    public static <T> RestResponse<T> success() {
-        return new RestResponse<T>();
     }
 
     public static ErrorResponseBuilder error() {
@@ -52,12 +46,10 @@ public class RestResponse<T> {
         return error(null, errorMessage);
     }
 
+    @NoArgsConstructor
     public static class ErrorResponseBuilder {
 
         private List<Error> errors = new ArrayList<>();
-
-        public ErrorResponseBuilder() {
-        }
 
         private ErrorResponseBuilder(Error error) {
             errors.add(error);
@@ -79,14 +71,10 @@ public class RestResponse<T> {
 
     @Getter
     @NoArgsConstructor
-    @ToString
+    @AllArgsConstructor
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Error {
         private String field;
         private String message;
-
-        public Error(String field, String message) {
-            this.field = field;
-            this.message = message;
-        }
     }
 }

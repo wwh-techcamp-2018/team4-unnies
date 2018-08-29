@@ -1,10 +1,10 @@
 import { $, $all } from './lib/utils.js';
 import ImageUploader from './class/ImageUploader.js';
 import ImageViewer from './class/ImageViewer.js';
-import Category from './lib/Category.js';
-import Product from './lib/Product.js';
-import DaumMap from './lib/DaumMap.js';
-import { uploadInput, mainView, thumbnailView, imageView } from './template/UploadTemplate.js';
+import Category from './class/Category.js';
+import Product from './class/Product.js';
+import DaumMap from './class/DaumMap.js';
+import { mainView, thumbnailView, imageView } from './template/UploadTemplate.js';
 
 new Category().load($('#category-section > .wrapper'));
 
@@ -23,8 +23,9 @@ imageViewer.enableDrag();
 
 const imageUploader = new ImageUploader();
 imageUploader.setForm($('.form-group.upload'));
-imageUploader.setInputTemplate(uploadInput);
-imageUploader.setInputName('files');
+imageUploader.setName('files');
+imageUploader.setAccept('image/jpeg,image/png');
+imageUploader.setMultiple(true);
 imageUploader.setDropZone($('.form-group.upload'));
 imageUploader.setDelegate($('button.upload'));
 
@@ -43,7 +44,9 @@ $('#upload-form').addEventListener('keydown', event => {
 $('#upload-form').addEventListener('submit', e => {
     e.preventDefault();
     const formData = new FormData($('#upload-form'));
-    new Product().upload(formData);
+    new Product().upload(formData, response => {
+        location.href = response.headers.get("Location");
+    });
 });
 
 function setDateTime() {
