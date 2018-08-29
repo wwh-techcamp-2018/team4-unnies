@@ -6,7 +6,7 @@ import com.baemin.nanumchan.dto.ProductDTO;
 import com.baemin.nanumchan.dto.ProductDetailDTO;
 import com.baemin.nanumchan.dto.ReviewDTO;
 import com.baemin.nanumchan.exception.NotAllowedException;
-import com.baemin.nanumchan.dto.NearProductsDTO;
+import com.baemin.nanumchan.dto.NearProductDTO;
 import com.baemin.nanumchan.utils.DistanceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -106,22 +106,10 @@ public class ProductService {
         return reviewRepository.save(reviewDTO.toEntity(user, product));
     }
 
-    public List<NearProductsDTO> getNearProducts(Double longitude, Double latitude, int offset, int limit) {
-        List<Product> products = productRepository.findNearProducts(NearProductsDTO.DEFAULT_RADIUS_METER, longitude, latitude, offset, limit);
+    public List<NearProductDTO> getNearProducts(double longitude, double latitude, int offset, int limit) {
+        List<Product> products = productRepository.findNearProducts(NearProductDTO.DEFAULT_RADIUS_METER, longitude, latitude, offset, limit);
         return products.stream()
-                .map(p -> NearProductsDTO.builder()
-                        .distanceMeter(Math.floor(DistanceUtils.distanceInMeter(p.getLatitude(), p.getLongitude(), latitude, longitude)))
-                        .productId(p.getId())
-                        .productTitle(p.getTitle())
-                        .productImgUrl(p.getProductImages().stream().findFirst().isPresent() ? p.getProductImages().get(0).getUrl() : null)
-                        .ownerName(p.getOwner().getName())
-                        .ownerImgUrl(p.getOwner().getImageUrl())
-                        .ownerRating(reviewRepository.getAvgRatingByChefId(p.getOwner().getId()).orElse(ZERO))
-                        .orderCnt(orderRepository.countByProductId(p.getId()))
-                        .maxParticipant(p.getMaxParticipant())
-                        .expireDateTime(p.getExpireDateTime())
-                        .price(p.getPrice())
-                        .build())
+                .map(p -> p.toNearProductDTO(longitude, latitude, reviewRepository.getAvgRatingByChefId(p.getOwner().getId()).orElse(0.0)))
                 .collect(Collectors.toList());
     }
 }

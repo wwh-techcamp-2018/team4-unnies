@@ -1,6 +1,8 @@
 package com.baemin.nanumchan.domain;
 
+import com.baemin.nanumchan.dto.NearProductDTO;
 import com.baemin.nanumchan.support.domain.AbstractEntity;
+import com.baemin.nanumchan.utils.DistanceUtils;
 import com.baemin.nanumchan.validate.Expirable;
 import com.baemin.nanumchan.validate.KoreanWon;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -155,5 +157,21 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
 
     public Order getOrderByUser(User user) {
         return orders.stream().filter(order -> order.getParticipant().equals(user)).findAny().orElse(null);
+    }
+
+    public NearProductDTO toNearProductDTO(double longitude, double latitude, double ownerRating) {
+        return NearProductDTO.builder()
+                .distanceMeter(Math.floor(DistanceUtils.distanceInMeter(this.latitude, this.longitude, latitude, longitude)))
+                .productId(id)
+                .productTitle(title)
+                .productImgUrl(productImages.stream().findFirst().isPresent() ? productImages.get(0).getUrl() : null)
+                .ownerName(owner.getName())
+                .ownerImgUrl(owner.getImageUrl())
+                .ownerRating(ownerRating)
+                .orderCnt(getOrdersSize())
+                .maxParticipant(maxParticipant)
+                .expireDateTime(expireDateTime)
+                .price(price)
+                .build();
     }
 }

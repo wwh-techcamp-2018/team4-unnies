@@ -40,7 +40,6 @@ class Product {
                 return;
             })
             .then(({ data }) => {
-                console.log(data);
                 callback(data);
             })
             .catch(error => {

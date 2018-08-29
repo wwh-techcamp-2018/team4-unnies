@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class NearProductsDTO {
+public class NearProductDTO {
 
     public final static int DEFAULT_RADIUS_METER = 1000;
 
