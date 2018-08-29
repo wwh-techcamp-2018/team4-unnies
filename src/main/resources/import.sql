@@ -26,9 +26,8 @@ VALUES
 (5, 5, 5, '찰리와 촥컬릿 공장', '지우가 만든 장맛보다 찐한 수제 초콜릿입니다. 손맛 좀 보시죠. 쿨럭쿨럭', 9000, '팀장은 홍T', '경기도 어딘가', '네 집', 0.00, 0.00, 5, from_unixtime(ceil(unix_timestamp(now()) / 600) * 600) - interval 2 hour, from_unixtime(ceil(unix_timestamp(now()) / 600) * 600) - interval 1 hour, true),
 (6, 1, 6, '국물의 왕 오뎅탕', '석윤이가 두 번째로 1만년 지하수보다 더 깊은 국물 맛을 내는 오뎅탕입니다. 소주 한짝은 눈감고도 비우고 다음날 전혀 무리가 없즈오! ', 9000, '오뎅탕 호로록', '경기도 어딘가', '네 집', 0.00, 0.00, 5, from_unixtime(ceil(unix_timestamp(now()) / 600) * 600) - interval 2 hour, from_unixtime(ceil(unix_timestamp(now()) / 600) * 600) - interval 1 hour, true);
 
-INSERT INTO order_product (id, product_id, participant_id, delivery_type, status)
-VALUES
-(1, 1, 3, 'BAEMIN_RIDER', 'COMPLETE_SHARING'),
+INSERT INTO order_product (id, product_id, participant_id, delivery_type, share_status)
+VALUES (1, 1, 3, 'BAEMIN_RIDER', 'COMPLETE_SHARING'),
 (2, 1, 4, 'PICKUP', 'COMPLETE_SHARING'),
 (3, 1, 5, 'BAEMIN_RIDER', 'ON_SHARING'),
 (4, 2, 1, 'BAEMIN_RIDER', 'COMPLETE_SHARING'),
@@ -41,5 +40,5 @@ VALUES
 
 INSERT INTO review (id, product_id, writer_id, chef_id, comment, rating)
 VALUES
-(1, 1, 1, 2, '성열 답글', 3),
-(2, 2, 2, 3, '성열 답글', 4);
+(1, 1, 3, 1, '성열 답글', 3),
+(2, 2, 3, 2, '성열 답글', 4);
