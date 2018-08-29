@@ -57,8 +57,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(basicAuthInterceptor());
     }
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/users/{id}").setViewName("/mypage");
+        registry.addViewController("/products/{id}").setViewName("/detail");
     }
 }
