@@ -4,7 +4,7 @@ import com.baemin.nanumchan.dto.NearProductDTO;
 import com.baemin.nanumchan.support.domain.AbstractEntity;
 import com.baemin.nanumchan.utils.DistanceUtils;
 import com.baemin.nanumchan.validate.Expirable;
-import com.baemin.nanumchan.validate.KoreanWon;
+import com.baemin.nanumchan.validate.Currency;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -55,7 +55,7 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
     private String title;
 
     @NotNull
-    @KoreanWon(max = 1000000, unit = KoreanWon.Unit.HUNDRED)
+    @Currency(max = 1000000, unit = Currency.Unit.HUNDRED)
     @Column(nullable = false)
     private Integer price;
 

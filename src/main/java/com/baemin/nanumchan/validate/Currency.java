@@ -5,10 +5,10 @@ import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = KoreanWonValidator.class)
+@Constraint(validatedBy = CurrencyValidator.class)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface KoreanWon {
+public @interface Currency {
     String message() default "정확한 가격을 입력해주세요";
 
     Class<?>[] groups() default {};
@@ -22,6 +22,8 @@ public @interface KoreanWon {
     int max() default Integer.MAX_VALUE;
 
     enum Unit {
+        ONE(1),
+        TEN(10),
         HUNDRED(100),
         THOUSAND(1000);
 
@@ -34,6 +36,5 @@ public @interface KoreanWon {
         public boolean isValid(int price) {
             return price % decimalUnit == 0;
         }
-
     }
 }
