@@ -43,4 +43,8 @@ public class Order extends AbstractEntity {
     public void changeStatusToCompleted() {
         status = Status.COMPLETE_SHARING;
     }
+
+    public void changeStatus(Status status) {
+        this.status = status;
+    }
 }
