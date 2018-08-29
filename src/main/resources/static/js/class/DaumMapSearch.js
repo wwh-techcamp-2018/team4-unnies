@@ -1,4 +1,4 @@
-import {$} from './utils.js';
+import {$} from '../lib/utils.js';
 import DaumMap from "./DaumMap.js";
 
 /**

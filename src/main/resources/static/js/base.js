@@ -1,5 +1,5 @@
 import { $ } from "./lib/utils.js";
-import Category from "./lib/Category.js";
+import Category from "./class/Category.js";
 
 $('.logout') && $('.logout').addEventListener('click', logout);
 

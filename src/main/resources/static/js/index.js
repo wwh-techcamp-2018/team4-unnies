@@ -1,7 +1,7 @@
 import { $, $all } from './lib/utils.js';
-import DaumMapSearch from './lib/DaumMapSearch.js';
-import Category from './lib/Category.js';
-import Product from './lib/Product.js';
+import DaumMapSearch from './class/DaumMapSearch.js';
+import Category from './class/Category.js';
+import Product from './class/Product.js';
 import { productTemplate } from './template/ProductTemplate.js';
 
 
