@@ -82,6 +82,7 @@ public class ProductTest {
     @Test
     public void validateOrder_성공() {
         user = User.builder()
+                .name("석윤")
                 .build();
         product = Product.builder()
                 .owner(user)
