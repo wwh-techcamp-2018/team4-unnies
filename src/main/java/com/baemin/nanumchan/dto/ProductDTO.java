@@ -1,11 +1,10 @@
 package com.baemin.nanumchan.dto;
 
-
 import com.baemin.nanumchan.domain.DateTimeExpirable;
 import com.baemin.nanumchan.domain.Product;
+import com.baemin.nanumchan.validate.Currency;
 import com.baemin.nanumchan.validate.Expirable;
 import com.baemin.nanumchan.validate.Image;
-import com.baemin.nanumchan.validate.KoreanWon;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
@@ -17,6 +16,9 @@ import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.baemin.nanumchan.validate.Image.AcceptType.JPG;
+import static com.baemin.nanumchan.validate.Image.AcceptType.PNG;
+
 @Builder
 @Getter
 @Setter
@@ -27,7 +29,7 @@ public class ProductDTO implements DateTimeExpirable {
 
     @Nullable
     @Size(max = 5)
-    private List<@Image MultipartFile> files;
+    private List<@Image(accept = {JPG, PNG}, size = 1_000_000, width = 640, height = 640) MultipartFile> files;
 
     @NotNull
     @Range(min = 1, max = 6)
@@ -42,7 +44,7 @@ public class ProductDTO implements DateTimeExpirable {
     private String title;
 
     @NotNull
-    @KoreanWon(max = 1000000, unit = KoreanWon.Unit.HUNDRED)
+    @Currency(max = 1000000, unit = Currency.Unit.HUNDRED)
     private Integer price;
 
     @NotEmpty

@@ -2,11 +2,13 @@ package com.baemin.nanumchan.dto;
 
 import com.baemin.nanumchan.validate.Image;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Size;
+
+import static com.baemin.nanumchan.validate.Image.AcceptType.JPG;
+import static com.baemin.nanumchan.validate.Image.AcceptType.PNG;
 
 @Builder
 @Getter
@@ -22,7 +24,7 @@ public class UserModifyDTO {
     private String aboutMe;
 
     @Nullable
-    @Image
+    @Image(accept = {JPG, PNG}, size = 1_000_000, width = 640, height = 640)
     private MultipartFile file;
 
     @Nullable

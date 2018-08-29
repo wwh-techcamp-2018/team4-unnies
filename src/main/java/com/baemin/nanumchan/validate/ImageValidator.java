@@ -6,44 +6,46 @@ import javax.imageio.ImageIO;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class ImageValidator implements ConstraintValidator<Image, MultipartFile> {
 
-    private static final String IMAGE_MIME_REGEX = "image\\/(jpe?g|png)";
-    private static final Long MAX_FILE_SIZE = 1_000_000L;
-    private static final Integer MAX_WIDTH = 640;
-    private static final Integer MAX_HEIGHT = 640;
+    private Image.AcceptType[] accept;
+    private int size;
+    private int width;
+    private int height;
 
     @Override
-    public boolean isValid(MultipartFile file, ConstraintValidatorContext context) {
-        if (file == null) {
-            return true;
-        }
-        return validateMultipartFile(file);
+    public void initialize(Image constraintAnnotation) {
+        this.accept = constraintAnnotation.accept();
+        this.size = constraintAnnotation.size();
+        this.width = constraintAnnotation.width();
+        this.height = constraintAnnotation.height();
     }
 
-    private boolean validateMultipartFile(MultipartFile multipartFile) {
+    @Override
+    public boolean isValid(MultipartFile multipartFile, ConstraintValidatorContext context) {
         return Optional.of(multipartFile)
                 .filter(file -> !file.isEmpty())
-                .filter(this::isMimeTypeImage)
-                .filter(this::lessThanMaximumAllowedSize)
-                .filter(this::isValidDimension)
+                .filter(this::isAcceptable)
+                .filter(this::hasValidSize)
+                .filter(this::hasValidDimension)
                 .isPresent();
     }
 
-    private boolean isMimeTypeImage(MultipartFile file) {
-        return file.getContentType().matches(IMAGE_MIME_REGEX);
+    private boolean isAcceptable(MultipartFile file) {
+        return Arrays.stream(this.accept).anyMatch(type -> type.matches(file.getContentType()));
     }
 
-    private boolean lessThanMaximumAllowedSize(MultipartFile file) {
-        return file.getSize() <= MAX_FILE_SIZE;
+    private boolean hasValidSize(MultipartFile file) {
+        return file.getSize() <= this.size;
     }
 
-    private boolean isValidDimension(MultipartFile file) {
+    private boolean hasValidDimension(MultipartFile file) {
         try {
             BufferedImage image = ImageIO.read(file.getInputStream());
-            return image.getWidth() <= MAX_WIDTH && image.getHeight() <= MAX_HEIGHT;
+            return image.getWidth() <= this.width && image.getHeight() <= this.height;
         } catch (Exception e) {
             return false;
         }
