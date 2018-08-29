@@ -1,48 +1,203 @@
-import { $ } from "./lib/utils.js";
+import { $, $all } from './lib/utils.js';
+import './lib/underscore.min.js';
+import DaumMapSearch from './class/DaumMapSearch.js';
+import Category from './class/Category.js';
+import Product from './class/Product.js';
+import { productTemplate } from './template/ProductTemplate.js';
 
-function onDOMContentLoaded() {
-    $(".card-columns").insertAdjacentHTML('afterbegin', templateCard());
+
+const PAGE_MIN_OFFSET = 0;
+const PAGE_SIZE = 6;
+let pageOffset = PAGE_MIN_OFFSET;
+
+const RATIO_SCROLL_DETECTION = 0.4;
+const WAIT_TIME_MS = 50;
+window.addEventListener('scroll', _.throttle(loadMoreNearProducts, WAIT_TIME_MS));
+window.addEventListener('resize', _.throttle(loadMoreNearProducts, WAIT_TIME_MS));
+
+const LOADING_TEXT = '(loading...)';
+
+const category = new Category();
+const product = new Product();
+
+const daumMap = new DaumMapSearch(onSetAddress, onErrorSearchAddress);
+daumMap.setZoomable(false);
+daumMap.setZoomControl();
+
+hideMap();
+hideNotFoundNearProducts();
+
+loadGIS();
+
+$('.location .current').addEventListener('click', getCurrentLocation);
+$('.location .modification').addEventListener('click', modifyLocation);
+$('.map_wrap .input-group button.search').addEventListener('click', searchAddress);
+
+
+function loadGIS() {
+    const longitude = sessionStorage.getItem('longitude');
+    const latitude = sessionStorage.getItem('latitude');
+
+    if (longitude && latitude) {
+        setGIS(latitude, longitude);
+        return;
+    }
+
+    getCurrentLocation();
 }
 
-function templateCard() {
-    return `
-    <!-- product template -->
-    <div class="card">
-        <img class="card-img-top" src="https://cdn.bmf.kr/_data/product/I21A3/b3b7ce9d8cf1ee91166fe97785d51d8a.jpg" alt="연잎수육">
-        <div class="card-body">
-            <h5 class="card-title font-weight-bold">진리의 탕수육</h5>
-            <!-- chef -->
-            <div class="container-fluid mt-2">
-                <div class="row">
-                    <div class="chef-img" style="width:80px;height:80px;border:dotted 1px lightgray;border-radius:3px;"></div>
-                    <div class="col text-right">
-                        <p class="card-text">강석윤</p>
-                        <span class="badge badge-danger">나대는 사람</span>
-                    </div>
-                </div>
-                <dl class="rating-app text-right">
-                    <dt></dt>
-                    <dd class="rating">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                    </dd>
-                </dl>
-            </div>
-            <dl class="row">
-                <dt class="col">모집인원</dt>
-                <dd class="col">3 / 4</dd>
-            </dl>
-            <dl class="row">
-                <dt class="col">모집기간</dt>
-                <dd class="col">2018.08.24 17:22:20 <span class="text-muted">까지</span></dd>
-            </dl>
-            <h4 class="card-subtitle text-right font-weight-bold">7000 <span class="text-muted">원</span></h4>
-        </div>
-        <a href="/detail.html" class="btn btn-primary">나눔신청</a>
-    </div>`;
+function onSetAddress() {
+    hideMap();
+    daumMap.addressSearch(this.address_name, onSearchAddress);
 }
 
-document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
+function onErrorSearchAddress() {
+    setErrorMessageSearchAddress(this);
+}
+
+function setErrorMessageSearchAddress(error) {
+    $('.map_wrap .error').innerHTML = error;
+}
+
+function onSearchAddress(latLng) {
+    const latitude = latLng.getLat();
+    const longitude = latLng.getLng();
+    setGIS(latitude, longitude);
+}
+
+function setGIS(latitude, longitude) {
+    sessionStorage.setItem('longitude', longitude);
+    sessionStorage.setItem('latitude', latitude);
+
+    daumMap.setPosition(latitude, longitude);
+
+    setLocation(LOADING_TEXT);
+    daumMap.getAddress(address => onGetAddress(address));
+
+    pageOffset = PAGE_MIN_OFFSET;
+    loadNearProducts(latitude, longitude, pageOffset, PAGE_SIZE);
+}
+
+function getCurrentLocation() {
+    hideMap();
+    setLocation(LOADING_TEXT);
+    daumMap.getCurrentLocation(({ coords: { latitude, longitude }}) => {
+        setGIS(latitude, longitude);
+    });
+}
+
+function onGetAddress(address) {
+    address && address.address_name && setLocation(address.address_name);
+}
+
+function modifyLocation() {
+    showMap();
+}
+
+function setLocation(address) {
+    $('.location .settings .address').innerHTML = address;
+}
+
+function showMap() {
+    clearAddressSearchKeyword();
+
+    $('.map_wrap').style.display = 'block';
+    daumMap.relayout();
+
+    const longitude = sessionStorage.getItem('longitude');
+    const latitude = sessionStorage.getItem('latitude');
+    daumMap.setPosition(latitude, longitude);
+}
+
+function hideMap() {
+    $('.map_wrap').style.display = 'none';
+}
+
+function clearAddressSearchKeyword() {
+    $('#keyword').value = '';
+    $('#pagination').innerHTML = '';
+    $('#placesList').innerHTML = '';
+    setErrorMessageSearchAddress('');
+}
+
+function searchAddress() {
+    setErrorMessageSearchAddress('');
+    daumMap.searchPlaces();
+}
+
+function loadNearProducts(latitude, longitude, offset, limit) {
+    const categoryId = window.location.pathname.split('/').pop();
+    if (categoryId) {
+        category.loadNearProducts(categoryId, latitude, longitude, offset, limit, onLoadNearProducts, onLoadFailNearProducts);
+    } else {
+        product.loadNearAll(latitude, longitude, offset, limit, onLoadNearProducts, onLoadFailNearProducts);
+    }
+}
+
+function onLoadNearProducts(data) {
+    const productsContainer = $(".card-columns");
+
+    if(!pageOffset)
+        productsContainer.innerHTML = '';
+
+    if (!data.length && !$('.container.card-columns').children.length) {
+        showNotFoundNearProducts();
+        return;
+    }
+
+    hideNotFoundNearProducts();
+    productsContainer.insertAdjacentHTML('beforeend', templateProducts(data));
+    $all('.card').forEach(card => attachCardEventListener(card));
+
+    pageOffset += data.length;
+}
+
+function templateProducts(data) {
+    return `${data && data.map(productTemplate).join('')}`;
+}
+
+function attachCardEventListener(card) {
+    const productId = $('input[name=product-id]').value;
+    card && card.addEventListener('click', () => {
+        location.href = `/products/${productId}`;
+    });
+}
+
+function onLoadFailNearProducts() {
+    showNotFoundNearProducts();
+}
+
+function showNotFoundNearProducts() {
+    $('.container.not-found').style.display = 'block';
+}
+
+function hideNotFoundNearProducts() {
+    $('.container.not-found').style.display = 'none';
+}
+
+function isOverScrollThreshold() {
+    const documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+    const scrollY = document.documentElement.scrollTop + (windowHeight / 2);
+    const documentYHalf = documentHeight * RATIO_SCROLL_DETECTION;
+
+    if (scrollY < documentYHalf)
+        return false;
+    else
+        return true;
+}
+
+function loadMoreNearProducts() {
+    if(!isOverScrollThreshold()) {
+        return;
+    }
+
+    if (pageOffset % PAGE_SIZE != 0) {
+        return;
+    }
+
+    const longitude = sessionStorage.getItem('longitude');
+    const latitude = sessionStorage.getItem('latitude');
+    loadNearProducts(latitude, longitude, pageOffset, PAGE_SIZE);
+}

@@ -1,52 +1,50 @@
 import { $ } from "./lib/utils.js";
+import Category from "./class/Category.js";
+import { templateCategory } from "./template/CategoryTemplate.js";
 
-function onDOMContentLoaded() {
-    fetchCategories($('.categories'));
-    $('.logout') && $('.logout').addEventListener('click',logout);
-}
+$('.logout') && $('.logout').addEventListener('click', logout);
 
 function logout(){
     fetch('/api/users/logout')
-    .then(response => {
-        if(!response.ok){
-            throw '로그아웃에 실패하였습니다.'
-        }
-        location.href = '/';
-    })
-    .catch(error =>{
-        alert(error);
-    })
-}
-
-function fetchCategories(container) {
-    fetch('/api/categories')
         .then(response => {
-            if (!response.ok) {
-                throw '잠시 후 다시 시도해주세요';
+            if(!response.ok) {
+                throw '로그아웃에 실패하였습니다.'
             }
-            return response.json();
-        })
-        .then(({ data }) => {
-            container.innerHTML = '';
-            container.insertAdjacentHTML('afterbegin', renderCategories(data));
+            location.href = '/';
         })
         .catch(error => {
-            container.innerHTML = '';
-            container.insertAdjacentHTML('afterbegin', templateCategoryError(error));
-        });
+            console.error(error);
+        })
 }
 
-function renderCategories(data) {
+new Category().load(onLoadSuccessCategory, onLoadFailCategory);
+
+function onLoadSuccessCategory(data) {
+    insertIntoCategoryContainer(templateCategories(data));
+    const categoryId = window.location.pathname.split('/').pop();
+    categoryId && setActiveCategory(categoryId);
+}
+
+function onLoadFailCategory(error) {
+    insertIntoCategoryContainer(templateCategoryError(error));
+}
+
+function insertIntoCategoryContainer(template) {
+    const container = $('.categories');
+    container.innerHTML = '';
+    container.insertAdjacentHTML('afterbegin', template);
+}
+
+function templateCategories(data) {
     return `${data && data.map(templateCategory).join('')}`;
 }
 
-function templateCategory({ name }) {
-    // TODO: category href 연결 필요
-    return `<a class="nav-item nav-link" href="#">${name}</a>`;
+function templateCategoryError() {
+    return `<span class="category-error text-muted">카테고리를 가져오는데 실패했습니다.</span>`;
 }
 
-function templateCategoryError(error) {
-    return `<span class="category-error text-muted">${error}</span>`;
+function setActiveCategory(index) {
+    const activeItem = $('.categories > .nav-item.active');
+    activeItem && activeItem.classList.remove('active');
+    $(`.categories > .nav-item:nth-child(${index})`).classList.add('active');
 }
-
-document.addEventListener('DOMContentLoaded', onDOMContentLoaded);

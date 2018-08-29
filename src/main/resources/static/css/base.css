@@ -1,3 +1,7 @@
+.navbar {
+    display: block;
+}
+
 .nav > li {
     color: #dedfe0;
 }
@@ -5,6 +9,10 @@
 .nav-item {
     margin-left: 8px;
     margin-right: 8px;
+}
+
+.categories > .nav-item.active {
+    border-bottom: 3px solid #007bff;
 }
 
 .body-container {

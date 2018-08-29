@@ -40,7 +40,6 @@ class Product {
                 return;
             })
             .then(({ data }) => {
-                console.log(data);
                 callback(data);
             })
             .catch(error => {
@@ -104,6 +103,20 @@ class Product {
 
     loadProductError(){
         $('.container').insertAdjacentHTML('afterbegin', errorPageTemplate());
+    }
+
+    loadNearAll(latitude, longitude, offset, limit, success, fail) {
+        fetch(`/api/products?latitude=${latitude}&longitude=${longitude}&offset=${offset}&limit=${limit}`
+         ).then(response => {
+            if (!response.ok) {
+                fail('잠시 후 다시 시도해주세요');
+            }
+            return response.json();
+        }).then(({ data }) => {
+            success(data);
+        }).catch(error => {
+            fail(error);
+        });
     }
 }
 
