@@ -78,9 +78,9 @@ class ImageUploader {
         }
 
         input = document.createElement('input');
-        input.name = this.name;
-        input.accept = this.accept;
-        input.multiple = this.multiple;
+        input.name = this.name || input.name;
+        input.accept = this.accept || input.accept;
+        input.multiple = this.multiple || input.multiple;
         input.type = 'file';
         input.style.display = 'none';
         input.addEventListener('input', event => {

@@ -115,8 +115,6 @@
 
 .card > .btn-primary {
     width: 100%;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
     border-radius: 0px;
 }
 
@@ -168,3 +166,36 @@
 #pagination {margin:10px auto;text-align: center;}
 #pagination a {display:inline-block;margin-right:10px;}
 #pagination .on {font-weight: bold; cursor: default;color:#777;}
+
+.main {
+    position: relative;
+}
+
+.main .banner {
+    width: 100%;
+    height: 500px;
+    background: transparent no-repeat center center;
+    background-image: url('/images/banner_1920_500_big.png');
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 120px;
+    bottom: 0px;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.search .input-group {
+    flex-wrap: nowrap;
+    width: initial;
+}
+
+.search input {
+    min-width: 850px;
+    width: 850px;
+    height : 60px;
+}

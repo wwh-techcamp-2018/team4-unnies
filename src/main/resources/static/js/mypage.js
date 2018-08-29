@@ -21,7 +21,8 @@ function initEvents() {
     imageUploader.setMultiple(false);
     imageUploader.setAccept('image/jpeg,image/png');
     imageUploader.setName('file');
-    imageUploader.setDelegate($('#mypage-upload-image'));
+    // imageUploader.setDelegate($('#mypage-upload-image'));
+    imageUploader.setDelegate($('div.upload'));
 
     imageUploader.addAfterFileInputListener(() => {
         const fileInput = $('input[name=file]');
@@ -29,6 +30,13 @@ function initEvents() {
 
         fileReader.addEventListener('load', ({target: {result}}) => {
             $('div.preview-pic .img-thumb img').src = result;
+        });
+
+        fileReader.addEventListener('error', error => {
+            console.info('error', error);
+        });
+        fileReader.addEventListener('abort', error => {
+            console.info('abort', error);
         });
 
         fileReader.readAsDataURL(fileInput.files.item(0));
@@ -86,7 +94,7 @@ function toggleUpdateMode(event) {
     event.preventDefault();
 
     const buttonManager = event.target.parentNode;
-    const imageButton = $('#mypage-image').firstElementChild;
+    const imageButton = $('#mypage-image > div.upload');
 
     imageButton.hidden ? imageButton.hidden = false : imageButton.hidden = true;
     [...buttonManager.children].forEach(child => {

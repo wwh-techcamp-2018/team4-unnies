@@ -30,7 +30,7 @@ function onLoadFailCategory(error) {
 }
 
 function insertIntoCategoryContainer(template) {
-    const container = $('.categories');
+    const container = $('.nav.categories');
     container.innerHTML = '';
     container.insertAdjacentHTML('afterbegin', template);
 }
@@ -44,7 +44,7 @@ function templateCategoryError() {
 }
 
 function setActiveCategory(index) {
-    const activeItem = $('.categories > .nav-item.active');
+    const activeItem = $('.nav.categories > .nav-item.active');
     activeItem && activeItem.classList.remove('active');
-    $(`.categories > .nav-item:nth-child(${index})`).classList.add('active');
+    $(`.nav.categories > .nav-item:nth-child(${index})`).classList.add('active');
 }
