@@ -45,25 +45,24 @@ export function ratingTemplate(rating) {
 
 
 
-export function orderTemplate({ name, owner, expireDateTime, shareDateTime, bowlNeeded, price}) {
+export function registerTemplate({ product, orderCount }) {
     return `<h3></h3>
                     <div>
-                        <span><strong>요리명 : ${name}</strong></span>
+                        <span><strong>요리명 : ${product.name}</strong></span>
                     </div>
-                    <h4><strong>요리사 : ${owner.name}</strong><span></span></h4>
+                    <h4><strong>요리사 : ${product.owner.name}</strong><span></span></h4>
                     </h4>
-                    <h4><strong>모집기간 : ${expireDateTime}</strong><span></span>
-
+                    <h4><strong>모집기간 : ${product.expireDateTime}</strong><span></span>
+                    <h4><strong>모집현황 : ${orderCount}/${product.maxParticipant}</strong><span></span>
                     </h4>
-                    <h4><strong>나눔시각 : ${shareDateTime}</strong><span
+                    <h4><strong>나눔시각 : ${product.shareDateTime}</strong><span
                             ><strong></strong></span></h4>
-                    <h4><strong>나눔장소 : ${owner.address} ${owner.addressDetail}</strong><span></span></h4>
-                    <h4><strong>나눔용기 : ${bowlNeeded === true ? '용기 지참' : '용기 제공'}</strong><span></span>
-                    <h4><strong>나눔가격 : ${price}</strong><span></span>`;
+                    <h4><strong>나눔장소 : ${product.address} ${product.addressDetail}</strong><span></span></h4>
+                    <h4><strong>나눔용기 : ${product.isBowlNeeded === true ? '용기 지참' : '용기 제공'}</strong><span></span>
+                    <h4><strong>나눔가격 : ${product.price}</strong><span></span>`;
 }
 
 export function orderListTemplate(data){
-    console.log(data);
     const shareDateTime = data.product.shareDateTime.replace('T',' ');
     const isBeforeShareTime = Date.parse(shareDateTime) > Date.now();
     const deliveryType = data.deliveryType === 'BAEMIN_RIDER' ? '배민라이더스' : '직접수령';
@@ -73,22 +72,20 @@ export function orderListTemplate(data){
             ${data.participant.name}
             ${data.participant.phoneNumber}
             ${deliveryType}
-            <input type='hidden' value='${data.id}'/>
-            ${shareCompleteButtonTemplate(data.completeSharing, isBeforeShareTime)}
+            ${shareButtonTemplate(data.completeSharing, isBeforeShareTime, data.id)}
         </li>
     `;
 }
 
-function shareCompleteButtonTemplate(completeSharing, isBeforeShareTime){
+function shareButtonTemplate(completeSharing, isBeforeShareTime, id){
     let html = '';
     if(completeSharing){
-        html = `<button type='button' class='order-button' disabled='true'>
+        html = `<button type='button' class='order-button' data-order-id=${id} disabled='true'>
                 나눔 완료
             </button>`;
     }else{
-        html = `<button type='button' class='order-button' disabled='false'>
+        html = `<button type='button' class='order-button' data-order-id=${id} disabled='false'>
                 ${isBeforeShareTime ? '나눔 시간 전' : '나눔 중'}
-                <input type='hidden' value=''
             </button>`;
     }
     return html;

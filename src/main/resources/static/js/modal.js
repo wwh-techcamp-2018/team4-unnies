@@ -1,11 +1,11 @@
 import { $ , $all } from './lib/utils.js'
-import { orderTemplate } from './template/DetailTemplate.js'
+import { registerTemplate } from './template/DetailTemplate.js'
 
-export function openModal(){
+export function openReviewModal(){
     $('#overlay').classList.remove("is-hidden");
 }
 
-export function closeModal(){
+export function closeReviewModal(){
     $('#overlay').classList.add("is-hidden");
     $('#comment').value = '';
 
@@ -18,12 +18,12 @@ export function closeModal(){
     }
 }
 
-export function openRegisterModal({ data }){
+export function openOrderModal(data){
     $('#register-overlay').classList.remove("is-hidden");
     $('#register-data').innerHTML = orderTemplate(data);
 }
 
-export function closeRegisterModal(){
+export function closeOrderModal(){
     $('#register-overlay').classList.add("is-hidden");
     const radioList = $all('input[name=groupOfRadioGap]');
     radioList.forEach(radio => {

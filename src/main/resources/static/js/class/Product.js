@@ -29,7 +29,7 @@ class Product {
         });
     }
 
-    load(productId) {
+    load(productId, callback){
         fetch(`/api/products/${productId}`)
             .then(response => {
                 if (response.ok) {
@@ -38,8 +38,8 @@ class Product {
                 this.loadProductError();
                 return;
             })
-            .then(({data}) => {
-                this.loadProductDetail(data);
+            .then(({ data }) => {
+                callback(data);
             })
             .catch(error => {
                 // TODOs : error handling...
@@ -73,7 +73,6 @@ class Product {
             initialValue: product.description
         });
 
-        this.loadStatus(status);
         const userRating = Math.round(data.ownerRating)
         $('#user-rating').innerHTML = userRating > 0 ? ratingTemplate(userRating) : '';
 
@@ -85,7 +84,7 @@ class Product {
             registerShareBtn.innerText = '나눔신청';
             registerShareBtn.classList.add('on');
             registerShareBtn.disabled = false;
-        } else if (status === 'FULL_PARTICIPANTS') {
+        } else if(status === 'FULL_PARTICIPANTS') {
             currentStatus.innerText = '모집완료';
             currentStatus.classList.add('full');
             registerShareBtn.innerText = '모집완료';
@@ -98,6 +97,7 @@ class Product {
             registerShareBtn.classList.add('expired');
             registerShareBtn.disabled = true;
         }
+
     }
 
     loadProductError(){

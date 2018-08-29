@@ -2,15 +2,9 @@ import { $ } from '../lib/utils.js';
 
 class OrderList {
     load(productId, callback) {
-        fetch(`/api/products/${productId}/orders/user`)
+        fetch(`/api/orders/products/${productId}`)
             .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                if (response.status === 404){
-                    return;
-                }
-//                throw response.json();
+                return response.json();
             })
             .then(({ data }) => {
                 callback(data)
