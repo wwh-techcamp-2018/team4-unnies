@@ -3,6 +3,7 @@ import { ratingTemplate } from "./DetailTemplate.js";
 
 export function productTemplate({ distanceMeter, productId, productTitle, productImgUrl, ownerName, ownerImgUrl, ownerRating, orderCnt, maxParticipant, expireDateTime, price }) {
     const formattedExpireDateTime = translateDateTime(expireDateTime);
+    const numberOwnerRating = Number(ownerRating);
     return `
     <div class="card">
         <input type="hidden" name="product-id" value="${productId}">
@@ -21,8 +22,8 @@ export function productTemplate({ distanceMeter, productId, productTitle, produc
                         <p class="card-text">${ownerName}</p>
                         <dl class="rating-app text-right">
                             <dt></dt>
-                            <dd class="rating" value="${Number(ownerRating)}">
-                                ${ratingTemplate(Number(ownerRating))}
+                            <dd class="rating" value="${numberOwnerRating}">
+                                ${ratingTemplate(numberOwnerRating)}
                             </dd>
                         </dl>
                     </div>

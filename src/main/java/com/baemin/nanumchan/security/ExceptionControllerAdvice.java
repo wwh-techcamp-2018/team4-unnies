@@ -15,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityNotFoundException;
@@ -81,7 +82,7 @@ public class ExceptionControllerAdvice {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestResponse constraintViolationException(ConstraintViolationException exception) {
         RestResponse.ErrorResponseBuilder errorResponseBuilder = RestResponse.error();
         for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
@@ -90,8 +91,14 @@ public class ExceptionControllerAdvice {
         return errorResponseBuilder.build();
     }
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public RestResponse<?> methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
+        return RestResponse.error(exception.getMessage()).build();
+    }
+
     @ExceptionHandler(InvalidDataAccessResourceUsageException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public RestResponse invalidDataAccessResourceUsageException(InvalidDataAccessResourceUsageException exception) {
         return RestResponse.error(exception.getClass().getName()).build();
     }

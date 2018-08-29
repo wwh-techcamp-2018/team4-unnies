@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class NearProductsDTO { // repo -> client (VO가 더 적합할듯..)
+public class NearProductsDTO {
 
-    public final static int DEFAULT_RADIUS_METER = 1000; // 여기 있는게 맞나?
+    public final static int DEFAULT_RADIUS_METER = 1000;
 
     private double distanceMeter;
 

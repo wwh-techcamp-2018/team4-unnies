@@ -1,4 +1,5 @@
 import { $, $all } from './lib/utils.js';
+import './lib/underscore.min.js';
 import DaumMapSearch from './class/DaumMapSearch.js';
 import Category from './class/Category.js';
 import Product from './class/Product.js';
@@ -11,8 +12,8 @@ let pageOffset = PAGE_MIN_OFFSET;
 
 const RATIO_SCROLL_DETECTION = 0.4;
 const WAIT_TIME_MS = 50;
-window.addEventListener('scroll', throttle(loadMoreNearProducts, WAIT_TIME_MS));
-window.addEventListener('resize', throttle(loadMoreNearProducts, WAIT_TIME_MS));
+window.addEventListener('scroll', _.throttle(loadMoreNearProducts, WAIT_TIME_MS));
+window.addEventListener('resize', _.throttle(loadMoreNearProducts, WAIT_TIME_MS));
 
 const LOADING_TEXT = '(loading...)';
 
@@ -162,7 +163,7 @@ function attachCardEventListener(card) {
     });
 }
 
-function onLoadFailNearProducts(error) {
+function onLoadFailNearProducts() {
     showNotFoundNearProducts();
 }
 
@@ -172,16 +173,6 @@ function showNotFoundNearProducts() {
 
 function hideNotFoundNearProducts() {
     $('.container.not-found').style.display = 'none';
-}
-
-function throttle(callback, wait) {
-    let time = Date.now();
-    return function() {
-        if ((time + wait) < Date.now()) {
-            callback();
-            time = Date.now();
-        }
-    }
 }
 
 function isOverScrollThreshold() {

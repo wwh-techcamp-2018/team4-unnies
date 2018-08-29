@@ -64,10 +64,11 @@ public class ApiProductController {
     }
 
     @GetMapping
-    public ResponseEntity<RestResponse> getNearProducts(
-            @RequestParam(defaultValue = "0") @DecimalMin("-180.00000") @DecimalMax("180.00000") Double longitude
-            , @RequestParam(defaultValue = "0") @DecimalMin("-90.00000") @DecimalMax("90.00000") Double latitude
-            , @RequestParam(defaultValue = "0") int offset, @RequestParam(defaultValue = "10") int limit) {
-        return ResponseEntity.ok(RestResponse.success(productService.getNearProducts(longitude, latitude, offset, limit)));
+    public RestResponse getNearProducts(
+            @RequestParam(defaultValue = "0") @DecimalMin("-180.00000") @DecimalMax("180.00000") double longitude
+            , @RequestParam(defaultValue = "0") @DecimalMin("-90.00000") @DecimalMax("90.00000") double latitude
+            , @RequestParam(defaultValue = "0") int offset
+            , @RequestParam(defaultValue = "10") int limit) {
+        return RestResponse.success(productService.getNearProducts(longitude, latitude, offset, limit));
     }
 }

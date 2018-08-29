@@ -1,5 +1,6 @@
 import { $ } from "./lib/utils.js";
 import Category from "./class/Category.js";
+import { templateCategory } from "./template/CategoryTemplate.js";
 
 $('.logout') && $('.logout').addEventListener('click', logout);
 
@@ -38,11 +39,7 @@ function templateCategories(data) {
     return `${data && data.map(templateCategory).join('')}`;
 }
 
-function templateCategory({ id, name }) {
-    return `<a class="nav-item nav-link category-id" href="/categories/${id}">${name}</a>`;
-}
-
-function templateCategoryError(error) {
+function templateCategoryError() {
     return `<span class="category-error text-muted">카테고리를 가져오는데 실패했습니다.</span>`;
 }
 

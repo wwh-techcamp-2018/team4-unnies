@@ -49,7 +49,7 @@ class DaumMapSearch extends DaumMap {
         let fragment = document.createDocumentFragment();
         let bounds = new daum.maps.LatLngBounds();
 
-        this.removeAllChildNods(listEl);
+        this.removeAllChildNodes(listEl);
         this.removeMarker();
 
         for (let i = 0; i < places.length; i++) {
@@ -73,16 +73,12 @@ class DaumMapSearch extends DaumMap {
         this.map.setBounds(bounds);
     }
 
-    removeAllChildNods(el) {
-        while (el.hasChildNodes()) {
-            el.removeChild (el.lastChild);
-        }
+    removeAllChildNodes(el) {
+        el.innerHTML = '';
     }
 
     removeMarker() {
-        for (let i = 0; i < this.markers.length; i++) {
-            this.markers[i].setMap(null);
-        }
+        this.markers.forEach(marker => { marker.setMap(null); });
         this.markers = [];
     }
 
