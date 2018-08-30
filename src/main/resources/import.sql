@@ -42,7 +42,8 @@ VALUES
 (21, 4, 6, '맛있는 김말이튀김', '김말이튀김은 진리', 5000, '같이 먹어요!', '서울 광진구 뚝섬로52마길 70', '자양삼성아파트 1301호', 37.5285662, 127.08220000000006, 3, '2018-09-01 15:22:20', '2018-09-02 15:22:20', false);
 
 INSERT INTO order_product (id, product_id, participant_id, delivery_type, share_status)
-VALUES (1, 1, 3, 'BAEMIN_RIDER', 'COMPLETE_SHARING'),
+VALUES
+(1, 1, 3, 'BAEMIN_RIDER', 'COMPLETE_SHARING'),
 (2, 1, 4, 'PICKUP', 'COMPLETE_SHARING'),
 (3, 1, 5, 'BAEMIN_RIDER', 'ON_SHARING'),
 (4, 2, 1, 'BAEMIN_RIDER', 'COMPLETE_SHARING'),

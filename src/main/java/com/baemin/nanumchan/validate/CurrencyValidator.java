@@ -3,14 +3,14 @@ package com.baemin.nanumchan.validate;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class KoreanWonValidator implements ConstraintValidator<KoreanWon, Integer> {
+public class CurrencyValidator implements ConstraintValidator<Currency, Integer> {
 
-    private KoreanWon.Unit unit;
+    private Currency.Unit unit;
     private int min;
     private int max;
 
     @Override
-    public void initialize(KoreanWon price) {
+    public void initialize(Currency price) {
         unit = price.unit();
         min = price.min();
         max = price.max();
