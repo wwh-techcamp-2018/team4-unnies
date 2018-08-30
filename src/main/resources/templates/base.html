@@ -25,30 +25,32 @@
 {{#block "navigation"}}
 <header class="main-header">
     <div class="fix-width-center mb-2">
-        <nav class="navbar navbar-light">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">
-                    <img src="/images/logo.jpeg" width="120" alt="logo">
-                </a>
+        <nav class="navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">
+                        <img src="/images/logo.jpeg" width="120" alt="logo">
+                    </a>
+                </div>
+                <ul class="nav">
+                    {{^ loginedUser }}
+                    <li class="nav-item">
+                        <small><a class="nav-link" href="/login.html">로그인</a></small>
+                    </li>
+                    <li class="nav-item">
+                        <small><a class="nav-link" href="/signup.html">회원가입</a></small>
+                    </li>
+                    {{/ loginedUser }}
+                    {{# loginedUser }}
+                    <li class="nav-item">
+                        <small><a class="nav-link logout" href="#">로그아웃</a></small>
+                    </li>
+                    <li class="nav-item">
+                        <small><a class="nav-link" href="/users/{{id}}">마이페이지</a></small>
+                    </li>
+                    {{/ loginedUser }}
+                </ul>
             </div>
-            <ul class="nav">
-                {{^ loginedUser }}
-                <li class="nav-item">
-                    <small><a class="nav-link" href="/login.html">로그인</a></small>
-                </li>
-                <li class="nav-item">
-                    <small><a class="nav-link" href="/signup.html">회원가입</a></small>
-                </li>
-                {{/ loginedUser }}
-                {{# loginedUser }}
-                <li class="nav-item">
-                    <small><a class="nav-link logout" href="#">로그아웃</a></small>
-                </li>
-                <li class="nav-item">
-                    <small><a class="nav-link" href="/users/{{id}}">마이페이지</a></small>
-                </li>
-                {{/ loginedUser }}
-            </ul>
         </nav>
         <nav class="nav nav-fill categories justify-content-center">
 

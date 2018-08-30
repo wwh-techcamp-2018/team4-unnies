@@ -16,12 +16,26 @@ class DaumMapSearch extends DaumMap {
 
         this.imgMarker = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
 
+//         var imageSrc = '/images/map-marker.png',
+//             imageSize = new daum.maps.Size(40, 40), // 마커이미지의 크기입니다
+//             imageOption = {offset: new daum.maps.Point(20, 40)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+//
+//         // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+//         var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption);
+//
+// // 마커를 생성합니다
+//         this.marker = new daum.maps.Marker({
+//             image: markerImage // 마커이미지 설정
+//         });
+//
+//         this.marker.setMap(this.map);
+
+
         this.onSetAddress = onSetAddress;
         this.onError = onError;
     }
 
-    searchPlaces() {
-        const keyword = $('#keyword').value;
+    searchPlaces(keyword) {
         if (!keyword.replace(/^\s+|\s+$/g, '')) {
             this.onError.call('키워드를 입력해주세요!');
             return false;
@@ -32,15 +46,26 @@ class DaumMapSearch extends DaumMap {
 
     onSearchPlaces(data, status, pagination) {
         if (status === daum.maps.services.Status.OK) {
+            this.showSearchAddressList();
             this.displayPlaces(data);
             this.displayPagination(pagination);
         } else if (status === daum.maps.services.Status.ZERO_RESULT) {
+            this.hideSearchAddressList();
             this.onError.call('검색 결과가 존재하지 않습니다.');
             return;
         } else if (status === daum.maps.services.Status.ERROR) {
+            this.hideSearchAddressList();
             this.onError.call('검색 결과 중 오류가 발생했습니다.');
             return;
         }
+    }
+
+    showSearchAddressList() {
+        $('#menu_wrap').style.display = 'block';
+    }
+
+    hideSearchAddressList() {
+        $('#menu_wrap').style.display = 'none';
     }
 
     displayPlaces(places) {

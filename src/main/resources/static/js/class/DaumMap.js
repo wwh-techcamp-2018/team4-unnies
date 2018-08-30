@@ -33,6 +33,10 @@ class DaumMap {
         this.map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
     }
 
+    setZoomLevel(level) {
+        this.map.setLevel(level);
+    }
+
     addMarkerListener(event, callback) {
         daum.maps.event.addListener(this.marker, event, callback);
     }

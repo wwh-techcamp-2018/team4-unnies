@@ -29,9 +29,18 @@ hideNotFoundNearProducts();
 
 loadGIS();
 
-$('.location .current').addEventListener('click', getCurrentLocation);
-$('.location .modification').addEventListener('click', modifyLocation);
-$('.map_wrap .input-group button.search').addEventListener('click', searchAddress);
+$('.current-location').addEventListener('click', getCurrentLocation);
+$('#button-search').addEventListener('click', searchAddress);
+
+$('.search .form-control').addEventListener('focus', showMap);
+$('.search .form-control').addEventListener('input', _.debounce(searchAddress, 500));
+
+const ENTER_KEY = 13;
+$('.search .form-control').addEventListener('keyup', event => {
+    if (event.keyCode === ENTER_KEY) {
+        searchAddress();
+    }
+});
 
 
 function loadGIS() {
@@ -47,7 +56,6 @@ function loadGIS() {
 }
 
 function onSetAddress() {
-    hideMap();
     daumMap.addressSearch(this.address_name, onSearchAddress);
 }
 
@@ -56,7 +64,7 @@ function onErrorSearchAddress() {
 }
 
 function setErrorMessageSearchAddress(error) {
-    $('.map_wrap .error').innerHTML = error;
+    $('.search .error').innerHTML = error;
 }
 
 function onSearchAddress(latLng) {
@@ -69,6 +77,7 @@ function setGIS(latitude, longitude) {
     sessionStorage.setItem('longitude', longitude);
     sessionStorage.setItem('latitude', latitude);
 
+    daumMap.setZoomLevel(4);
     daumMap.setPosition(latitude, longitude);
 
     setLocation(LOADING_TEXT);
@@ -79,7 +88,6 @@ function setGIS(latitude, longitude) {
 }
 
 function getCurrentLocation() {
-    hideMap();
     setLocation(LOADING_TEXT);
     daumMap.getCurrentLocation(({ coords: { latitude, longitude }}) => {
         setGIS(latitude, longitude);
@@ -90,17 +98,11 @@ function onGetAddress(address) {
     address && address.address_name && setLocation(address.address_name);
 }
 
-function modifyLocation() {
-    showMap();
-}
-
 function setLocation(address) {
-    $('.location .settings .address').innerHTML = address;
+    $('.search-header .address').innerHTML = address;
 }
 
 function showMap() {
-    clearAddressSearchKeyword();
-
     $('.map_wrap').style.display = 'block';
     daumMap.relayout();
 
@@ -113,16 +115,11 @@ function hideMap() {
     $('.map_wrap').style.display = 'none';
 }
 
-function clearAddressSearchKeyword() {
-    $('#keyword').value = '';
-    $('#pagination').innerHTML = '';
-    $('#placesList').innerHTML = '';
-    setErrorMessageSearchAddress('');
-}
-
 function searchAddress() {
     setErrorMessageSearchAddress('');
-    daumMap.searchPlaces();
+    const keyword = $('.search .form-control').value;
+
+    daumMap.searchPlaces(keyword);
 }
 
 function loadNearProducts(latitude, longitude, offset, limit) {
@@ -140,7 +137,7 @@ function onLoadNearProducts(data) {
     if(!pageOffset)
         productsContainer.innerHTML = '';
 
-    if (!data.length && !$('.container.card-columns').children.length) {
+    if (!data.length && !$('.products.card-columns').children.length) {
         showNotFoundNearProducts();
         return;
     }
