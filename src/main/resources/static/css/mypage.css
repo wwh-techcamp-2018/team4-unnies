@@ -1,20 +1,26 @@
-
-.off {
-    border: none;
-    background-color:#FFF !important;
+#mypage-form {
+    padding: 25px;
+    overflow: auto;
 }
 
-textarea {
-    resize: none;
+#mypage-form .form-group {
+    float: left;
+    margin-bottom: 0;
 }
 
-li {
-    list-style: none;
+#mypage-form .form-group:last-child {
+    position: relative;
+    float: right;
+    width: calc(100% - 250px - 2px - 25px);
+    height: 250px;
+}
+
+#mypage-form .form-group:last-child {
+    float: right;
 }
 
 #mypage-image {
-    width: 250px;
-    height: 250px;
+    position: relative;
 }
 
 #mypage-image img {
@@ -22,16 +28,20 @@ li {
     height: 250px;
 }
 
-.card img {
-    width: 250px;
-    height: 250px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+#mypage-aboutme textarea {
+    resize: none;
 }
 
-#mypage-card {
-    width: 255px;
+#mypage-modify {
+    overflow: auto;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.off {
+    border: none;
+    background-color: #FFF !important;
 }
 
 .centered {
@@ -41,60 +51,20 @@ li {
     transform: translate(-50%, -50%);
 }
 
-.feedback {
-    visibility: hidden;
+div.upload {
+    position: absolute;
+    background-color: rgba(0, 0, 0, .6);
+    color: white;
+    left: 0;
+    top: 0;
     width: 100%;
-    margin-top: .25rem;
-    font-size: 80%;
-    color: #dc3545;
+    height: 100%;
+    cursor: pointer;
+    font-size: 150px;
+    text-align: center;
+    line-height: 1.5;
 }
 
-.feedback.on {
-    visibility: visible;
-}
-
-/*
-하단
-*/
-
-section {
-   padding: 60px 0;
-}
-
-section .section-title {
-   text-align: center;
-   color: #fff;
-   margin-bottom: 50px;
-   text-transform: uppercase;
-}
-#tabs{
-    background: #fff;
-   color: #000;
-}
-#tabs h6.section-title{
-   color: #000;
-}
-
-#tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-   color: #0000;
-   background-color: transparent;
-   border-color: transparent transparent #f3f3f3;
-   border-bottom: 4px solid !important;
-   font-size: 20px;
-   font-weight: bold;
-}
-#tabs .nav-tabs .nav-link {
-   border: 1px solid transparent;
-   border-top-left-radius: .25rem;
-   border-top-right-radius: .25rem;
-   color: #000;
-   font-size: 20px;
-}
-
-.fade.show {
-   display: block;
-}
-
-.checked {
-    color:orange;
+.tab-pane.active {
+    min-height: 400px;
 }

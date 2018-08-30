@@ -1,54 +1,54 @@
 {{#partial "header"}}
+<link href="/css/font-awesome.min.css" rel="stylesheet">
 <link href="/css/index.css" rel="stylesheet">
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2241f6e152f592bddb033558fa71eaa9&libraries=services"></script>
 <script src="/js/index.js" type="module" defer></script>
 {{/partial}}
 
 {{#partial "contents"}}
-<div class="container">
-    <a class="btn btn-primary font-weight-bold upload" href="/upload" role="button">나눔하기</a>
-</div>
+<div class="main mb-5">
+    <div class="banner">
 
-<div class="container search pl-5 pr-5 pb-3">
-    <div class="m-2 location">
-        <div class="current">
-            <button class="btn btn-primary">
-                <i class="fa fa-map-pin" aria-hidden="true"></i>
-                <span class="ml-1">현 위치</span>
-            </button>
+        <div class="map_wrap">
+            <div id="map"></div>
+            <div id="menu_wrap">
+                <ul id="placesList"></ul>
+                <div id="pagination"></div>
+            </div>
         </div>
-        <div class="modification">
-            <button class="btn btn-primary">
-                <i class="fa fa-map-o" aria-hidden="true"></i>
-                <span class="ml-1">변경</span>
-            </button>
-        </div>
-        <div class="settings">
+
+    </div>
+
+    <div class="search">
+        <div class="search-header">
             <i class="fa fa-map-marker" aria-hidden="true"></i>
             <span class="ml-1 address"></span>
         </div>
-    </div>
-    <!-- reference : http://apis.map.daum.net/web/sample/keywordList/ -->
-    <div class="map_wrap">
-        <div id="map"></div>
-        <div id="menu_wrap">
-            <div class="input-group mb-2">
-                <input type="text" id="keyword" class="form-control" placeholder="주소를 입력해주세요.">
-                <div class="input-group-append">
-                    <button class="btn btn-primary search" type="button">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
-                </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button class="btn btn-info current-location">
+                    <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                </button>
             </div>
+            <input type="text" class="form-control" placeholder="나눔받고 싶은 주소를 입력해주세요" aria-label="검색어를 입력해주세요"
+            aria-describedby="button-search">
+            <div class="input-group-append">
+                <button class="btn btn-secondary" style="height: 60px" type="button" id="button-search">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+            <a href="/upload">
+                <button class="btn btn-info ml-4" style="height: 60px">나눔하기</button>
+            </a>
+        </div>
+        <div class="search-footer">
             <span class="error"></span>
-            <hr>
-            <ul id="placesList"></ul>
-            <div id="pagination"></div>
         </div>
     </div>
 </div>
 
-<div class="container products card-columns">
+<div class="products card-columns fix-width-center mb-5">
+
 </div>
 
 <div class="container not-found">

@@ -55,11 +55,11 @@ class UserActivity {
 
     showUserActivity() {
         $('#mypage-name').innerText = this.originData.name + ' (' + this.originData.email + ')';
-        $('#mypage-activity .col:nth-child(1) .fa').innerText = '나눔수 ' + this.originData.createdProductsCount;
-        $('#mypage-activity .col:nth-child(2) .fa').innerText = '받음수 ' + this.originData.receivedProductsCount;
-        $('#mypage-activity .col:nth-child(3) .fa').innerText = '남긴리뷰수 ' + this.originData.createdReviewsCount;
-        $('#mypage-activity .col:nth-child(4) .fa').innerText = '받은리뷰수 ' + this.originData.receivedReviewsCount;
-        $('#mypage-activity .col:nth-child(5) .fa').innerText = '평균평점 ' + this.originData.avgRating;
+        $('#mypage-activity .nav-item:nth-child(1) .fa').innerText = ' 나눔수 ' + this.originData.createdProductsCount;
+        $('#mypage-activity .nav-item:nth-child(2) .fa').innerText = ' 받음수 ' + this.originData.receivedProductsCount;
+        $('#mypage-activity .nav-item:nth-child(3) .fa').innerText = ' 남긴리뷰수 ' + this.originData.createdReviewsCount;
+        $('#mypage-activity .nav-item:nth-child(4) .fa').innerText = ' 받은리뷰수 ' + this.originData.receivedReviewsCount;
+        $('#mypage-activity .nav-item:nth-child(5) .fa').innerText = ' 평균평점 ' + this.originData.avgRating;
 
         $('#mypage-aboutme').firstElementChild.value = this.originData.aboutMe;
         $('#mypage-aboutme').firstElementChild.placeholder = '자기소개를 입력해보아요.';

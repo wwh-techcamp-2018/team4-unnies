@@ -2,7 +2,6 @@ package com.baemin.nanumchan.dto;
 
 import com.baemin.nanumchan.validate.Image;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.lang.Nullable;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,15 +1,3 @@
-.feedback {
-    visibility: hidden;
-    width: 100%;
-    margin-top: .25rem;
-    font-size: 80%;
-    color: #dc3545;
-}
-
-.feedback.on {
-    visibility: visible;
-}
-
 .fluid-box {
     overflow: hidden;
 }
@@ -24,6 +12,6 @@
 }
 
 .form-group label {
-    font-size: 1.3rem;
+    /*font-size: 1.3rem;*/
     font-weight: bold;
 }
