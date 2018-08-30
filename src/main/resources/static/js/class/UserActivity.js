@@ -185,8 +185,8 @@ class UserActivity {
 
                 $('#show-received-product-prev').style.visibility = first ? 'hidden' : 'visible';
                 $('#show-received-product-next').style.visibility = last ? 'hidden' : 'visible';
-
                 $('#received-products').innerHTML = content.map(cardTemplate).join('');
+                $all('.card.item').forEach(card => attachCardEventListener(card));
             })
             .catch(error => {
                 // todo error 처리
@@ -208,6 +208,7 @@ class UserActivity {
                 $('#show-gived-product-prev').style.visibility = first ? 'hidden' : 'visible';
                 $('#show-gived-product-next').style.visibility = last ? 'hidden' : 'visible';
                 $('#gived-products').innerHTML = content.map(cardTemplate).join('');
+                $all('.card.item').forEach(card => attachCardEventListener(card));
             })
             .catch(error => {
                 // todo error 처리
@@ -215,6 +216,13 @@ class UserActivity {
             });
     }
 
+}
+
+function attachCardEventListener(card) {
+    const productId = card.querySelector('input[name=product-id]').value;
+    card && card.addEventListener('click', () => {
+        location.href = `/products/${productId}`;
+    });
 }
 
 export default UserActivity;

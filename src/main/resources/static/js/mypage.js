@@ -67,8 +67,8 @@ function showTabContents(index) {
 function changeTabIndex(index) {
     $('.nav.nav-tabs.nav-fill .nav-item.nav-link.active').classList.remove('active');
     $(`.nav.nav-tabs.nav-fill .nav-item.nav-link:nth-child(${index})`).classList.add('active');
-    $('.tab-content.py-3.px-3.px-sm-0 .tab-pane.fade.show').classList.remove('show');
-    $(`.tab-content.py-3.px-3.px-sm-0 .tab-pane.fade:nth-child(${index})`).classList.add('show');
+    $('.tab-content .tab-pane.fade.show').classList.remove('show');
+    $(`.tab-content .tab-pane.fade:nth-child(${index})`).classList.add('show');
 }
 
 function moveToSelectedBar(event) {

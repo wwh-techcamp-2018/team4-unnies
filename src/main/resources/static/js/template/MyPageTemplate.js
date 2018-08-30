@@ -40,34 +40,35 @@ export function contentsTemplate() {
     </div>
 
     <section>
-        <div class="row">
-            <div class="col-12 nav-template-area">
+        <!--<div class="row">-->
+            <!--<div class="col-12 nav-template-area">-->
+            <div class="nav-template-area">
                 <nav>
                     <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
 
                     </div>
                 </nav>
-                <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                <div class="tab-content  px-5" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-give" role="tabpanel"
                          aria-labelledby="nav-give-tab">
-                        <div class="py-5">
+                        <!--<div class="py-5">-->
                             <!--<div class="container">-->
+                                <div class="row hidden-md-up pl-4" id="gived-products">
+                                </div>
                                 <a href="#" id="show-gived-product-prev">이전 보기</a>
                                 <a href="#" id="show-gived-product-next">다음 보기</a>
-                                <div class="row hidden-md-up" id="gived-products">
-                                </div>
                             <!--</div>-->
-                        </div>
+                        <!--</div>-->
                     </div>
                     <div class="tab-pane fade" id="nav-take" role="tabpanel" aria-labelledby="nav-take-tab">
-                        <div class="py-5">
+                        <!--<div class="py-5">-->
                             <!--<div class="container">-->
+                                <div class="row hidden-md-up pl-4" id="received-products">
+                                </div>
                                 <a href="#" id="show-received-product-prev">이전 보기</a>
                                 <a href="#" id="show-received-product-next">다음 보기</a>
-                                <div class="row hidden-md-up" id="received-products">
-                                </div>
                             <!--</div>-->
-                        </div>
+                        <!--</div>-->
                     </div>
                     <div class="tab-pane fade" id="nav-give-review" role="tabpanel"
                          aria-labelledby="nav-give-review-tab">
@@ -76,10 +77,10 @@ export function contentsTemplate() {
                                 <div id="gived-reviews-count">
                                 </div>
                             </div>
-                            <a href="#" id="show-gived-review-prev">이전 보기</a>
-                            <a href="#" id="show-gived-review-next">다음 보기</a>
                             <ul id="gived-comments-list">
                             </ul>
+                            <a href="#" id="show-gived-review-prev">이전 보기</a>
+                            <a href="#" id="show-gived-review-next">다음 보기</a>
                         </section>
                     </div>
                     <div class="tab-pane fade" id="nav-get-review" role="tabpanel"
@@ -89,16 +90,16 @@ export function contentsTemplate() {
                                 <div id="received-reviews-count">
                                 </div>
                             </div>
-                            <a href="#" id="show-received-review-prev">이전 보기</a>
-                            <a href="#" id="show-received-review-next">다음 보기</a>
                             <ul id="received-comments-list">
                             </ul>
+                            <a href="#" id="show-received-review-prev">이전 보기</a>
+                            <a href="#" id="show-received-review-next">다음 보기</a>
                         </section>
                     </div>
                 </div>
 
             </div>
-        </div>
+        <!--</div>-->
     </section>
     `;
 }
