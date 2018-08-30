@@ -82,7 +82,6 @@ function loadOrderList(data){
 
     $('#orders-count').innerHTML = '신청자 ' + data.length + '명';
 
-//    const test = data.map(orderListTemplate).join('');
     $('#product-order-list').innerHTML = data.map(orderListTemplate).join('');
     const buttonList = $all('#product-order-list li .order-button');
     buttonList.forEach(button => {
