@@ -1,4 +1,5 @@
 import {translateDateTime} from '../lib/Translator.js';
+import {numberWithCommas} from '../lib/utils.js';
 
 export function reviewTemplate({writer, product, rating}) {
     const writerId = writer.id;
@@ -53,7 +54,7 @@ export function registerTemplate({ product }) {
                         <dt class="cook">요리사</dt>
                         <dd>${product.name}</dd>
                         <dt class="participate-number">모집현황</dt>
-                        <dd>${product.ordersSize}/${product.maxParticipant}</dd>
+                        <dd>${product.ordersSize} / ${product.maxParticipant}</dd>
                         <dt class="participate-date">모집기간</dt>
                         <dd>${translateDateTime(product.expireDateTime)}</dd>
                         <dt class="give-time">나눔시각</dt>
@@ -63,7 +64,7 @@ export function registerTemplate({ product }) {
                         <dt class="give-plate">나눔용기</dt>
                         <dd>${product.isBowlNeeded === true ? '용기 지참' : '용기 제공'}</dd>
                         <dd class="price">
-                        ${price}
+                        ${numberWithCommas(price)}
                     </dl>
                     <div class="form-check">
                         <label class="form-check-label" for="radio-riders">

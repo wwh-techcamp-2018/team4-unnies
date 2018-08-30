@@ -215,8 +215,6 @@ function registerOrderModal(){
                 .then(openOrderModal);
 }
 
-//$('.preview-thumbnail.nav.nav-tabs').addEventListener('click', moveToSelectedImage);
-
 $('#register-share').addEventListener('submit',createOrder);
 $('#close-register').addEventListener('click',closeOrderModal);
 
