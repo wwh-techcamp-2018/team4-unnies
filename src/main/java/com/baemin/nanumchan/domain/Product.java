@@ -169,6 +169,7 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
     public NearProductDTO toNearProductDTO(double longitude, double latitude, double ownerRating) {
         return NearProductDTO.builder()
                 .distanceMeter(Math.floor(DistanceUtils.distanceInMeter(this.latitude, this.longitude, latitude, longitude)))
+                .productName(name)
                 .productId(id)
                 .productTitle(title)
                 .productImgUrl(productImages.stream().findFirst().isPresent() ? productImages.get(0).getUrl() : null)

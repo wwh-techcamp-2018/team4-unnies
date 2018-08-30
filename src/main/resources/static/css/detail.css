@@ -470,3 +470,9 @@ input[type="number"]::-webkit-inner-spin-button {
 .progress-bar {
     background-color: #2ac1bc
 }
+
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

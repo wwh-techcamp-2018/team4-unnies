@@ -50,7 +50,7 @@ export function registerTemplate({ product }) {
                     <h1 class="share-page">나눔 신청 페이지</h1>
                     <dl class="product-info">
                         <dt class="cook">요리사</dt>
-                        <dd>${product.name}</dd>
+                        <dd class="truncate">${product.name}</dd>
                         <dt class="participate-number">모집현황</dt>
                         <dd>${product.ordersSize} / ${product.maxParticipant}</dd>
                         <dt class="participate-date">모집기간</dt>

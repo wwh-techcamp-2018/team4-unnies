@@ -16,6 +16,8 @@ public class NearProductDTO {
 
     private Long productId;
 
+    private String productName;
+
     private String productTitle;
 
     private String productImgUrl;

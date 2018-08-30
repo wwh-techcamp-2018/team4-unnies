@@ -36,9 +36,12 @@ loadDetailContent(function(){
     product.load(productId)
             .then(data => {
                 data.product.productImages.forEach((productImage, index) => {
-                    imageViewer.setThumbnailImage(index, productImage, productImage);
+                    imageViewer.setThumbnailImage(index, productImage.url, productImage.url);
                 });
-                imageViewer.setImage(data.product.productImages[0], data.product.productImages[0]);
+                if(data.product.productImages[0]){
+                    imageViewer.setImage(data.product.productImages[0].url, data.product.productImages[0].url);
+                }
+
                 product.loadProduct(data);
                 return review.load(productId, reviewPage);
             })
