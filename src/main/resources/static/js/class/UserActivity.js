@@ -119,8 +119,8 @@ class UserActivity {
             .then(({data}) => {
                 const {content, first, last, totalElements} = data;
 
-                $('#show-received-review-prev').style.visibility = first ? 'hidden' : 'visible';
-                $('#show-received-review-next').style.visibility = last ? 'hidden' : 'visible';
+                $('#show-received-review-prev').disabled = first ? true : false;
+                $('#show-received-review-next').disabled = last ? true : false;
 
                 $('#received-reviews-count').innerHTML = '리뷰 ' + totalElements;
                 $('#received-comments-list').innerHTML = content.map(reviewTemplate).join('');
@@ -151,8 +151,8 @@ class UserActivity {
             .then(({data}) => {
                 const {content, first, last, totalElements} = data;
 
-                $('#show-gived-review-prev').style.visibility = first ? 'hidden' : 'visible';
-                $('#show-gived-review-next').style.visibility = last ? 'hidden' : 'visible';
+                $('#show-gived-review-prev').disabled = first ? true : false;
+                $('#show-gived-review-next').disabled = last ? true : false;
 
                 $('#gived-reviews-count').innerHTML = '리뷰 ' + totalElements;
                 $('#gived-comments-list').innerHTML = content.map(reviewTemplate).join('');
@@ -183,8 +183,8 @@ class UserActivity {
             .then(({data}) => {
                 const {content, first, last, totalElements} = data;
 
-                $('#show-received-product-prev').style.visibility = first ? 'hidden' : 'visible';
-                $('#show-received-product-next').style.visibility = last ? 'hidden' : 'visible';
+                $('#show-received-product-prev').disabled = first ? true : false;
+                $('#show-received-product-next').disabled = last ? true : false;
                 $('#received-products').innerHTML = content.map(cardTemplate).join('');
                 $all('.card.item').forEach(card => attachCardEventListener(card));
             })
@@ -205,8 +205,8 @@ class UserActivity {
             .then(({data}) => {
                 const {content, first, last, totalElements} = data;
 
-                $('#show-gived-product-prev').style.visibility = first ? 'hidden' : 'visible';
-                $('#show-gived-product-next').style.visibility = last ? 'hidden' : 'visible';
+                $('#show-gived-product-prev').disabled = first ? true : false;
+                $('#show-gived-product-next').disabled = last ? true : false;
                 $('#gived-products').innerHTML = content.map(cardTemplate).join('');
                 $all('.card.item').forEach(card => attachCardEventListener(card));
             })

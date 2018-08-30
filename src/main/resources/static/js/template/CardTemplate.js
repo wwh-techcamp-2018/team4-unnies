@@ -1,5 +1,6 @@
 import {translateStatus, translateDateTime} from '../lib/Translator.js';
 import {ratingTemplate} from "../template/DetailTemplate.js";
+import {numberWithCommas} from '../lib/utils.js';
 
 export function cardTemplate({product, orderCount, status, ownerRating}) {
     //TODO : 클래스 처리
@@ -50,7 +51,7 @@ export function cardTemplate({product, orderCount, status, ownerRating}) {
                 <dt>모집기간</dt>
                 <dd>${productExpireDateTime} <span class="text-muted">까지</span></dd>
             </dl>
-            <h4 class="card-subtitle text-right font-weight-bold price">${productPrice} <span class="text-muted">원</span></h4>
+            <h4 class="card-subtitle text-right font-weight-bold price">${numberWithCommas(productPrice)} <span class="text-muted">원</span></h4>
         </div>
     </div>`;
 

@@ -148,3 +148,97 @@ div.upload {
 .card .price {
     margin-top: 5px;
 }
+
+/*리뷰*/
+
+li {
+    list-style-type: none;
+}
+
+.checked {
+    color:orange;
+}
+
+#reviews-count{
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.47;
+    margin-bottom: 24px;
+}
+
+
+
+#product-comments-list > li {
+    margin-right:25px;
+    font-weight:lighter;
+    padding: 16px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+#product-comment-rating {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.product-comment-profile {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.product-comment-profile img{
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.product-comment-nickname {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.47;
+    letter-spacing: -0.5px;
+    margin-right: 8px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.product-comment-region-name {
+    display: inline-block;
+    font-size: 13px;
+    line-height: 1.46;
+    letter-spacing: -0.5px;
+    vertical-align: middle;
+}
+
+.product-comment-text {
+    padding-top: 8px;
+    font-size: 15px;
+    line-height: 1.47;
+    letter-spacing: -0.5px;
+}
+.product-comment-address {
+    display: inline-block;
+    font-size: 13px;
+    line-height: 1.46;
+    letter-spacing: -0.5px;
+    color: #868e96;
+    margin-top: 8px;
+}
+
+.star {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    padding: 0 0.15em;
+}
+
+.remove-button-shape {
+    padding: 0;
+    border: none;
+    background: none;
+}
+.product-comment{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
