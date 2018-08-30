@@ -14,22 +14,19 @@ class DaumMapSearch extends DaumMap {
         this.markers = [];
         this.places = new daum.maps.services.Places();
 
-        this.imgMarker = 'http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png';
+        var imageSrc = '/images/map-marker.png';
+        const imageSize = new daum.maps.Size(40, 40);  // 마커 이미지의 크기
+        const imgOptions = {
+            spriteSize : new daum.maps.Size(40, 40), // 스프라이트 이미지의 크기
+            offset: new daum.maps.Point(20, 40) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+        };
+        const markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imgOptions);
 
-//         var imageSrc = '/images/map-marker.png',
-//             imageSize = new daum.maps.Size(40, 40), // 마커이미지의 크기입니다
-//             imageOption = {offset: new daum.maps.Point(20, 40)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-//
-//         // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-//         var markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imageOption);
-//
-// // 마커를 생성합니다
-//         this.marker = new daum.maps.Marker({
-//             image: markerImage // 마커이미지 설정
-//         });
-//
-//         this.marker.setMap(this.map);
+        this.marker = new daum.maps.Marker({
+            image: markerImage
+        });
 
+        this.marker.setMap(this.map); // 지도 위에 마커를 표출합니다
 
         this.onSetAddress = onSetAddress;
         this.onError = onError;
@@ -108,13 +105,13 @@ class DaumMapSearch extends DaumMap {
     }
 
     addMarker(position, idx, title) {
-        const imageSize = new daum.maps.Size(36, 37);  // 마커 이미지의 크기
+        var imageSrc = '/images/map-marker.png'
+        const imageSize = new daum.maps.Size(40, 40);  // 마커 이미지의 크기
         const imgOptions = {
-            spriteSize : new daum.maps.Size(36, 691), // 스프라이트 이미지의 크기
-            spriteOrigin : new daum.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-            offset: new daum.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+            spriteSize : new daum.maps.Size(40, 40), // 스프라이트 이미지의 크기
+            offset: new daum.maps.Point(20, 40) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
         };
-        const markerImage = new daum.maps.MarkerImage(this.imgMarker, imageSize, imgOptions);
+        const markerImage = new daum.maps.MarkerImage(imageSrc, imageSize, imgOptions);
 
         const marker = new daum.maps.Marker({
             position: position, // 마커의 위치
