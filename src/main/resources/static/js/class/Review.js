@@ -11,21 +11,34 @@ class Review {
                 if (response.status === 404){
                     this.loadReviewError();
                     return;
-//                    location.href = window.location.origin +'/error-404';
                 }
 //                throw response.json();
             })
             .then(({ data }) => {
-                this.loadReviewList(data);
+                this.loadReviews(data);
             })
             .catch(error => {
                 // TODOs : error handling...
             });
     }
 
-    loadReviews({ content, first, last, totalElements }){
-        $('#show-review-prev').style.visibility = first ?  'hidden' :  'visible';
-        $('#show-review-next').style.visibility = last ? 'hidden' : 'visible';
+    loadReviews({ content, first, last, totalElements, pageable, totalPages }){
+        if(first){
+            $('#show-review-prev').disabled = true;
+            $('#show-review-prev').classList.add('disabled');
+        }else{
+            $('#show-review-prev').disabled = false;
+            $('#show-review-prev').classList.remve('disabled')
+        }
+
+        if(last){
+            $('#show-review-next').disabled = true;
+            $('#show-review-next').classList.add('disabled');
+        }else{
+            $('#show-review-next').disabled = false;
+            $('#show-review-next').classList.remve('disabled')
+        }
+
 
         $('#reviews-count').innerHTML = '리뷰 '+totalElements;
         $('#product-comments-list').innerHTML = content.map(reviewTemplate).join('');

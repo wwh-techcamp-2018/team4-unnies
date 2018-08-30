@@ -20,7 +20,7 @@ public class ProductDetailDTO {
     private Product product;
 
     @NotNull
-    @Min(0)
+    @Min(-1)
     @Max(5)
     private Double ownerRating;
 

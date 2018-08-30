@@ -103,6 +103,7 @@ public class ProductTest {
     @Test
     public void isOwner_성공() {
         user = User.builder()
+                .email("test@test.com")
                 .build();
         product = Product.builder()
                 .owner(user)
@@ -113,10 +114,11 @@ public class ProductTest {
     @Test
     public void isOwner_실패() {
         user = User.builder()
+                .email("test@test.com")
                 .build();
         product = Product.builder()
                 .owner(user)
                 .build();
-        assertThat(product.isOwner(User.GUEST_USER)).isTrue();
+        assertThat(product.isOwner(User.GUEST_USER)).isFalse();
     }
 }

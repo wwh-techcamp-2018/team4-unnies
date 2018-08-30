@@ -2,21 +2,50 @@ import { $, $all } from './lib/utils.js';
 import Product from './class/Product.js';
 import Review from './class/Review.js';
 import OrderList from './class/OrderList.js';
-import { orderListTemplate } from './template/DetailTemplate.js';
-import { openReviewModal, closeReviewModal, openOrderModal, closeOrderModal } from './modal.js'
+import { orderListTemplate, detailContentsTemplate } from './template/DetailTemplate.js';
+import { openReviewModal, closeReviewModal, openOrderModal, closeOrderModal, openOrderListModal, closeOrderListModal } from './lib/modal.js'
+import ImageViewer from './class/ImageViewer.js';
+import { mainView, thumbnailView, imageView, categorySelect } from './template/UploadTemplate.js';
 
 const pathname = window.location.pathname;
-const productId = pathname.substring(pathname.lastIndexOf('/')+1);
+const productId = pathname.substring(pathname.lastIndexOf('/') + 1 );
 let reviewPage = 0;
-
 
 const product = new Product();
 const review = new Review();
 const orderList = new OrderList();
+const imageViewer = new ImageViewer();
 
-product.load(productId, product.loadProduct);
-review.load(productId, reviewPage);
-orderList.load(productId, loadOrderList);
+function loadDetailContent(callback){
+    $('.detail-contents').insertAdjacentHTML('afterbegin', detailContentsTemplate());
+    callback();
+}
+
+loadDetailContent(function(){
+
+    imageViewer.setViewTemplate(mainView);
+    imageViewer.setImageViewTemplate(imageView);
+    imageViewer.setThumbnailViewTemplate(thumbnailView);
+
+    imageViewer.setView($('#image-viewer'));
+    imageViewer.setMainWidth('399px');
+    imageViewer.setMainHeight('399px');
+
+    imageViewer.setThumbnailsCount(5);
+    imageViewer.enableThumbnailMouseOver();
+    product.load(productId)
+            .then(data => {
+                data.product.productImages.forEach((productImage, index) => {
+                    imageViewer.setThumbnailImage(index, productImage, productImage);
+                });
+                imageViewer.setImage(data.product.productImages[0], data.product.productImages[0]);
+                product.loadProduct(data);
+                return review.load(productId, reviewPage);
+            })
+            .then(()=>orderList.load(productId,loadOrderList))
+})
+
+
 
 function moveToSelectedImage(event) {
     event.preventDefault();
@@ -33,17 +62,34 @@ function getElementParentIndex(element){
 }
 
 function loadOrderList(data){
-    if(!data.length){
+    if(!data){
+        $('#register-button').addEventListener('click',registerOrderModal);
         return;
     }
 
-    $('#orders-count').innerHTML = '신청자 ' + data.length;
-    $('#product-order-list').innerHTML = data.map(orderListTemplate).join('');
+    $('#register-button').innerText = '신청내역';
+    $('#register-button').classList.add('on');
+    $('#register-button').classList.remove('expired');
+    $('#register-button').classList.remove('full');
+    $('#register-button').disabled = false;
+    $('#register-button').addEventListener('click',openOrderListModal);
 
+
+    if(!data.length){
+        $('#orders-count').innerHTML = '신청자가 존재하지 않습니다';
+        return;
+    }
+
+    $('#orders-count').innerHTML = '신청자 ' + data.length + '명';
+
+//    const test = data.map(orderListTemplate).join('');
+    $('#product-order-list').innerHTML = data.map(orderListTemplate).join('');
     const buttonList = $all('#product-order-list li .order-button');
     buttonList.forEach(button => {
-        if(button.innerText === '나눔 중'){
+        if(button.innerText.trim() == '나눔 중'){
             button.disabled = false;
+            button.classList.remove('btn-secondary');
+            button.classList.add('btn-primary');
             button.addEventListener('click', changeOrderStatus);
         }
     });
@@ -110,19 +156,17 @@ function createOrder(event){
         })
     })
     .then(response => {
-        closeOrderModal();
         return response.json();
     })
     .then(({ data, errors }) => {
-        console.log(data);
         if(data){
             product.loadProduct(data);
-            $('strong[name=invalid-register]').style.visibility = 'hidden';
+            closeOrderModal();
             return;
         }
 
         errors.forEach(({ message }) => {
-            $('strong[name=invalid-register]').innerText += message;
+            $('strong[name=invalid-register]').innerText = message;
         });
         $('strong[name=invalid-register]').style.visibility = 'visible';
 
@@ -138,9 +182,7 @@ function createReview(event){
     const comment = $('#comment').value;
     const rating = $all('.star.selected').length;
 
-    console.log(comment);
-
-    fetch(`/api/products/${productId}/reviews?page=0&size=5`, {
+    fetch(`/api/products/${productId}/reviews`, {
             method:'post',
             headers:{'content-type':'application/json'},
             credentials:'same-origin',
@@ -149,17 +191,17 @@ function createReview(event){
                 rating
             })
         }).then(response => {
-            closeReviewModal();
             return response.json();
         })
         .then(({ data, errors }) => {
             if(data){
+                closeReviewModal();
                 $('strong[name=invalid-review]').style.visibility = 'hidden';
                 review.loadReviews(data);
                 return;
             }
             errors.forEach(({ message }) => {
-                $('strong[name=invalid-review]').innerText += message;
+                $('strong[name=invalid-review]').innerText = message;
             });
             $('strong[name=invalid-review]').style.visibility = 'visible';
         })
@@ -169,12 +211,10 @@ function createReview(event){
 }
 
 function registerOrderModal(){
-    product.load(productId, openOrderModal);
+    product.load(productId)
+                .then(openOrderModal);
 }
 
-$('.preview-thumbnail.nav.nav-tabs').addEventListener('click', moveToSelectedImage);
-
-$('#register-button').addEventListener('click',registerOrderModal);
 $('#register-share').addEventListener('submit',createOrder);
 $('#close-register').addEventListener('click',closeOrderModal);
 
@@ -182,14 +222,18 @@ $('#open-modal').addEventListener('click',openReviewModal);
 $('#register-review').addEventListener('click', createReview);
 $('#close-modal').addEventListener('click',closeReviewModal);
 
+$('#close-orders').addEventListener('click', closeOrderListModal);
+
 $('#show-review-prev').addEventListener('click', (event) => {
+    console.log(event.target);
     event.preventDefault();
     reviewPage -= 1;
-    reviewList.load(productId, reviewPage);
+    review.load(productId, reviewPage);
 });
 
 $('#show-review-next').addEventListener('click', (event) => {
     event.preventDefault();
+    console.log("asdasd");
     reviewPage += 1;
-    reviewList.load(productId, reviewPage);
+    review.load(productId, reviewPage);
 });

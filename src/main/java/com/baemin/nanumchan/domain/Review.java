@@ -43,22 +43,16 @@ public class Review extends AbstractEntity {
     private Double rating;
 
     public Review(User user, Product product, String comment, Double rating) {
+        validateReviewCreation(product, user);
         this.comment = comment;
         this.rating = rating;
-
-        canCreateReview(product, user);
-
         this.writer = user;
         this.product = product;
         this.chef = product.getOwner();
     }
 
-    private void canCreateReview(Product product, User user) {
-        Order order = product.getOrderByUser(user);
-
-        if (order == null) {
-            throw new EntityNotFoundException("신청 내역이 존재하지 않습니다");
-        }
+    private void validateReviewCreation(Product product, User user) {
+        Order order = product.getOrderByUser(user).orElseThrow(() -> new EntityNotFoundException("신청 내역이 존재하지 않습니다"));
 
         if (!order.isCompleteSharing()) {
             throw new NotAllowedException("나눔 완료가 되지 않았습니다");

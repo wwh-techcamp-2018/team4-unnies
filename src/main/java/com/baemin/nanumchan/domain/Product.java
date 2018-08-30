@@ -16,6 +16,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Builder
@@ -115,6 +116,10 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
         return orders.size();
     }
 
+    public void addOrder(Order order) {
+        orders.add(order);
+    }
+
     public Status getStatus() {
         if (isExpiredDateTime()) {
             return Status.EXPIRED;
@@ -148,15 +153,15 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
     }
 
     public boolean isOwner(User user) {
-        return owner.equals(user);
+        return owner.equalsEmail(user);
     }
 
     public boolean isStatus_ON_PARTICIPATING() {
         return getStatus().equals(Status.ON_PARTICIPATING);
     }
 
-    public Order getOrderByUser(User user) {
-        return orders.stream().filter(order -> order.getParticipant().equals(user)).findAny().orElse(null);
+    public Optional<Order> getOrderByUser(User user) {
+        return orders.stream().filter(order -> order.getParticipant().equalsEmail(user)).findAny();
     }
 
     public NearProductDTO toNearProductDTO(double longitude, double latitude, double ownerRating) {

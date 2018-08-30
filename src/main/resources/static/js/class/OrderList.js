@@ -6,8 +6,12 @@ class OrderList {
             .then(response => {
                 return response.json();
             })
-            .then(({ data }) => {
-                callback(data)
+            .then(({ data, errors }) => {
+                if(errors){
+                    callback();
+                }else{
+                    callback(data)
+                }
             })
             .catch(error => {
                 // TODOs : error handling...

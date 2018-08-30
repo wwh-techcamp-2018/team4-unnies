@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 
-    private static final Double ZERO = 0.0;
+    private static final Double MINUS = -1.0;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -68,7 +68,7 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("상품이 존재하지 않습니다"));
 
-        Double ownerRating = reviewRepository.getAvgRatingByChefId(product.getOwner().getId()).orElse(ZERO);
+        Double ownerRating = reviewRepository.getAvgRatingByChefId(product.getOwner().getId()).orElse(MINUS);
 
         return ProductDetailDTO.builder()
                 .product(product)
@@ -83,7 +83,7 @@ public class ProductService {
 
         Order order = orderRepository.save(orderDTO.toEntity(user, product));
 
-        product.getOrders().add(order);
+        product.addOrder(order);
         productRepository.save(product);
 
         return order;

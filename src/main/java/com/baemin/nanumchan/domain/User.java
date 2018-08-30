@@ -75,4 +75,10 @@ public class User extends AbstractEntity {
         }
     }
 
+    public boolean equalsEmail(User user){
+        if(email.equals(user.getEmail())){
+            return true;
+        }
+        return false;
+    }
 }
