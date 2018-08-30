@@ -10,6 +10,7 @@ import com.baemin.nanumchan.security.LoginUser;
 import com.baemin.nanumchan.service.ProductService;
 import com.baemin.nanumchan.utils.RestResponse;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -57,7 +58,7 @@ public class ApiProductController {
     }
 
     @PostMapping("/{id}/reviews")
-    public ResponseEntity<RestResponse> createReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO, Pageable pageable) {
+    public ResponseEntity<RestResponse> createReview(@LoginUser User user, @PathVariable Long id, @Valid @RequestBody ReviewDTO reviewDTO, @PageableDefault(page = 0, size = 5) Pageable pageable) {
         Review review = productService.createReview(user, id, reviewDTO);
         return ResponseEntity.created(URI.create("/products/" + id + "/review/" + review.getId()))
                 .body(RestResponse.success(productService.getReviews(id, pageable)));

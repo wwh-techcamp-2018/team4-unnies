@@ -43,12 +43,12 @@ public class Order extends AbstractEntity {
         this.participant = participant;
         this.deliveryType = deliveryType;
 
-        canOrder(product);
+        validateOrderCreation(product);
         this.product = product;
     }
 
-    public LocalDateTime getShareDateTime() {
-        return product.getShareDateTime();
+    public boolean isSharedDateTime() {
+        return product.isSharedDateTime();
     }
 
     public boolean isCompleteSharing() {
@@ -59,11 +59,11 @@ public class Order extends AbstractEntity {
         this.shareStatus = shareStatus;
     }
 
-    private void canOrder(Product product) {
+    private void validateOrderCreation(Product product) {
         if (product.isOwner(participant)) {
             throw new NotAllowedException("본인은 나눔신청이 안됩니다");
         }
-        if (!(product.getOrderByUser(participant) == (null))) {
+        if (product.getOrderByUser(participant).isPresent()) {
             throw new NotAllowedException("이미 신청한 사람은 안됩니다");
         }
         if (!product.isStatus_ON_PARTICIPATING()) {
