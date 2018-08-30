@@ -1,3 +1,7 @@
+li {
+    list-style-type: none;
+}
+
 .container {
   width: 970px;
   max-width: none !important;
@@ -62,7 +66,8 @@
     text-align: center;
     padding: 7px 12px;
     display: inline-block;
-    margin-top:10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     color: #fff;
 }
 .on {
@@ -192,7 +197,7 @@
 }
 
 .review-and-register{
-    margin-top : 10px;
+    margin-top : 20px;
 }
 
 #reviews-count {
@@ -204,8 +209,6 @@
     display:inline-block;
     float:right;
 }
-
-
 
 /*
  card 부분!
@@ -234,7 +237,7 @@ img {
   border: 0px;
 }
 .row.card{
-    margin-top: 0px;
+    margin-top: -40px;
 }
 
 .tab-content {
@@ -275,10 +278,6 @@ img {
     margin-bottom: 15px;
 }
 
-.price span {
-    color: #1fcbc7;
-}
-
 .form-check{
   text-align: center;
 }
@@ -317,9 +316,158 @@ img {
     list-style: none;
 }
 
+#product-category {
+    margin-left:15px;
+    margin-top:12px;
+    letter-spacing: -1px;
+    font-size: 15px;
+    color: #868e96;
+}
+
 .form-check-label {
     margin-right: 25px;
 }
 .form-check-input {
     margin-top: 0px;
+}
+
+.details > .product-name, .product-title, .product-description, .price {
+    color: #333;
+    font-size: 14px;
+    line-height: 1.6em;
+    margin-bottom: 7px;
+}
+
+.details .product-name{
+    font-family: "Noto Sans KR Bold", sans-serif;
+    font-weight: 900;
+    color: #000;
+    font-size: 30px;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+#product-name{
+    font-family: "Noto Sans KR Bold", sans-serif;
+    font-weight: 900;
+    color: #000;
+    font-size: 30px;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+}
+.details .product-info {
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.85em;
+}
+
+.details .product-info dt {
+    clear: both;
+    position: relative;
+    float: left;
+    color: #999;
+    padding: 4px 0 0 0;
+}
+
+.details .product-info dd {
+    position: relative;
+    padding: 4px 0 0 80px;
+}
+
+.details .product-info .price {
+    font-size: 33px;
+    font-family: Verdana, sans-serif;
+    font-weight: 900;
+    letter-spacing: -0.07em;
+}
+
+
+.details .product-info .unit {
+   position: relative;
+   top: 0;
+   font-size: 18px;
+}
+
+.details .product-info dd.price {
+   text-align: right;
+   line-height: 1.2em;
+   margin: 10px 0;
+}
+
+.details {
+    font-family: "Noto Sans KR", sans-serif;
+    letter-spacing: -0.05em;
+    position: relative;
+
+}
+
+.details .share-page  {
+    font-family: "Noto Sans KR Bold", sans-serif;
+    font-weight: 900;
+    color: #000;
+    font-size: 30px;
+    letter-spacing: -1px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.details .form-check-label  {
+    font-family: "Noto Sans KR Bold", sans-serif;
+    color: #000;
+    font-size: 15px;
+    letter-spacing: -1px;
+    text-align: center;
+}
+
+.free-price {
+    margin-right : 7px;
+    color: #2ac1bc;
+}
+
+.disabled {
+    cursor: default;
+    color: #868e96;
+    font-size : 13px;
+}
+
+.remove-button-shape {
+    padding: 0;
+    border: none;
+    background: none;
+}
+
+.modal-content h4{
+    font-family: "Noto Sans KR Bold", sans-serif;
+    color: #000;
+    letter-spacing: -1px;
+}
+
+#register-review {
+    background-color : #2ac1bc;
+}
+
+.modal-content > *{
+    font-family: "Noto Sans KR Bold", sans-serif;
+    color: #000;
+    letter-spacing: -1px;
+}
+
+#orders-count {
+    font-weight: 800;
+    color: #000;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.order-phone-number {
+    font-size : 14px;
+    color: #555;
+}
+
+.progress-bar {
+    background-color: #2ac1bc
 }

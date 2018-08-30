@@ -1,6 +1,8 @@
-import {$, $all} from '../lib/utils.js';
-import {ratingTemplate} from "../template/DetailTemplate.js";
+import {$, $all, numberWithCommas} from '../lib/utils.js';
+import {ratingTemplate, detailContentsTemplate} from "../template/DetailTemplate.js";
 import {errorPageTemplate} from '../template/ErrorPageTemplate.js';
+import {translateDateTime} from '../lib/Translator.js';
+
 
 class Product {
 
@@ -30,21 +32,27 @@ class Product {
         });
     }
 
-    load(productId, callback){
-        fetch(`/api/products/${productId}`)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                this.loadProductError();
-                return;
-            })
-            .then(({ data }) => {
-                callback(data);
-            })
-            .catch(error => {
-                // TODOs : error handling...
-            });
+    load(productId){
+        return new Promise((resolve, reject)=>{
+            fetch(`/api/products/${productId}`)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    this.loadProductError();
+                    return;
+                })
+                .then(({ data }) => {
+                    resolve(data);
+                })
+                .catch(error => {
+                });
+        });
+
+    }
+
+    setDetailTemplate() {
+        $('.detail-contents').insertAdjacentHTML('afterbegin', detailContentsTemplate());
     }
 
     loadProduct(data) {
@@ -54,19 +62,31 @@ class Product {
         $('#product-name').innerText = product.name;
         $('#product-title').innerText = product.title;
         $('#cook').innerText = owner.name;
-        $('#participate-number').innerText = product.ordersSize + '/' + product.maxParticipant;
-        $('#participate-date').innerText = product.expireDateTime;
-        $('#give-time').innerText = product.shareDateTime;
+        const participantPercentage = (product.ordersSize / product.maxParticipant) * 100;
+
+        $('#participate-number').insertAdjacentHTML('afterbegin',
+            `<div class="progress">
+                 <div class="progress-bar" role="progressbar" style="width: ${participantPercentage}%;" aria-valuenow="${participantPercentage}" aria-valuemin="0" aria-valuemax="100">
+                    ${product.ordersSize + ' / ' + product.maxParticipant}
+                 </div>
+            </div>`);
+
+
+        $('#participate-date').innerText = translateDateTime(product.expireDateTime);
+        $('#give-time').innerText = translateDateTime(product.shareDateTime);
         $('#give-place').innerText = owner.address;
         $('#give-plate').innerText = product.isBowlNeeded === true ? '개인 용기 지참' : '나눔 용기 제공';
-        $('#price').innerText = product.price;
+
         $('#nickname').innerText = owner.name;
         $('#region-name').innerText = owner.address;
         $('#product-name').innerText = product.name;
+        $('.product-content-title').innerText = product.title;
         $('#product-category').innerText = product.category.name;
-        $('#product-create-time').innerText = product.shareDateTime;
-        $('#product-price').innerText = product.price == 0 ? '무료 나눔' : product.price;
 
+        $('#user-image').src = owner.imageUrl ? owner.imageUrl : "/images/blank-profile.png";
+        $('#user-image').alt = owner.name;
+
+        $('#user-profile-link').href = '/users/'+owner.id;
         tui.Editor.factory({
             el: $('#product-detail'),
             height: 'auto',
@@ -74,11 +94,20 @@ class Product {
             initialValue: product.description
         });
 
+
+        if(product.price){
+            $('#price').innerText = numberWithCommas(product.price);
+        }else{
+            $('#price').innerText = '무료 나눔';
+            $('#price').classList.add('free-price');
+            $('.details .unit').remove();
+        }
         const userRating = Math.round(ownerRating)
-        $('#user-rating').innerHTML = userRating > 0 ? ratingTemplate(userRating) : '';
+        $('#user-rating').innerHTML = userRating >= 0 ? ratingTemplate(userRating) : ratingTemplate(5);
 
         const currentStatus = $('.status');
         const registerShareBtn = $('#register-button');
+
         if(status === 'ON_PARTICIPATING') {
             currentStatus.innerText = '모집중';
             currentStatus.classList.add('on');
@@ -98,11 +127,11 @@ class Product {
             registerShareBtn.classList.add('expired');
             registerShareBtn.disabled = true;
         }
-
     }
 
     loadProductError(){
-        $('.container').insertAdjacentHTML('afterbegin', errorPageTemplate());
+        $('.detail-contents .container').remove();
+        $('.detail-contents').insertAdjacentHTML('afterbegin', errorPageTemplate());
     }
 
     loadNearAll(latitude, longitude, offset, limit, success, fail) {
