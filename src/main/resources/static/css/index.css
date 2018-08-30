@@ -227,3 +227,11 @@
     width: 850px;
     height : 60px;
 }
+
+.checked {
+    color:orange;
+}
+
+.products {
+    padding-left: 50px;
+}

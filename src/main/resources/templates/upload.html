@@ -22,7 +22,7 @@
 {{/partial}}
 
 {{#partial "contents"}}
-<div class="fix-width-center py-5">
+<div class="fix-width-center py-5" style="width: 800px;">
     <form id="upload-form" enctype="multipart/form-data">
         <div class="form-group upload">
             <label>이미지 등록</label>
@@ -30,7 +30,7 @@
                 <div id="image-viewer" class="left-group">
 
                 </div>
-                <div class="left-group">
+                <div class="left-group" style="padding-top: 120px;">
                     <ul>
                         <li>상품 이미지를 끌어와 등록할 수 있습니다.</li>
                         <!--<li>상품 이미지는 400*400에 최적화 되어있습니다.</li>-->
@@ -94,7 +94,7 @@
                 <input type="hidden" name="latitude">
                 <input type="hidden" name="longitude">
             </div>
-            <div id="map" style="width:960px;height:600px;"></div>
+            <div id="map" style="width:800px;height:600px;"></div>
         </div>
 
         <div class="form-group">

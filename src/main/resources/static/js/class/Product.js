@@ -64,12 +64,11 @@ class Product {
         $('#cook').innerText = owner.name;
         const participantPercentage = (product.ordersSize / product.maxParticipant) * 100;
 
-        $('#participate-number').insertAdjacentHTML('afterbegin',
-            `<div class="progress">
+        $('#participate-number').innerHTML =`<div class="progress">
                  <div class="progress-bar" role="progressbar" style="width: ${participantPercentage}%;" aria-valuenow="${participantPercentage}" aria-valuemin="0" aria-valuemax="100">
                     ${product.ordersSize + ' / ' + product.maxParticipant}
                  </div>
-            </div>`);
+            </div>`;
 
 
         $('#participate-date').innerText = translateDateTime(product.expireDateTime);
@@ -103,7 +102,7 @@ class Product {
             $('.details .unit').remove();
         }
         const userRating = Math.round(ownerRating)
-        $('#user-rating').innerHTML = userRating >= 0 ? ratingTemplate(userRating) : ratingTemplate(5);
+        $('#user-rating').innerHTML = ratingTemplate(userRating);
 
         const currentStatus = $('.status');
         const registerShareBtn = $('#register-button');

@@ -5,8 +5,13 @@ const registerFlag = {
     'password':false,
 };
 
+
 function loginHandler(event){
     event.preventDefault();
+
+    if(!monitorRegisterButton()){
+        return;
+    }
 
     const email = $('input[name=email]').value;
     const password = $('input[name=password]').value;
@@ -42,10 +47,6 @@ function validateError(response) {
     })
 }
 
-function validateCheck(){
-    $('#button').disabled = !monitorRegisterButton();
-}
-
 function monitorRegisterButton(){
     for(const key in registerFlag){
             if(registerFlag[key] === false){
@@ -66,7 +67,6 @@ function validateEmail(){
     }else{
         $('strong[name=invalid-email]').style.visibility='hidden';
         registerFlag['email'] = true;
-        validateCheck();
     }
 }
 
@@ -80,11 +80,10 @@ function validatePassword(){
     }else{
         $('strong[name=invalid-password]').style.visibility='hidden';
         registerFlag['password'] = true;
-        validateCheck();
     }
 
 }
 
-$('#button').addEventListener('click',loginHandler);
+$('#loginForm').addEventListener('submit',loginHandler);
 $('input[name=email]').onchange = validateEmail;
 $('input[name=password]').onchange = validatePassword;

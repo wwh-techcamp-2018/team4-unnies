@@ -35,15 +35,15 @@
                 <ul class="nav">
                     {{^ loginedUser }}
                     <li class="nav-item">
-                        <small><a class="nav-link" href="/login.html">로그인</a></small>
+                        <small><a class="nav-link" href="/login">로그인</a></small>
                     </li>
                     <li class="nav-item">
-                        <small><a class="nav-link" href="/signup.html">회원가입</a></small>
+                        <small><a class="nav-link" href="/signup">회원가입</a></small>
                     </li>
                     {{/ loginedUser }}
                     {{# loginedUser }}
                     <li class="nav-item">
-                        <small><a class="nav-link logout" href="#">로그아웃</a></small>
+                        <small><a class="nav-link logout" href="/logout">로그아웃</a></small>
                     </li>
                     <li class="nav-item">
                         <small><a class="nav-link" href="/users/{{id}}">마이페이지</a></small>
