@@ -22,7 +22,7 @@ public class Order extends AbstractEntity {
     @NotNull
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_order_product"))
-    @JsonBackReference
+//    @JsonBackReference
     private Product product;
 
     @NotNull

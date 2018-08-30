@@ -5,6 +5,7 @@ import com.baemin.nanumchan.support.domain.AbstractEntity;
 import com.baemin.nanumchan.utils.DistanceUtils;
 import com.baemin.nanumchan.validate.Expirable;
 import com.baemin.nanumchan.validate.Currency;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -109,7 +110,8 @@ public class Product extends AbstractEntity implements DateTimeExpirable {
 
     @Size(max = 6)
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+//    @JsonManagedReference
+    @JsonIgnore
     private List<Order> orders;
 
     public int getOrdersSize() {
