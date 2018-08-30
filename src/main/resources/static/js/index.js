@@ -154,7 +154,7 @@ function templateProducts(data) {
 }
 
 function attachCardEventListener(card) {
-    const productId = $('input[name=product-id]').value;
+    const productId = card.querySelector('input[name=product-id]').value;
     card && card.addEventListener('click', () => {
         location.href = `/products/${productId}`;
     });

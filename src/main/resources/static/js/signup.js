@@ -21,8 +21,12 @@ $('input[name=find-postcode]').addEventListener('click', event => {
 function signupHandler(event) {
     event.preventDefault();
 
+
     validateConfirmPassword();
     if (!validateAddress()) {
+        return;
+    }
+    if(!monitorRegisterButton()){
         return;
     }
 
@@ -72,9 +76,6 @@ function validateError(response) {
 }
 
 
-function validateCheck() {
-    $('#button').disabled = !monitorRegisterButton();
-}
 
 function monitorRegisterButton() {
     for (const key in registerFlag) {
@@ -96,7 +97,6 @@ function validateEmail() {
     } else {
         $('strong[name=invalid-email]').style.visibility = 'hidden';
         registerFlag['email'] = true;
-        validateCheck();
     }
 }
 
@@ -109,7 +109,6 @@ function validateName() {
     } else {
         $('strong[name=invalid-name]').style.visibility = 'hidden';
         registerFlag['name'] = true;
-        validateCheck();
     }
 
 }
@@ -123,7 +122,6 @@ function validatePassword() {
     } else {
         $('strong[name=invalid-password]').style.visibility = 'hidden';
         registerFlag['password'] = true;
-        validateCheck();
     }
 
 }
@@ -137,7 +135,6 @@ function validateConfirmPassword() {
     } else {
         $('strong[name=invalid-confirmPassword]').style.visibility = 'hidden';
         registerFlag['confirmPassword'] = true;
-        validateCheck();
     }
 
 }
@@ -151,7 +148,6 @@ function validatePhone() {
     } else {
         $('strong[name=invalid-phoneNumber]').style.visibility = 'hidden';
         registerFlag['phoneNumber'] = true;
-        validateCheck();
     }
 }
 
@@ -159,7 +155,6 @@ function validateAddress() {
     const address = $('input[name=address]').value;
     if (address) {
         $('strong[name=invalid-address]').style.visibility = 'hidden';
-        validateCheck();
         return true;
     } else {
         $('strong[name=invalid-address]').style.visibility = 'visible';
@@ -177,7 +172,6 @@ function validateAddressDetail() {
     } else {
         $('strong[name=invalid-address]').style.visibility = 'hidden';
         registerFlag['addressDetail'] = true;
-        validateCheck();
     }
 }
 

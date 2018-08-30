@@ -1,10 +1,8 @@
 package com.baemin.nanumchan.dto;
 
 import com.baemin.nanumchan.domain.Product;
-import com.baemin.nanumchan.domain.Status;
 import lombok.*;
 
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -20,7 +18,7 @@ public class ProductDetailDTO {
     private Product product;
 
     @NotNull
-    @Min(-1)
+    @Min(0)
     @Max(5)
     private Double ownerRating;
 

@@ -22,7 +22,9 @@ new Category().load(onLoadSuccessCategory, onLoadFailCategory);
 function onLoadSuccessCategory(data) {
     insertIntoCategoryContainer(templateCategories(data));
     const categoryId = window.location.pathname.split('/').pop();
-    categoryId && setActiveCategory(categoryId);
+
+    if (Number.isInteger(categoryId))
+        categoryId && setActiveCategory(categoryId);
 }
 
 function onLoadFailCategory(error) {

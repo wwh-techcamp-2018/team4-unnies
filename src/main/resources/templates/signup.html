@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>배민나눔찬 회원가입</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/font-awesome.min.css" rel="stylesheet">
+{{#partial "header"}}
     <script src="/js/lib/postcode.v2.js?autoload=false" defer></script>
-    <script src="/js/lib/jquery-3.3.1.slim.min.js" defer></script>
-    <script src="/js/lib/bootstrap.min.js" defer></script>
     <script src="/js/signup.js" type="module" defer></script>
-</head>
-<body>
-<div style="width: 1000px; background: #fff; margin: 0 auto; padding: 20px;">
+    <link href="/css/user.css" rel="stylesheet">
+
+{{/partial}}
+
+{{#partial "contents"}}
+<div class="signup-contents" style="width: 500px; background: #fff; margin: 0 auto; padding: 20px; margin-top:40px;">
     <div class="main-login main-center">
         <form method="post" id="signupForm" action="#">
             <div class="form-group">
@@ -65,7 +59,7 @@
                 <div>
                     <div style="display:inline-block;">
                         <input type="button" name="find-postcode" class="btn btn-primary btn-sm"
-                               value="우편번호 찾기"/><br>
+                               style="color:#fff" value="우편번호 찾기"/><br>
                     </div>
                 </div>
                 <div>
@@ -85,12 +79,13 @@
 
             <div class="form-group ">
                 <button target="_blank" type="submit" id="button"
-                        class="btn btn-primary btn-lg btn-block login-button" disabled="true">회원가입
+                        class="btn btn-primary btn-lg btn-block login-button">회원가입
                 </button>
             </div>
 
         </form>
     </div>
 </div>
-</body>
-</html>
+{{/partial}}
+
+{{> base}}

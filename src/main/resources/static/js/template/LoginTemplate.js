@@ -1,18 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>배민나눔찬 로그인</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <script src="/js/lib/jquery-3.3.1.slim.min.js" defer></script>
-    <script src="/js/lib/bootstrap.min.js" defer></script>
-    <script src="/js/login.js" type="module" defer></script>
-</head>
-<body>
-<div style="width: 1000px; background: #fff; margin: 0 auto; padding: 20px;">
-    <div class="main-login main-center">
+export function loginContentsTemplate(){
+return `<div class="main-login main-center">
         <form method="post" action="#">
             <div class="form-group">
                 <label class="control-label">이메일</label>
@@ -43,7 +30,5 @@
             </div>
 
         </form>
-    </div>
-</div>
-</body>
-</html>
+    </div>`;
+}

@@ -36,11 +36,9 @@ export function reviewTemplate({writer, product, rating}) {
 
 export function ratingTemplate(rating) {
     let html = '';
-
     for (let i = 0; i < 5; i++) {
         i < rating ? html += `<span class='fa fa-star checked'></span>` : html += `<span class='fa fa-star'></span>`;
     }
-
     return html;
 }
 
@@ -82,11 +80,12 @@ export function registerTemplate({ product }) {
 
 export function orderListTemplate(data){
     const deliveryType = data.deliveryType === 'BAEMIN_RIDER' ? '배민라이더스' : '직접수령';
-return `<div style="display:inline-block; text-align:center;">
+    const writerImageUrl = data.participant.imageUrl ? data.participant.imageUrl : "/images/blank-profile.png";
+return `<div style="display:inline-block; text-align:center; margin-left:65px; margin-bottom:30px;">
         <div>
            <div>
                <div>
-                   <img class="chef-img" src="${data.participant.imageUrl}" style="width:90px;height:90px;border:dotted 1px lightgray;border-radius:3px;">
+                   <img class="chef-img" src="${writerImageUrl}" style="width:90px;height:90px;border:dotted 1px lightgray;border-radius:3px;">
                    <div>
                        <a href="/users/${data.participant.id}">${data.participant.name}</a>
 
@@ -270,7 +269,7 @@ return `<div class="container">
                                 <div style="text-align:center;">
                                     <strong name="invalid-review" style="color:red; visibility:hidden;"></strong>
                                 </div>
-                                <button type="submit" id="register-review" class="btn btn-info" style="float:right;">등록
+                                <button type="submit" id="register-review" class="btn btn-info" style="float:right; color:#fff;">등록
                                 </button>
                             </div>
                     </div>

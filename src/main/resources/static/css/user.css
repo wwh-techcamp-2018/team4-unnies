@@ -1,0 +1,14 @@
+.btn.btn-primary.btn-lg.btn-block.login-button {
+    background-color: #2ac1bc;
+    border-color: #2ac1bc;
+}
+.signup-contents *,
+.login-contents *{
+    font-family: "Noto Sans KR Bold", sans-serif;
+    color: #000;
+    letter-spacing: -1px;
+}
+
+.login-button {
+    color: #fff;
+}

@@ -1,9 +1,11 @@
 import { translateDateTime } from '../lib/Translator.js';
-import { ratingTemplate } from "./DetailTemplate.js";
+import { ratingTemplate } from './DetailTemplate.js';
+import { numberWithCommas } from '../lib/utils.js'
 
 export function productTemplate({ distanceMeter, productId, productTitle, productImgUrl, ownerName, ownerImgUrl, ownerRating, orderCnt, maxParticipant, expireDateTime, price }) {
     const formattedExpireDateTime = translateDateTime(expireDateTime);
     const numberOwnerRating = Number(ownerRating);
+
     return `
     <div class="card">
         <input type="hidden" name="product-id" value="${productId}">
@@ -37,7 +39,7 @@ export function productTemplate({ distanceMeter, productId, productTitle, produc
                 <dt>모집기간</dt>
                 <dd>${formattedExpireDateTime} <span class="text-muted">까지</span></dd>
             </dl>
-            <h4 class="card-subtitle text-right font-weight-bold price">${price} <span class="text-muted">원</span></h4>
+            <h4 class="card-subtitle text-right font-weight-bold price">${numberWithCommas(price)} <span class="text-muted">원</span></h4>
         </div>
     </div>`;
 }
