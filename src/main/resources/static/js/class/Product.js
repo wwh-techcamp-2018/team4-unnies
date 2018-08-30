@@ -24,11 +24,12 @@ class Product {
             }
         }).catch(errors => {
             errors.forEach(({field, message}) => {
+                field = field.replace(/\[\d\]/, '');
                 const feedback = $(`*[name=${field}]`).closest('.form-group').querySelector('.feedback');
                 feedback.innerText = message;
                 feedback.classList.add('on');
             });
-            $('.feedback.on:first-child').focus();
+            $('.feedback.on').focus();
         });
     }
 
