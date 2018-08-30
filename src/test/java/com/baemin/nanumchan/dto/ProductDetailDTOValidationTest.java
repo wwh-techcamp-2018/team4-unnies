@@ -50,6 +50,6 @@ public class ProductDetailDTOValidationTest {
                 .ownerRating(-1.0)
                 .build();
         Set<ConstraintViolation<ProductDetailDTO>> constraintViolations = validator.validate(productDetailDTO);
-        assertThat(constraintViolations.size()).isEqualTo(1);
+        assertThat(constraintViolations.size()).isEqualTo(2);
     }
 }
