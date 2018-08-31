@@ -20,6 +20,7 @@ const LOADING_TEXT = '(loading...)';
 const category = new Category();
 const product = new Product();
 
+const MAP_ZOOM_LEVEL = 4;
 const daumMap = new DaumMapSearch(onSetAddress, onErrorSearchAddress);
 daumMap.setZoomable(false);
 daumMap.setZoomControl();
@@ -77,7 +78,7 @@ function setGIS(latitude, longitude) {
     sessionStorage.setItem('longitude', longitude);
     sessionStorage.setItem('latitude', latitude);
 
-    daumMap.setZoomLevel(4);
+    daumMap.setZoomLevel(MAP_ZOOM_LEVEL);
     daumMap.setPosition(latitude, longitude);
 
     setLocation(LOADING_TEXT);
@@ -123,6 +124,10 @@ function searchAddress() {
 }
 
 function loadNearProducts(latitude, longitude, offset, limit) {
+    if (!latitude || !longitude) {
+        return;
+    }
+
     const categoryId = window.location.pathname.split('/').pop();
     if (categoryId) {
         category.loadNearProducts(categoryId, latitude, longitude, offset, limit, onLoadNearProducts, onLoadFailNearProducts);
