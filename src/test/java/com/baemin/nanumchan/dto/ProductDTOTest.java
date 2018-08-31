@@ -75,8 +75,8 @@ public class ProductDTOTest {
 
     @Test
     public void categoryId_max보다_큼() {
-        assertThat(validator.validateValue(ProductDTO.class, "categoryId", 6L).size()).isEqualTo(0);
-        assertThat(validator.validateValue(ProductDTO.class, "categoryId", 7L).size()).isEqualTo(1);
+        assertThat(validator.validateValue(ProductDTO.class, "categoryId", 7L).size()).isEqualTo(0);
+        assertThat(validator.validateValue(ProductDTO.class, "categoryId", 8L).size()).isEqualTo(1);
     }
 
     @Test

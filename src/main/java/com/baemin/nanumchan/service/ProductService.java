@@ -1,13 +1,8 @@
 package com.baemin.nanumchan.service;
 
 import com.baemin.nanumchan.domain.*;
-import com.baemin.nanumchan.dto.OrderDTO;
-import com.baemin.nanumchan.dto.ProductDTO;
-import com.baemin.nanumchan.dto.ProductDetailDTO;
-import com.baemin.nanumchan.dto.ReviewDTO;
+import com.baemin.nanumchan.dto.*;
 import com.baemin.nanumchan.exception.NotAllowedException;
-import com.baemin.nanumchan.dto.NearProductDTO;
-import com.baemin.nanumchan.utils.DistanceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +46,7 @@ public class ProductService {
         product.setCategory(categoryRepository.findById(productDTO.getCategoryId()).orElseThrow(EntityNotFoundException::new));
         product.setProductImages(
                 productImageRepository.saveAll(
-                        productDTO.getFiles()
+                        Optional.ofNullable(productDTO.getFiles()).orElse(Arrays.asList())
                                 .stream()
                                 .map(imageStorage::upload)
                                 .map(ProductImage::new)
