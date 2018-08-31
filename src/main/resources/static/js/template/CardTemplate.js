@@ -22,7 +22,7 @@ export function cardTemplate({product, orderCount, status, ownerRating}) {
     <div class="card item">
         <input type="hidden" name="product-id" value="${productId}">
         <div class="card-header">
-            <img src="${productImageUrl}" alt="${productName}">
+            <img src="${productImageUrl.url}" alt="${productName}">
         </div>
         <div class="card-body">
             <h5 class="card-title font-weight-bold truncate">${productName}</h5>
