@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 public class NearProductDTO {
 
-    public final static int DEFAULT_RADIUS_METER = 1000;
+    public final static int DEFAULT_RADIUS_METER = 5000;
 
     private double distanceMeter;
 
