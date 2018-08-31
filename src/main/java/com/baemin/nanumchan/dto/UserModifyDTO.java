@@ -24,7 +24,7 @@ public class UserModifyDTO {
     private String aboutMe;
 
     @Nullable
-    @Image(accept = {JPG, PNG}, size = 1_000_000, width = 640, height = 640)
+    @Image(accept = {JPG, PNG}, size = 1_000_000, width = 1200, height = 1200)
     private MultipartFile file;
 
     @Nullable
