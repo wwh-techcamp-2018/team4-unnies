@@ -32,7 +32,7 @@ public class ProductDTO implements DateTimeExpirable {
     private List<@Image(accept = {JPG, PNG}, size = 1_000_000, width = 640, height = 640) MultipartFile> files;
 
     @NotNull
-    @Range(min = 1, max = 6)
+    @Range(min = 1, max = 7)
     private Long categoryId;
 
     @NotNull
